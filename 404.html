@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 2 missing clue fields UI v46</title>
+  <title>BloomBuffer - Phase 2 mobile utility bar UI v48</title>
   <style>
 :root {
   color-scheme: light;
@@ -127,7 +127,7 @@ textarea {
 }
 
 main {
-  padding: 14px 12px 176px;
+  padding: 14px 12px 24px;
 }
 
 .screen {
@@ -1332,33 +1332,53 @@ button.card-danger-action {
 }
 
 .backup-bar {
-  position: fixed;
-  left: 50%;
-  bottom: 12px;
-  z-index: 10;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  width: min(532px, calc(100vw - 24px));
-  padding: 8px;
-  border: 1px solid var(--line);
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: var(--shadow);
-  transform: translateX(-50%);
+  gap: 7px;
+  width: min(536px, calc(100vw - 24px));
+  margin: 0 auto;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  border-top: 2px solid #b7c8ae;
+  background: #e7efe2;
+  box-shadow: 0 -6px 18px rgba(23, 32, 24, 0.08);
+}
+
+.backup-kicker {
+  margin: 0;
+  color: var(--green-dark);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .backup-status {
-  grid-column: 1 / -1;
   margin: 0;
-  color: var(--muted);
-  font-size: 12px;
+  color: #40523f;
+  font-size: 11px;
   line-height: 1.35;
 }
 
-#open-debug-log {
-  grid-column: 1 / -1;
-  min-height: 38px;
+.backup-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.utility-button {
+  min-height: 36px;
+  border: 1px solid #b7c8ae;
+  border-radius: 9px;
+  padding: 8px 6px;
+  background: #f8fbf6;
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.utility-button-strong {
+  border-color: var(--green);
+  background: var(--green);
+  color: #fff;
 }
 
 .error {
@@ -1374,7 +1394,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p>Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 2 missing clue fields UI v46</p>
+        <p class="build-label">Build: Phase 2 mobile utility bar UI v48</p>
       </div>
       <span class="phase-badge">Phase 2</span>
     </header>
@@ -1767,11 +1787,14 @@ button.card-danger-action {
       </section>
     </main>
 
-    <footer class="backup-bar">
-      <p id="backup-status" class="backup-status">Local autosave is on in this browser. Save backup JSON to make a file copy.</p>
-      <button class="secondary" id="export-json">Save backup JSON</button>
-      <button class="primary" id="import-json-button">Import backup JSON</button>
-      <button class="secondary" id="open-debug-log" type="button">Debug log</button>
+    <footer class="backup-bar" aria-label="Backup and support tools">
+      <p class="backup-kicker">Backup and support</p>
+      <p id="backup-status" class="backup-status">Autosave is on. Save backup JSON to make a file copy.</p>
+      <div class="backup-actions">
+        <button class="utility-button" id="export-json">Save backup</button>
+        <button class="utility-button utility-button-strong" id="import-json-button">Import backup</button>
+        <button class="utility-button" id="open-debug-log" type="button">Debug log</button>
+      </div>
       <input id="import-json" type="file" accept="application/json" hidden>
     </footer>
   </div>
@@ -2576,21 +2599,21 @@ const FLOW_DEFINITIONS = [
       "distance_wall",
       "measured_from_structure_part",
       "structure_construction_type",
+      "container_placement",
+      "deck_balcony_wall_distance",
+      "deck_balcony_away_from_openings",
       "under_window",
       "distance_opening",
       "container_size",
       "container_material",
-      "container_placement",
-      "plant_type",
       "plant_height",
+      "deck_stair_clearance",
+      "combustible_mulch",
+      "plant_fuel_continuity",
+      "plant_type",
       "healthy_maintained",
       "plant_spacing",
-      "deck_stair_clearance",
-      "deck_balcony_wall_distance",
-      "deck_balcony_away_from_openings",
-      "combustible_mulch",
       "mulch_context",
-      "plant_fuel_continuity",
     ],
   },
   {
@@ -2605,14 +2628,14 @@ const FLOW_DEFINITIONS = [
       "structure_construction_type",
       "under_window",
       "distance_opening",
+      "deck_stair_clearance",
+      "combustible_mulch",
+      "plant_fuel_continuity",
       "plant_type",
       "plant_height",
       "healthy_maintained",
       "plant_spacing",
-      "deck_stair_clearance",
-      "combustible_mulch",
       "mulch_context",
-      "plant_fuel_continuity",
     ],
   },
   {
@@ -2645,11 +2668,11 @@ const FLOW_DEFINITIONS = [
       "measured_from_structure_part",
       "stored_within_5ft",
       "material_combustible",
-      "furniture_material",
-      "furniture_cushions_fabric",
       "deck_attached_location",
       "deck_wall_distance",
       "storage_contents_combustible",
+      "furniture_cushions_fabric",
+      "furniture_material",
       "temporary_or_regular",
       "combustible_mulch",
       "mulch_context",
@@ -3278,8 +3301,9 @@ async function saveObject(event) {
   }
 
   const type = document.querySelector("#object-type").value;
-  const questionAnswers = collectGuidedAnswersForType(type);
   const flow = getFlowForObjectType(type);
+  const questionAnswers = withCurrentWallDistance(collectGuidedAnswersForType(type), flow);
+  const wallDistance = questionAnswers.distance_wall || {};
   const screeningReadiness = readinessForObject({ type, questionAnswers });
   const draft = createObjectDraft({
     id,
@@ -3287,8 +3311,8 @@ async function saveObject(event) {
     areaId,
     type,
     status: document.querySelector("#object-status").value,
-    wallFt: document.querySelector("#wall-ft").value,
-    wallIn: document.querySelector("#wall-in").value,
+    wallFt: wallDistance.ft ?? document.querySelector("#wall-ft").value,
+    wallIn: wallDistance.in ?? document.querySelector("#wall-in").value,
     notes: document.querySelector("#object-notes").value,
     questionAnswers,
     flowId: flow?.id || "",
@@ -3951,6 +3975,12 @@ function linkedWallDistanceAnswer() {
   const inch = document.querySelector("#wall-in").value;
   if (ft === "" && inch === "") return null;
   return { ft, in: inch };
+}
+
+function withCurrentWallDistance(answers, flow) {
+  const distanceAnswer = linkedWallDistanceAnswer();
+  if (!flow?.questionIds.includes("distance_wall") || !distanceAnswer) return answers;
+  return { ...answers, distance_wall: distanceAnswer };
 }
 
 function handleWallCmInput(event) {

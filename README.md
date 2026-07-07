@@ -4,7 +4,7 @@ This folder is the publish-ready static app for GitHub Pages.
 
 Current build:
 
-- `Build: Phase 2 missing clue fields UI v46`
+- `Build: Phase 2 mobile utility bar UI v48`
 - Phase 2 Risk clues only.
 - No PASS/FAIL/REVIEW rule screening is connected.
 
@@ -45,10 +45,24 @@ Expected URL shape:
 
 On the phone:
 
-1. Confirm the top bar says `Build: Phase 2 missing clue fields UI v46`.
+1. Confirm the top bar says `Build: Phase 2 mobile utility bar UI v48`.
 2. Add one test object.
 3. Close and reopen the same phone browser.
 4. Confirm the object is still there.
 5. Go to `Rules` > `Phone diagnostics` if buttons or storage fail.
 
 Computer and phone data are separate unless moved by JSON backup/import.
+
+## Sharing The App
+
+After GitHub Pages is enabled, the app link should look like:
+
+`https://YOUR-GITHUB-USERNAME.github.io/bloombuffer/`
+
+For this repository, the likely link is:
+
+`https://pyxelwhiz.github.io/bloombuffer/`
+
+You can send that link to someone else. They will open the same app code, but their saved yard objects will be stored locally in their own browser/device. They will not see your phone data unless you separately send them a JSON backup or upload private data to GitHub.
+
+If someone forks or copies the project, they should publish their own GitHub Pages link from their own repository.

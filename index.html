@@ -1,0 +1,4488 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BloomBuffer - Phase 2 missing clue fields UI v46</title>
+  <style>
+:root {
+  color-scheme: light;
+  --bg: #f5f7f2;
+  --surface: #ffffff;
+  --surface-soft: #eef5ec;
+  --text: #172018;
+  --muted: #5d6e5b;
+  --line: #d8e0d3;
+  --green: #2f7d4d;
+  --green-dark: #245f3c;
+  --warn: #8a5b00;
+  --warn-bg: #fff2c7;
+  --risk: #6f5a1f;
+  --risk-bg: #fff3cf;
+  --clue-blue: #315d82;
+  --clue-sage: #557255;
+  --danger: #a63c31;
+  --danger-bg: #fde5df;
+  --blue-bg: #edf6fb;
+  --blue: #315d82;
+  --shadow: 0 12px 28px rgba(23, 32, 24, 0.09);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.app-shell {
+  max-width: 560px;
+  min-height: 100svh;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #fbfdf9 0%, #edf4ea 100%);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 16px 12px;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.topbar p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.topbar .build-label {
+  margin-top: 4px;
+  color: var(--green-dark);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.phase-badge,
+.pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: var(--surface-soft);
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tabs {
+  position: sticky;
+  top: 72px;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(245, 247, 242, 0.96);
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 6px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.tab.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+main {
+  padding: 14px 12px 176px;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+.panel {
+  margin-bottom: 12px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.compact-panel {
+  padding-bottom: 13px;
+}
+
+.panel h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.panel p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.hero h2 {
+  font-size: 24px;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.metric {
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.metric strong {
+  display: block;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.metric span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.form label,
+.field-label,
+.filter-row label,
+.filter-grid label {
+  display: block;
+  margin: 12px 0 6px;
+  color: #304030;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+  color: var(--text);
+}
+
+textarea {
+  min-height: 78px;
+  resize: vertical;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.mode-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.mode-actions [data-object-jump="quick-add-panel"] {
+  grid-column: 1 / -1;
+}
+
+.quick-add-panel {
+  border-color: #c8d9c2;
+  background: linear-gradient(180deg, #ffffff 0%, #f4faf1 100%);
+}
+
+.quick-type-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  padding: 10px;
+  background: var(--surface-soft);
+}
+
+.quick-type-card.needs-choice {
+  border-color: #e1ba4f;
+  background: #fff8df;
+}
+
+.quick-type-card strong,
+.quick-type-card span {
+  display: block;
+}
+
+.quick-type-card strong {
+  overflow-wrap: anywhere;
+}
+
+.quick-type-card div > span {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.quick-type-category-list {
+  margin-top: 8px;
+}
+
+.quick-type-option-list {
+  margin-bottom: 8px;
+}
+
+.type-picker {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.selected-type-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 58px;
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  padding: 10px;
+  background: var(--surface-soft);
+}
+
+.selected-type-card.needs-choice {
+  border-color: #e1ba4f;
+  background: #fff8df;
+}
+
+.selected-type-main {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.selected-type-icon {
+  flex: 0 0 auto;
+  width: 30px;
+  font-size: 22px;
+  text-align: center;
+  line-height: 1;
+}
+
+.selected-type-main strong,
+.selected-type-main span {
+  display: block;
+}
+
+.selected-type-main strong {
+  overflow-wrap: anywhere;
+}
+
+.selected-type-main span {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.compact-button {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+
+.type-browser {
+  display: grid;
+  gap: 9px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  background: #fbfdf8;
+}
+
+.type-browser[hidden] {
+  display: none;
+}
+
+.type-category-list,
+.type-option-list {
+  display: grid;
+  gap: 8px;
+}
+
+.type-step-label {
+  margin: 6px 0 0;
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.type-browsing-note {
+  margin: 0;
+  border-radius: 9px;
+  padding: 8px 10px;
+  background: #eef4ec;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.type-category-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.type-option-list {
+  grid-template-columns: 1fr;
+  margin-left: 14px;
+  padding-left: 12px;
+  border-left: 4px solid #c8d9c2;
+}
+
+.type-category-list button,
+.type-option-list button {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px 10px;
+  background: #fff;
+  color: var(--text);
+  font-weight: 800;
+  text-align: left;
+}
+
+.type-category-list button {
+  display: grid;
+  gap: 2px;
+}
+
+.type-category-list button.active,
+.type-option-list button.active {
+  border-color: var(--green);
+  background: var(--surface-soft);
+  color: var(--green-dark);
+}
+
+.type-category-list button.active {
+  grid-column: 1 / -1;
+  min-height: 62px;
+  border-width: 2px;
+  box-shadow: 0 6px 0 rgba(47, 125, 77, 0.12);
+}
+
+.type-category-list button.inactive {
+  min-height: 34px;
+  padding: 7px 9px;
+  background: #fbfcfa;
+  color: #5f685f;
+  opacity: 0.72;
+}
+
+.type-category-list button.inactive span:last-child {
+  font-size: 16px;
+}
+
+.type-category-list button.inactive .type-button-kicker {
+  font-size: 9px !important;
+}
+
+.type-option-list button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-color: #cfdacb;
+  background: #fff;
+}
+
+.type-option-list button span:first-child {
+  width: 26px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.type-option-list button > span:last-child {
+  display: grid;
+  gap: 2px;
+}
+
+.type-button-kicker {
+  display: block;
+  width: auto !important;
+  color: var(--muted);
+  font-size: 10px !important;
+  font-weight: 900;
+  line-height: 1.1 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 560px) {
+  .type-category-list {
+    grid-template-columns: 1fr;
+  }
+
+  .type-category-list button.active {
+    grid-column: auto;
+  }
+}
+
+.guided-panel {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0;
+  border: 2px solid #d8bd70;
+  border-radius: 12px;
+  padding: 12px;
+  background: linear-gradient(180deg, #fff8df 0%, #eef6f0 100%);
+  box-shadow: 0 10px 22px rgba(111, 90, 31, 0.12);
+}
+
+.guided-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.guided-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--risk);
+  font-size: 16px;
+}
+
+.risk-clue-person {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: #edf6fb;
+  border: 1px solid #bdd3e5;
+  font-size: 17px;
+}
+
+.guided-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.guided-progress {
+  color: var(--risk);
+  font-weight: 900;
+}
+
+.risk-clue-nudge {
+  max-width: 36ch;
+}
+
+.readiness-badge {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 6px 9px;
+  background: #eef1ec;
+  color: #445044;
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.readiness-badge.ready,
+.readiness-mini.ready {
+  background: #e7f4e6;
+  color: #245f3c;
+}
+
+.readiness-badge.review,
+.readiness-mini.review {
+  background: #fff2c7;
+  color: #7a5100;
+}
+
+.readiness-badge.incomplete,
+.readiness-mini.incomplete {
+  background: #edf6fb;
+  color: #315d82;
+}
+
+.readiness-badge.not-started,
+.readiness-mini.not-started {
+  background: #eef1ec;
+  color: #445044;
+}
+
+.guided-question-list {
+  display: grid;
+  gap: 10px;
+}
+
+.guided-linked-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #d8e0d3;
+  border-radius: 10px;
+  padding: 10px 11px;
+  background: #eef5ec;
+  color: #245f3c;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.mini-diagram {
+  flex: 0 0 auto;
+  width: 100px;
+  max-width: 36%;
+  height: auto;
+}
+
+.mini-diagram rect,
+.mini-diagram circle {
+  fill: #fff;
+  stroke: #557255;
+  stroke-width: 3;
+}
+
+.mini-diagram line {
+  stroke: #557255;
+  stroke-width: 3;
+  stroke-dasharray: 4 4;
+}
+
+.mini-diagram text {
+  fill: #245f3c;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.material-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.material-examples span {
+  border-radius: 999px;
+  padding: 5px 8px;
+  background: #f5efdc;
+  color: #5f4f24;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.guided-question {
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 11px;
+  background: #fff;
+}
+
+.guided-question-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.guided-question-title label {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.source-badge {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 4px 7px;
+  background: #eef1ec;
+  color: #445044;
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.source-badge.official {
+  color: #245f3c;
+  background: #e7f4e6;
+}
+
+.source-badge.app_inference {
+  color: #315d82;
+  background: #edf6fb;
+}
+
+.source-badge.inventory_only {
+  color: #5f4f24;
+  background: #f5efdc;
+}
+
+.source-legend {
+  border: 1px solid #d9dfd4;
+  border-radius: 11px;
+  padding: 10px;
+  background: #f8faf5;
+}
+
+.source-legend p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.source-legend p:last-child {
+  margin-bottom: 0;
+}
+
+.source-legend .source-badge {
+  margin-right: 5px;
+}
+
+.guided-help,
+.guided-required,
+.notice-only,
+.guided-distance-metric {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.guided-required {
+  font-weight: 800;
+}
+
+.notice-only {
+  border-radius: 10px;
+  padding: 9px 10px;
+  background: var(--blue-bg);
+  color: var(--blue);
+}
+
+.guided-distance label {
+  margin-top: 7px;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 10px;
+  margin-bottom: 12px;
+}
+
+.filter-grid > div:first-child,
+.filter-grid > div:last-child {
+  grid-column: 1 / -1;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+button.primary,
+button.secondary,
+button.danger,
+button.risk-clue-action {
+  min-height: 44px;
+  border-radius: 11px;
+  padding: 10px 13px;
+  border: 1px solid transparent;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button.primary,
+button.secondary,
+button.risk-clue-action {
+  align-items: center;
+  justify-content: center;
+}
+
+button.primary {
+  flex: 1;
+  color: #fff;
+  background: var(--green);
+}
+
+button.secondary {
+  flex: 1;
+  color: var(--green-dark);
+  background: var(--surface-soft);
+  border-color: var(--line);
+}
+
+button.danger {
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: #f1b9b0;
+}
+
+button.risk-clue-action {
+  display: flex;
+  flex: 1.2;
+  gap: 10px;
+  color: #fff;
+  background: linear-gradient(135deg, #315d82 0%, #557255 58%, #b8912d 100%);
+  border-color: #315d82;
+  box-shadow: 0 8px 18px rgba(49, 93, 130, 0.2);
+}
+
+button.continue-action {
+  flex: 2 1 360px;
+  min-height: 84px;
+  border-width: 2px;
+  box-shadow: 0 12px 24px rgba(49, 93, 130, 0.26);
+}
+
+button.quick-save-action {
+  flex: 1 1 180px;
+  min-height: 54px;
+  border-style: dashed;
+  opacity: 0.9;
+}
+
+.clue-agent-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: inset 0 0 0 2px rgba(49, 93, 130, 0.14);
+  font-size: 26px;
+  line-height: 1;
+}
+
+button.continue-action .clue-agent-icon {
+  width: 54px;
+  height: 54px;
+  font-size: 32px;
+}
+
+.button-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  text-align: center;
+}
+
+.button-text strong,
+.button-text small {
+  display: block;
+}
+
+.button-text small {
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  opacity: 0.88;
+}
+
+button.active {
+  outline: 3px solid rgba(47, 125, 77, 0.18);
+}
+
+.card-list {
+  display: grid;
+  gap: 10px;
+}
+
+.list-summary {
+  margin: 0 0 10px;
+  border-radius: 10px;
+  padding: 10px 11px;
+  background: #f8fbf5;
+  color: var(--green-dark);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.card {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.unassigned-card {
+  border-color: #e4c46d;
+  background: #fffaf0;
+}
+
+.area-card {
+  border-left: 7px solid #7ca57b;
+}
+
+.area-card.area-sage {
+  border-left-color: #7ca57b;
+  background: linear-gradient(90deg, #f1f7ef 0%, #ffffff 24%);
+}
+
+.area-card.area-blue {
+  border-left-color: #6f95b8;
+  background: linear-gradient(90deg, #edf6fb 0%, #ffffff 24%);
+}
+
+.area-card.area-gold {
+  border-left-color: #d4a937;
+  background: linear-gradient(90deg, #fff8df 0%, #ffffff 24%);
+}
+
+.area-card.area-clay {
+  border-left-color: #b98268;
+  background: linear-gradient(90deg, #fff0e9 0%, #ffffff 24%);
+}
+
+.area-card.area-lavender {
+  border-left-color: #8b86ba;
+  background: linear-gradient(90deg, #f2f0fb 0%, #ffffff 24%);
+}
+
+.area-card.area-gray {
+  border-left-color: #8c968b;
+  background: linear-gradient(90deg, #f1f3ef 0%, #ffffff 24%);
+}
+
+.area-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.area-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--line);
+  color: var(--green-dark);
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.area-cue-line {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.object-card {
+  position: relative;
+  overflow: hidden;
+  border-left: 6px solid #c8d8c0;
+}
+
+.object-card.object-plant {
+  border-left-color: #85b77f;
+}
+
+.object-card.object-tree {
+  border-left-color: #7ea2bf;
+}
+
+.object-card.object-structure {
+  border-left-color: #bea96f;
+}
+
+.object-card.object-mulch,
+.object-card.object-item {
+  border-left-color: #b9977f;
+}
+
+.object-card.object-equipment {
+  border-left-color: #879fbe;
+}
+
+.object-card.object-grill {
+  border-left-color: #bc8f84;
+}
+
+.object-unassigned {
+  border-color: #e4c46d;
+  border-left-color: #d5a531;
+  background: #fffaf0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.card-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.type-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 40px;
+  border-radius: 8px;
+  padding: 4px 6px;
+  background: #eef1ec;
+  color: #445044;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.object-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.mini-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: #f4f6f1;
+  color: #465346;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.mini-badge.needs-area {
+  background: #fff2c7;
+  color: #7a5100;
+}
+
+.distance-line {
+  margin: 9px 0 4px;
+  color: var(--muted);
+}
+
+.object-note-line {
+  margin: 4px 0;
+  color: var(--muted);
+}
+
+.guided-card-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  margin: 8px 0 0;
+  padding: 7px 9px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.guided-card-summary strong,
+.guided-card-summary small {
+  display: block;
+}
+
+.guided-card-summary small {
+  font-size: 11px;
+  font-weight: 800;
+  opacity: 0.85;
+}
+
+.guided-card-summary.ready {
+  color: #245f3c;
+  background: #e7f4e6;
+}
+
+.guided-card-summary.review {
+  color: #7a5100;
+  background: #fff2c7;
+}
+
+.guided-card-summary.incomplete {
+  color: #315d82;
+  background: #edf6fb;
+}
+
+.guided-card-summary.not-started {
+  color: #445044;
+  background: #eef1ec;
+}
+
+.inventory-note {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.object-actions {
+  align-items: stretch;
+  gap: 8px;
+}
+
+button.card-clue-action {
+  flex: 1.2 1 180px;
+  min-height: 46px;
+  gap: 6px;
+  border-radius: 10px;
+  padding: 8px 10px;
+  box-shadow: 0 5px 12px rgba(49, 93, 130, 0.16);
+}
+
+button.card-clue-action span:first-child {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 17px;
+}
+
+button.card-secondary-action,
+button.card-danger-action {
+  flex: 1 1 110px;
+  min-height: 46px;
+  padding: 8px 10px;
+}
+
+.type-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  min-width: 15px;
+  flex: 0 0 auto;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.type-icon::before,
+.type-icon::after {
+  display: none;
+}
+
+.type-chip.plant {
+  color: #245f3c;
+  background: #e7f4e6;
+}
+
+.type-chip.tree {
+  color: #315d82;
+  background: #edf6fb;
+}
+
+.type-chip.structure {
+  color: #5f4f24;
+  background: #f5efdc;
+}
+
+.type-chip.mulch {
+  color: #6b452e;
+  background: #f3e8df;
+}
+
+.type-chip.item {
+  color: #3f5363;
+  background: #e8eef2;
+}
+
+.type-chip.equipment {
+  color: #334f72;
+  background: #e7edf6;
+}
+
+.type-chip.grill {
+  color: #6b3f37;
+  background: #f4e6e1;
+}
+
+.card p {
+  margin: 7px 0 0;
+  font-size: 13px;
+}
+
+.pill.warn {
+  color: var(--warn);
+  background: var(--warn-bg);
+}
+
+.pill.ok {
+  color: var(--green-dark);
+  background: var(--surface-soft);
+}
+
+.pill.neutral {
+  color: var(--blue);
+  background: var(--blue-bg);
+}
+
+.empty,
+.info-note,
+.field-note {
+  border-radius: 10px;
+  padding: 10px 11px;
+  background: var(--blue-bg);
+  color: var(--blue);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.field-note {
+  margin-top: 8px;
+}
+
+.empty {
+  text-align: center;
+  border: 1px dashed #b9c7b4;
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--muted);
+}
+
+.step-list {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.checklist-focus {
+  margin: 8px 0 10px;
+  border-radius: 10px;
+  padding: 10px 11px;
+  background: var(--warn-bg);
+  color: var(--warn);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.checklist-details summary {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 11px;
+  background: var(--surface-soft);
+  color: var(--green-dark);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.checklist-list {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding-left: 22px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.checklist-list li {
+  padding-left: 2px;
+}
+
+.checklist-list strong {
+  color: var(--text);
+}
+
+.debug-log-output {
+  max-height: 260px;
+  overflow: auto;
+  margin: 10px 0 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  background: #101710;
+  color: #eaf3e8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.filter-actions {
+  margin-top: 10px;
+}
+
+.linked-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #d8e0d3;
+  font-size: 19px;
+}
+
+.diagnostics-list {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.diagnostics-list div {
+  display: grid;
+  grid-template-columns: minmax(96px, 0.36fr) 1fr;
+  gap: 8px;
+  align-items: start;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8fbf6;
+}
+
+.diagnostics-list dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.diagnostics-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.backup-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: min(532px, calc(100vw - 24px));
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow);
+  transform: translateX(-50%);
+}
+
+.backup-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#open-debug-log {
+  grid-column: 1 / -1;
+  min-height: 38px;
+}
+
+.error {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+  </style>
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>BloomBuffer</h1>
+        <p>Not My Fern. Yard inventory before rule panic.</p>
+        <p class="build-label">Build: Phase 2 missing clue fields UI v46</p>
+      </div>
+      <span class="phase-badge">Phase 2</span>
+    </header>
+
+    <nav class="tabs" aria-label="Main navigation">
+      <button class="tab active" data-route="home">Home</button>
+      <button class="tab" data-route="areas">Areas</button>
+      <button class="tab" data-route="objects">Objects</button>
+      <button class="tab" data-route="rules">Rules</button>
+    </nav>
+
+    <main>
+      <section id="screen-home" class="screen active" aria-labelledby="home-title">
+        <div class="panel hero">
+          <h2 id="home-title">Save the yard first. Judge it later.</h2>
+          <p>Phase 2 adds risk clues to the local inventory. It still does not make PASS/FAIL rule decisions yet.</p>
+          <p class="field-note">If your screen says Phase 1 or shows Export JSON / Import JSON, you opened an older BloomBuffer file.</p>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric"><strong id="metric-areas">0</strong><span>Areas</span></div>
+          <div class="metric"><strong id="metric-objects">0</strong><span>Objects</span></div>
+          <div class="metric"><strong id="metric-unassigned">0</strong><span>Unassigned</span></div>
+          <div class="metric"><strong id="metric-review">0</strong><span>Need review</span></div>
+        </div>
+
+        <div class="panel">
+          <h2>Plant Plan Panic Button</h2>
+          <p>When something feels confusing, save it as an object with notes and measurements. Rule screening comes after risk clues are connected.</p>
+          <div class="actions">
+            <button class="secondary" data-route-button="areas">Add area</button>
+            <button class="primary" data-quick-add-start type="button">Quick add</button>
+            <button class="secondary" data-route-button="objects">Add object details</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-areas" class="screen" aria-labelledby="areas-title">
+        <div class="panel compact-panel">
+          <h2 id="areas-title">Areas</h2>
+          <p>Create areas the way you walk around the house. Use Edit area on a saved card to change details. Objects can also stay in Unassigned / Needs area.</p>
+          <div class="mode-actions">
+            <button class="primary" type="button" data-area-jump="area-editor-panel">Add / edit area</button>
+            <button class="secondary" type="button" data-area-jump="area-browser-panel">View saved areas</button>
+          </div>
+        </div>
+
+        <div class="panel" id="area-editor-panel">
+          <h2>Add / edit area</h2>
+          <form id="area-form" class="form">
+            <input type="hidden" id="area-id">
+            <label for="area-name">Area name</label>
+            <input id="area-name" required placeholder="Front / North side">
+
+            <div class="two-col">
+              <div>
+                <label for="area-side">Side</label>
+                <select id="area-side">
+                  <option>Front</option>
+                  <option>Back</option>
+                  <option>North</option>
+                  <option>South</option>
+                  <option>East</option>
+                  <option>West</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="area-access">Access</label>
+                <select id="area-access">
+                  <option>Easy</option>
+                  <option>Moderate</option>
+                  <option>Hard</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="two-col">
+              <div>
+                <label for="area-icon">Area icon</label>
+                <select id="area-icon">
+                  <option>Home</option>
+                  <option>Front</option>
+                  <option>Back</option>
+                  <option>Side</option>
+                  <option>Gate</option>
+                  <option>Deck</option>
+                  <option>Garden</option>
+                  <option>Slope</option>
+                  <option>Storage</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="area-color">Area color</label>
+                <select id="area-color">
+                  <option>Sage</option>
+                  <option>Blue</option>
+                  <option>Gold</option>
+                  <option>Clay</option>
+                  <option>Lavender</option>
+                  <option>Gray</option>
+                </select>
+              </div>
+            </div>
+
+            <label for="area-notes">Notes</label>
+            <textarea id="area-notes" placeholder="Narrow strip, many windows, hard to reach"></textarea>
+
+            <div class="actions">
+              <button class="primary" type="submit" id="area-submit">Save area</button>
+              <button class="secondary" type="button" id="area-cancel">Cancel edit</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel" id="area-browser-panel">
+          <h2>Saved areas</h2>
+          <div id="area-list" class="card-list"></div>
+        </div>
+      </section>
+
+      <section id="screen-objects" class="screen" aria-labelledby="objects-title">
+        <div class="panel compact-panel">
+          <h2 id="objects-title">Objects</h2>
+          <p>Save each plant, tree part, gate, pergola, mulch area, bin, or furniture item. Duplicate names in the same area will warn before saving.</p>
+          <div class="mode-actions">
+            <button class="primary" type="button" data-object-jump="quick-add-panel">Quick add</button>
+            <button class="primary" type="button" data-object-jump="object-editor-panel">Add / edit object</button>
+            <button class="secondary" type="button" data-object-jump="object-browser-panel">View saved objects</button>
+          </div>
+        </div>
+
+        <div class="panel quick-add-panel" id="quick-add-panel">
+          <h2>Quick add</h2>
+          <p>Fast yard-walk capture. Best path: add the details and clues while you still remember what you saw.</p>
+          <form id="quick-add-form" class="form">
+            <label for="quick-area">Area</label>
+            <select id="quick-area"></select>
+
+            <span class="field-label" id="quick-type-label">Object type - required</span>
+            <div class="quick-type-card" aria-labelledby="quick-type-label">
+              <span id="quick-selected-type-icon" class="selected-type-icon" aria-hidden="true">?</span>
+              <div>
+                <strong id="quick-selected-type-name">Choose type</strong>
+                <span id="quick-selected-type-group">Tap a category, then a type</span>
+              </div>
+            </div>
+            <p class="type-step-label">1. Choose a category</p>
+            <div id="quick-type-category-list" class="type-category-list quick-type-category-list"></div>
+            <p id="quick-type-option-heading" class="type-step-label">2. Choose one object type</p>
+            <div id="quick-type-option-list" class="type-option-list quick-type-option-list"></div>
+
+            <label for="quick-name">Object name</label>
+            <input id="quick-name" required placeholder="Example: red pot, palm fronds, side AC">
+
+            <label for="quick-status">Inventory status</label>
+            <select id="quick-status"></select>
+
+            <label for="quick-notes">Notes</label>
+            <textarea id="quick-notes" placeholder="Short note; measurements can come later"></textarea>
+
+            <p id="quick-add-message" class="field-note">Save basic only if you are rushing. Details + clues make this object useful for later screening.</p>
+
+            <div class="actions">
+              <button class="risk-clue-action continue-action" type="button" id="quick-continue-guided">
+                <span class="clue-agent-icon" aria-hidden="true">🕵️</span>
+                <span class="button-text"><strong>Best next step: details + clues</strong><small>Makes this ready for later screening</small></span>
+              </button>
+              <button class="secondary quick-save-action" type="submit">Save basic only</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel" id="object-editor-panel">
+          <h2>Add / edit object</h2>
+          <form id="object-form" class="form">
+            <input type="hidden" id="object-id">
+            <label for="object-name">Object name</label>
+            <input id="object-name" required placeholder="Red pot by front window">
+
+            <label for="object-area">Area / move to</label>
+            <select id="object-area"></select>
+            <p class="field-note">No area yet is okay. You can move this object later from its saved card.</p>
+
+            <span class="field-label" id="object-type-label">Object type - required before saving and risk clues</span>
+            <div class="type-picker" aria-labelledby="object-type-label">
+              <div class="selected-type-card">
+                <div class="selected-type-main">
+                  <span id="selected-type-icon" class="selected-type-icon" aria-hidden="true"></span>
+                  <div>
+                    <strong id="selected-type-name"></strong>
+                    <span id="selected-type-group"></span>
+                  </div>
+                </div>
+                <button class="secondary compact-button" type="button" id="type-picker-toggle" aria-expanded="false" aria-controls="type-browser">Change type</button>
+              </div>
+              <div id="type-browser" class="type-browser" hidden>
+                <p class="field-note">Choose a category first, then choose one object type from that category.</p>
+                <p id="type-browsing-note" class="type-browsing-note"></p>
+                <p class="type-step-label">1. Categories</p>
+                <div id="type-category-list" class="type-category-list"></div>
+                <p id="type-option-heading" class="type-step-label">2. Object types</p>
+                <div id="type-option-list" class="type-option-list"></div>
+              </div>
+            </div>
+            <select id="object-type" hidden></select>
+            <p id="object-type-hint" class="info-note"></p>
+
+            <section class="guided-panel" aria-labelledby="guided-questions-title">
+              <div class="guided-header">
+                <div>
+                  <h3 id="guided-questions-title"><span class="risk-clue-person" aria-hidden="true">🕵️</span> Risk clues: check what matters</h3>
+                  <p id="guided-flow-label">Choose an object type to see what matters here.</p>
+                  <p class="risk-clue-nudge">Answer what you can now. These details prevent guessing later when rule screening is connected.</p>
+                  <p id="guided-progress" class="guided-progress">No risk clues answered yet.</p>
+                </div>
+                <span id="guided-readiness" class="readiness-badge">Not started</span>
+              </div>
+              <div id="guided-question-list" class="guided-question-list"></div>
+              <p class="field-note">Phase 2 saves clue answers only. No PASS/FAIL result yet.</p>
+            </section>
+
+            <div class="two-col">
+              <div>
+                <label for="wall-ft">Distance from wall - ft</label>
+                <input id="wall-ft" type="number" min="0" step="1" placeholder="0">
+              </div>
+              <div>
+                <label for="wall-in">Distance from wall - in</label>
+                <input id="wall-in" type="number" min="0" max="11" step="1" placeholder="6">
+              </div>
+            </div>
+            <label for="wall-cm-input">Or enter distance in cm</label>
+            <input id="wall-cm-input" type="number" min="0" step="1" placeholder="15">
+            <p id="wall-cm" class="field-note">Metric: not entered</p>
+
+            <label for="object-status">Inventory status - your progress, not a rule result</label>
+            <select id="object-status"></select>
+
+            <label for="object-notes">Notes</label>
+            <textarea id="object-notes" placeholder="Under window; pot may be ceramic; palm fronds touch roof"></textarea>
+
+            <div class="actions">
+              <button class="primary" type="submit" id="object-submit">Save object</button>
+              <button class="secondary" type="button" id="object-cancel">Cancel edit</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel" id="object-browser-panel">
+          <h2>Saved objects</h2>
+          <p>Edit details or move an object from its saved card.</p>
+          <div class="filter-grid">
+            <div>
+              <label for="object-search">Search</label>
+              <input id="object-search" placeholder="Name, note, type, area">
+            </div>
+            <div>
+              <label for="object-filter">Area</label>
+              <select id="object-filter"></select>
+            </div>
+            <div>
+              <label for="object-type-filter">Type</label>
+              <select id="object-type-filter"></select>
+            </div>
+            <div>
+              <label for="object-status-filter">Status</label>
+              <select id="object-status-filter"></select>
+            </div>
+            <div>
+              <label for="object-sort">Sort</label>
+              <select id="object-sort">
+                <option value="updatedAtDesc">Last updated</option>
+                <option value="area">Area</option>
+                <option value="type">Type</option>
+                <option value="status">Status</option>
+                <option value="distance">Distance from wall</option>
+                <option value="name">Name</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions filter-actions">
+            <button class="secondary" type="button" id="clear-object-filters">Show all saved objects</button>
+          </div>
+          <p id="object-result-summary" class="list-summary"></p>
+          <div id="object-list" class="card-list"></div>
+        </div>
+      </section>
+
+      <section id="screen-rules" class="screen" aria-labelledby="rules-title">
+        <div class="panel">
+          <h2 id="rules-title">Rule status</h2>
+          <p>This Phase 2 app stores inventory plus risk-clue answers. It does not claim official compliance.</p>
+        </div>
+        <div class="panel">
+          <h2>What comes next</h2>
+          <ol class="step-list">
+            <li>Phase 2 asks object-specific questions only.</li>
+            <li>Phase 3 connects the tested rule engine.</li>
+            <li>Results then show PASS / FAIL / REVIEW / TEMP ONLY / N/A.</li>
+          </ol>
+        </div>
+        <div class="panel">
+          <h2>Phase 2 manual checklist</h2>
+          <p>Use this for the risk-clue shell only. These checks do not test rule screening.</p>
+          <details class="checklist-details" open>
+            <summary>Show Phase 2 checklist</summary>
+            <ol class="checklist-list">
+              <li><strong>Potted plant:</strong> questions appear after choosing Potted plant.</li>
+              <li><strong>Potted plant:</strong> tree and fence questions do not appear.</li>
+              <li><strong>Tree:</strong> tree status questions appear; tree part comes from the object type.</li>
+              <li><strong>Tree:</strong> container-size questions do not appear.</li>
+              <li><strong>Fence/gate:</strong> orientation and material questions appear.</li>
+              <li><strong>Equipment:</strong> HVAC / AC, grill, and generator stay review/inventory prompts.</li>
+              <li><strong>Saving:</strong> partial answers save and show again when editing.</li>
+              <li><strong>Readiness:</strong> missing answers show Incomplete, not PASS/FAIL.</li>
+              <li><strong>Unknown:</strong> unknown answers show Needs review, not a rule result.</li>
+              <li><strong>Backup:</strong> JSON export/import keeps risk-clue answers.</li>
+            </ol>
+          </details>
+        </div>
+        <div class="panel">
+          <h2>Phase 1 manual checklist</h2>
+          <p>Use Pass, Fail, Confusing, Blocked, or Not tested. This list checks inventory behavior only.</p>
+          <div class="checklist-focus">
+            <span>Start with: 1, 9, 25, 26, 27, 28, 29, 30, 31</span>
+          </div>
+          <details class="checklist-details" open>
+            <summary>Show checklist</summary>
+            <ol class="checklist-list">
+              <li><strong>Open:</strong> app opens directly without server/npm.</li>
+              <li><strong>Navigation:</strong> Home / Areas / Objects / Rules screens work.</li>
+              <li><strong>Areas:</strong> Add / edit area is easy to reach.</li>
+              <li><strong>Areas:</strong> create `Front`; it appears under Saved areas.</li>
+              <li><strong>Areas:</strong> create `Back`; metrics update.</li>
+              <li><strong>Areas:</strong> View saved areas is easy to reach.</li>
+              <li><strong>Areas:</strong> Edit area shows existing details.</li>
+              <li><strong>Areas:</strong> edited area updates without duplicate confusion.</li>
+              <li><strong>Objects:</strong> Add / edit object is easy to reach.</li>
+              <li><strong>Objects:</strong> object can save to Unassigned / Needs area.</li>
+              <li><strong>Objects:</strong> selecting an area filters saved objects to that area.</li>
+              <li><strong>Objects:</strong> object saved in `Front` appears in `Front` view.</li>
+              <li><strong>Objects:</strong> View saved objects is easy to reach.</li>
+              <li><strong>Objects:</strong> search narrows matching objects.</li>
+              <li><strong>Objects:</strong> type filter works.</li>
+              <li><strong>Objects:</strong> status filter works.</li>
+              <li><strong>Objects:</strong> sort changes object order.</li>
+              <li><strong>Objects:</strong> duplicate name in same area warns.</li>
+              <li><strong>Objects:</strong> same name in different area does not warn.</li>
+              <li><strong>Objects:</strong> Edit / move shows existing details.</li>
+              <li><strong>Objects:</strong> changing area moves the object.</li>
+              <li><strong>Objects:</strong> delete object removes it after confirmation.</li>
+              <li><strong>Areas/Objects:</strong> deleting an area moves objects to Unassigned.</li>
+              <li><strong>Persistence:</strong> close and reopen same browser/file; data remains.</li>
+              <li><strong>Backup:</strong> Save backup JSON downloads a file and shows filename.</li>
+              <li><strong>Backup:</strong> import valid JSON shows filename/counts and restores data.</li>
+              <li><strong>Backup:</strong> malformed JSON fails without replacing data.</li>
+              <li><strong>Mobile:</strong> controls do not overlap; search/filter are not buried.</li>
+              <li><strong>Type picker:</strong> selected type is clear; Change type opens categories; no long native dropdown opens.</li>
+              <li><strong>Tree labels:</strong> tree choices are understandable and inventory-only.</li>
+              <li><strong>Rule boundary:</strong> app says inventory-only; no PASS/FAIL rule result appears.</li>
+            </ol>
+          </details>
+        </div>
+        <div class="panel" id="debug-log-panel">
+          <h2>Debug log</h2>
+          <p>This session-only log helps troubleshoot problems. It resets when the app is reopened and avoids object names and notes.</p>
+          <div class="actions">
+            <button class="secondary" type="button" id="export-debug-log">Save debug log JSON</button>
+            <button class="secondary" type="button" id="copy-debug-log">Copy debug log</button>
+            <button class="secondary" type="button" id="clear-debug-log">Clear log</button>
+          </div>
+          <p id="debug-log-count" class="field-note">No debug events yet.</p>
+          <p id="debug-copy-status" class="field-note" hidden></p>
+          <details class="checklist-details">
+            <summary>Show recent debug events</summary>
+            <pre id="debug-log-output" class="debug-log-output"></pre>
+          </details>
+        </div>
+        <div class="panel" id="phone-diagnostics-panel">
+          <h2>Phone diagnostics</h2>
+          <p>Use this if the app behaves differently on phone and computer. It avoids object names and notes.</p>
+          <dl id="phone-diagnostics-list" class="diagnostics-list"></dl>
+          <div class="actions">
+            <button class="secondary" type="button" id="copy-phone-diagnostics">Copy phone diagnostics</button>
+          </div>
+          <p id="phone-diagnostics-copy-status" class="field-note" hidden></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="backup-bar">
+      <p id="backup-status" class="backup-status">Local autosave is on in this browser. Save backup JSON to make a file copy.</p>
+      <button class="secondary" id="export-json">Save backup JSON</button>
+      <button class="primary" id="import-json-button">Import backup JSON</button>
+      <button class="secondary" id="open-debug-log" type="button">Debug log</button>
+      <input id="import-json" type="file" accept="application/json" hidden>
+    </footer>
+  </div>
+
+  <script>
+const UNASSIGNED_AREA_ID = "unassigned";
+const UNASSIGNED_AREA_NAME = "Unassigned / Needs area";
+
+const OBJECT_TYPES = [
+  "Potted plant",
+  "In-ground plant",
+  "Shrub",
+  "Whole tree / unsure part",
+  "Tree trunk",
+  "Branches / canopy / fronds",
+  "Tree debris / leaves / needles",
+  "New or planned tree",
+  "Wood gate",
+  "Wood fence",
+  "Wood exterior door",
+  "Pergola",
+  "Climbing plant on pergola",
+  "Climbing plant on fence",
+  "Mulch / wood chips / bark",
+  "Furniture",
+  "Grill / BBQ",
+  "HVAC / AC unit",
+  "Generator",
+  "Firewood / lumber",
+  "Doormat / rug",
+  "Trash bin",
+  "Outdoor storage",
+  "Other",
+];
+
+const OBJECT_TYPE_GROUPS = [
+  {
+    label: "Plants",
+    types: ["Potted plant", "In-ground plant", "Shrub", "Climbing plant on pergola", "Climbing plant on fence"],
+  },
+  {
+    label: "Trees",
+    types: [
+      "Whole tree / unsure part",
+      "Tree trunk",
+      "Branches / canopy / fronds",
+      "Tree debris / leaves / needles",
+      "New or planned tree",
+    ],
+  },
+  {
+    label: "Structures",
+    types: ["Wood gate", "Wood fence", "Wood exterior door", "Pergola"],
+  },
+  {
+    label: "Objects and equipment",
+    types: ["Furniture", "Grill / BBQ", "HVAC / AC unit", "Generator", "Trash bin", "Outdoor storage"],
+  },
+  {
+    label: "Combustible material",
+    types: ["Mulch / wood chips / bark", "Firewood / lumber", "Doormat / rug"],
+  },
+  {
+    label: "Other",
+    types: ["Other"],
+  },
+];
+
+const OBJECT_STATUSES = [
+  "Not measured",
+  "Measured",
+  "Needs review",
+  "Planned",
+  "Fixed",
+  "Removed",
+  "Keep/monitor",
+];
+
+const SCREENING_READINESS = [
+  "not_started",
+  "incomplete",
+  "ready_for_rule_check",
+  "needs_review",
+];
+
+const AREA_ICONS = ["Home", "Front", "Back", "Side", "Gate", "Deck", "Garden", "Slope", "Storage", "Other"];
+
+const AREA_COLORS = ["Sage", "Blue", "Gold", "Clay", "Lavender", "Gray"];
+
+const LEGACY_OBJECT_TYPE_ALIASES = {
+  "Existing tree": "Whole tree / unsure part",
+  "Tree branches/canopy/fronds": "Branches / canopy / fronds",
+};
+
+function createAreaDraft({ id = crypto.randomUUID(), name, side, access, notes, icon = "Home", color = "Sage" }) {
+  return {
+    id,
+    name: String(name ?? "").trim(),
+    side,
+    access,
+    notes: String(notes ?? "").trim(),
+    icon: AREA_ICONS.includes(icon) ? icon : "Home",
+    color: AREA_COLORS.includes(color) ? color : "Sage",
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+function createObjectDraft({
+  id = crypto.randomUUID(),
+  name,
+  areaId = UNASSIGNED_AREA_ID,
+  type,
+  status,
+  wallFt,
+  wallIn,
+  notes,
+  questionAnswers = {},
+  flowId = "",
+  flowVersion = "",
+  screeningReadiness = "not_started",
+  treeStatus = "",
+  treePart = "",
+  sourceBasis = {},
+}) {
+  return {
+    id,
+    name: String(name ?? "").trim(),
+    areaId: areaId || UNASSIGNED_AREA_ID,
+    type: normalizeObjectType(type),
+    status: OBJECT_STATUSES.includes(status) ? status : "Not measured",
+    wallFt: normalizeOptionalNumber(wallFt),
+    wallIn: normalizeOptionalNumber(wallIn),
+    notes: String(notes ?? "").trim(),
+    questionAnswers: normalizeQuestionAnswers(questionAnswers),
+    flowId: optionalText(flowId),
+    flowVersion: optionalText(flowVersion),
+    screeningReadiness: SCREENING_READINESS.includes(screeningReadiness) ? screeningReadiness : "not_started",
+    treeStatus: optionalText(treeStatus),
+    treePart: optionalText(treePart),
+    sourceBasis: normalizeSourceBasis(sourceBasis),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+function findDuplicateObjectName(objects, { name, areaId, excludeObjectId }) {
+  const normalizedName = normalizeName(name);
+  const normalizedArea = areaId || UNASSIGNED_AREA_ID;
+  return objects.find((object) => {
+    if (excludeObjectId && object.id === excludeObjectId) return false;
+    return object.areaId === normalizedArea && normalizeName(object.name) === normalizedName;
+  });
+}
+
+function normalizeName(value) {
+  return String(value || "").trim().toLocaleLowerCase();
+}
+
+function normalizeObjectType(type) {
+  const text = String(type ?? "").trim();
+  const mapped = LEGACY_OBJECT_TYPE_ALIASES[text] || text;
+  return OBJECT_TYPES.includes(mapped) ? mapped : "Other";
+}
+
+function treePartFromObjectType(type) {
+  const normalizedType = normalizeObjectType(type);
+  return {
+    "Whole tree / unsure part": "whole_or_unsure",
+    "Tree trunk": "trunk",
+    "Branches / canopy / fronds": "branches_canopy_fronds",
+    "Tree debris / leaves / needles": "debris",
+    "New or planned tree": "whole_or_unsure",
+  }[normalizedType] || "";
+}
+
+function reassignObjectsFromDeletedArea(objects, areaId, updatedAt = new Date().toISOString()) {
+  return objects
+    .filter((object) => object.areaId === areaId)
+    .map((object) => ({ ...object, areaId: UNASSIGNED_AREA_ID, updatedAt }));
+}
+
+function normalizeImportedBackup(data) {
+  if (!isPlainRecord(data)) {
+    throw new Error("Backup must be a JSON object.");
+  }
+  if (!Array.isArray(data.areas) || !Array.isArray(data.objects)) {
+    throw new Error("Backup must include areas and objects arrays.");
+  }
+
+  const areaIds = new Set();
+  const areas = data.areas.map((area, index) => normalizeImportedArea(area, index, areaIds));
+  const validAreaIds = new Set(areas.map((area) => area.id));
+  const objectIds = new Set();
+  const objects = data.objects.map((object, index) => normalizeImportedObject(object, index, objectIds, validAreaIds));
+
+  return { areas, objects };
+}
+
+function normalizeOptionalNumber(value) {
+  if (value === "" || value === null || value === undefined) return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function normalizeImportedArea(area, index, seenIds) {
+  if (!isPlainRecord(area)) throw new Error(`Area ${index + 1} must be an object.`);
+  const id = requiredId(area.id, `Area ${index + 1}`);
+  if (seenIds.has(id)) throw new Error(`Area id "${id}" appears more than once.`);
+  seenIds.add(id);
+
+  return {
+    id,
+    name: requiredText(area.name, `Area ${index + 1} is missing a name.`),
+    side: optionalText(area.side) || "Other",
+    access: optionalText(area.access) || "Moderate",
+    notes: optionalText(area.notes),
+    icon: AREA_ICONS.includes(area.icon) ? area.icon : defaultAreaIcon(area.side),
+    color: AREA_COLORS.includes(area.color) ? area.color : defaultAreaColor(area.side),
+    updatedAt: optionalText(area.updatedAt) || new Date().toISOString(),
+  };
+}
+
+function defaultAreaIcon(side) {
+  return {
+    Front: "Front",
+    Back: "Back",
+    North: "Side",
+    South: "Side",
+    East: "Side",
+    West: "Side",
+  }[optionalText(side)] || "Home";
+}
+
+function defaultAreaColor(side) {
+  return {
+    Front: "Sage",
+    Back: "Blue",
+    North: "Gold",
+    South: "Clay",
+    East: "Lavender",
+    West: "Gray",
+  }[optionalText(side)] || "Sage";
+}
+
+function normalizeImportedObject(object, index, seenIds, validAreaIds) {
+  if (!isPlainRecord(object)) throw new Error(`Object ${index + 1} must be an object.`);
+  const id = requiredId(object.id, `Object ${index + 1}`);
+  if (seenIds.has(id)) throw new Error(`Object id "${id}" appears more than once.`);
+  seenIds.add(id);
+
+  const areaId = optionalText(object.areaId);
+  const knownAreaId = areaId === UNASSIGNED_AREA_ID || validAreaIds.has(areaId);
+
+  return {
+    id,
+    name: requiredText(object.name, `Object ${index + 1} is missing a name.`),
+    areaId: knownAreaId ? areaId : UNASSIGNED_AREA_ID,
+    type: normalizeObjectType(object.type),
+    status: OBJECT_STATUSES.includes(object.status) ? object.status : "Not measured",
+    wallFt: normalizeOptionalNumber(object.wallFt),
+    wallIn: normalizeOptionalNumber(object.wallIn),
+    notes: optionalText(object.notes),
+    questionAnswers: normalizeQuestionAnswers(object.questionAnswers),
+    flowId: optionalText(object.flowId),
+    flowVersion: optionalText(object.flowVersion),
+    screeningReadiness: SCREENING_READINESS.includes(object.screeningReadiness) ? object.screeningReadiness : "not_started",
+    treeStatus: optionalText(object.treeStatus),
+    treePart: optionalText(object.treePart),
+    sourceBasis: normalizeSourceBasis(object.sourceBasis),
+    updatedAt: optionalText(object.updatedAt) || new Date().toISOString(),
+  };
+}
+
+function normalizeQuestionAnswers(value) {
+  if (!isPlainRecord(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => optionalText(key))
+      .map(([key, answer]) => [optionalText(key), normalizeAnswerValue(answer)]),
+  );
+}
+
+function normalizeAnswerValue(value) {
+  if (value === null || value === undefined) return "";
+  if (["string", "number", "boolean"].includes(typeof value)) return value;
+  if (Array.isArray(value)) return value.map((item) => normalizeAnswerValue(item));
+  if (isPlainRecord(value)) {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([key]) => optionalText(key))
+        .map(([key, item]) => [optionalText(key), normalizeAnswerValue(item)]),
+    );
+  }
+  return String(value);
+}
+
+function normalizeSourceBasis(value) {
+  if (!isPlainRecord(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => optionalText(key))
+      .map(([key, basis]) => [optionalText(key), optionalText(basis)]),
+  );
+}
+
+function requiredText(value, message) {
+  const text = optionalText(value);
+  if (!text) throw new Error(message);
+  return text;
+}
+
+function requiredId(value, label) {
+  const id = requiredText(value, `${label} is missing an id.`);
+  if (!/^[A-Za-z0-9_.:-]{1,120}$/.test(id)) {
+    throw new Error(`${label} has an invalid id.`);
+  }
+  return id;
+}
+
+function optionalText(value) {
+  return String(value ?? "").trim();
+}
+
+function isPlainRecord(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+
+const SOURCE_BASIS = ["official", "app_inference", "inventory_only"];
+
+const INPUT_TYPES = [
+  "yes_no_unknown",
+  "choice",
+  "distance",
+  "number",
+  "text",
+  "notice",
+];
+
+const QUESTION_DEFINITIONS = [
+  {
+    id: "zone0_location",
+    label: "Is this within 5 ft / 152 cm of the structure?",
+    helpText: "Zone 0 is the first 5 ft / 152 cm around a structure, including attached decks and stairs.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: "all",
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "distance_wall",
+    label: "Distance from structure wall",
+    helpText: "Use feet/inches or cm. Some later checks may use 1 ft / 30 cm from walls, depending on structure type.",
+    inputType: "distance",
+    sourceBasis: "official",
+    appliesToTypes: "all",
+    required: true,
+  },
+  {
+    id: "measured_from_structure_part",
+    label: "What did you measure from?",
+    helpText: "Zone 0 can be measured from an exterior wall, attached deck, stairs, or pergola. Use unknown if you are not sure.",
+    inputType: "choice",
+    options: ["exterior_wall", "attached_deck", "stairs", "pergola", "balcony", "other_or_unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Mulch / wood chips / bark", "Trash bin"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "structure_construction_type",
+    label: "Nearby structure type",
+    helpText: "This affects later wall-distance screening. Most people should choose unknown unless they have reliable building information.",
+    inputType: "choice",
+    options: ["ordinary_existing", "ignition_resistant", "non_combustible_structure", "historic_structure", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "under_window",
+    label: "Is it beneath or in front of a window?",
+    helpText: "Use the outside view of the window or opening.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "distance_opening",
+    label: "Distance from nearest opening",
+    helpText: "Opening means window, door, vent, or similar opening. City guidance uses 2 ft / 61 cm for plants and containers.",
+    inputType: "distance",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+  },
+  {
+    id: "container_size",
+    label: "Container size",
+    helpText: "Choose the closest size range.",
+    inputType: "choice",
+    options: ["small", "medium", "large", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "container_material",
+    label: "Container material",
+    helpText: "Use unknown if you cannot tell.",
+    inputType: "choice",
+    options: ["non_combustible", "combustible", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "container_placement",
+    label: "Container placement",
+    helpText: "City source distinguishes ground, balcony floor, and deck/balcony situations. Use unknown if it does not fit.",
+    inputType: "choice",
+    options: ["ground", "balcony_floor", "deck_surface", "raised_stand_table", "hanging", "other_or_unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "deck_stair_clearance",
+    label: "Distance from decks or stairs",
+    helpText: "City source uses 1 ft / 30 cm from decks and stairs for plants/containers.",
+    inputType: "choice",
+    options: ["at_least_1ft", "less_than_1ft", "no_deck_stairs_nearby", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "deck_balcony_wall_distance",
+    label: "Deck/balcony pot: distance from adjacent exterior wall",
+    helpText: "Only needed for a pot on a deck or balcony level. City source uses 5 ft / 152 cm from adjacent exterior walls.",
+    inputType: "distance",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant"],
+    required: false,
+    requiredWhen: { questionId: "container_placement", values: ["balcony_floor", "deck_surface"] },
+  },
+  {
+    id: "deck_balcony_away_from_openings",
+    label: "Deck/balcony pot: away from building openings?",
+    helpText: "Only needed for a pot on a deck or balcony level.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant"],
+    required: false,
+    requiredWhen: { questionId: "container_placement", values: ["balcony_floor", "deck_surface"] },
+    reviewOnUnknown: true,
+  },
+  {
+    id: "plant_type",
+    label: "Plant type",
+    helpText: "Choose the closest type. Later screening may need official plant-list review.",
+    inputType: "choice",
+    options: ["fire_smart", "herbaceous", "other_or_unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "plant_height",
+    label: "Plant height",
+    helpText: "Use feet and inches, or the closest estimate.",
+    inputType: "distance",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+  },
+  {
+    id: "healthy_maintained",
+    label: "Healthy, irrigated, maintained, and free of dead material?",
+    helpText: "Use unknown if this needs another look.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "plant_spacing",
+    label: "Distance to nearest plant or container",
+    helpText: "This helps later screening consider the 1.5 x plant-height spacing clue and fuel continuity.",
+    inputType: "distance",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+  },
+  {
+    id: "combustible_mulch",
+    label: "Combustible mulch present?",
+    helpText: "Includes wood chips, bark, and similar combustible ground material.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Mulch / wood chips / bark"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "mulch_context",
+    label: "Where is the mulch?",
+    helpText: "This separates a mulch area from mulch in a pot or around another object.",
+    inputType: "choice",
+    options: ["standalone_mulch_area", "in_or_around_pot", "around_plant_or_object", "other_or_unknown"],
+    sourceBasis: "app_inference",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Mulch / wood chips / bark"],
+    required: false,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "plant_fuel_continuity",
+    label: "Do plants/containers create fuel continuity?",
+    helpText: "Look for connected fuels horizontally or vertically to nearby plants or the structure.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "fuel_continuity",
+    label: "Does it create horizontal or vertical fuel continuity?",
+    helpText: "This is an app observation prompt, not a rule result.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "app_inference",
+    appliesToTypes: ["In-ground plant", "Shrub", "Climbing plant on pergola", "Climbing plant on fence"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "tree_status",
+    label: "Tree status or timing",
+    helpText: "Separate timing/status from the tree part being recorded.",
+    inputType: "choice",
+    options: ["existing_before_2026", "new_or_recent", "planned_future", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Whole tree / unsure part", "Tree trunk", "Branches / canopy / fronds", "Tree debris / leaves / needles", "New or planned tree"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "tree_part",
+    label: "Tree part being recorded",
+    helpText: "This is inventory structure so later questions stay relevant.",
+    inputType: "choice",
+    options: ["whole_or_unsure", "trunk", "branches_canopy_fronds", "debris", "ladder_fuels"],
+    sourceBasis: "inventory_only",
+    appliesToTypes: ["Whole tree / unsure part", "Tree trunk", "Branches / canopy / fronds", "Tree debris / leaves / needles", "New or planned tree"],
+    required: true,
+  },
+  {
+    id: "tree_contact",
+    label: "Do branches, foliage, or fronds touch the structure or projections?",
+    helpText: "Includes walls, windows, eaves, vents, decks, balconies, and similar projections.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Whole tree / unsure part", "Branches / canopy / fronds", "New or planned tree"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "canopy_clearance_10ft",
+    label: "Are branches/canopy/fronds within 10 ft of roof/eaves/chimney/stovepipe?",
+    helpText: "Collect the observation now; later rule logic evaluates it.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Whole tree / unsure part", "Branches / canopy / fronds", "New or planned tree"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "dead_tree_material",
+    label: "Dead, dying, diseased, or dry tree material present?",
+    helpText: "Includes dead branches, fronds, leaf litter, needles, or fruit/debris where relevant.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Whole tree / unsure part", "Tree trunk", "Branches / canopy / fronds", "Tree debris / leaves / needles", "New or planned tree"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "ladder_fuels",
+    label: "Ladder fuels under or near the tree?",
+    helpText: "This supports later review of fuel continuity.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "app_inference",
+    appliesToTypes: ["Whole tree / unsure part", "Tree trunk", "New or planned tree"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "stored_within_5ft",
+    label: "Normally stored within 5 ft / 152 cm of the structure, deck, stairs, or pergola?",
+    helpText: "Use unknown if the usual storage location is unclear.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Trash bin", "Grill / BBQ", "Generator"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "material_combustible",
+    label: "Is the item combustible or flammable?",
+    helpText: "Examples: wood, plastic/resin, fabric cushions, cardboard, bark, lumber, fuel containers. Use unknown if unsure.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Mulch / wood chips / bark", "Pergola", "Climbing plant on pergola", "Climbing plant on fence", "Grill / BBQ", "Generator"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "furniture_material",
+    label: "Furniture material category",
+    helpText: "Examples: wood chair, plastic/resin table, fabric cushion, metal chair, or mixed materials. This is saved for later review, not a result.",
+    inputType: "choice",
+    options: ["wood", "plastic_resin", "fabric_cushion", "metal_or_noncombustible", "mixed", "unknown"],
+    sourceBasis: "app_inference",
+    appliesToTypes: ["Furniture"],
+    required: false,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "furniture_cushions_fabric",
+    label: "Fabric cushions or soft parts present?",
+    helpText: "Saved as a clue because City source names cushions, mats, and rugs as ember-ignition examples.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Furniture"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "on_or_under_deck",
+    label: "Is it on top of or beneath a deck, balcony, porch, or stairway?",
+    helpText: "Deck and under-deck locations need careful later screening.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Trash bin", "Grill / BBQ", "Generator"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "deck_attached_location",
+    label: "Exact deck / balcony / stair location",
+    helpText: "This is more precise than the older on/under-deck clue.",
+    inputType: "choice",
+    options: ["on_deck_surface", "beneath_deck", "neither", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Trash bin", "Grill / BBQ", "Generator"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "deck_wall_distance",
+    label: "If on deck/balcony/stairs: distance from exterior wall",
+    helpText: "Only needed when the object is on a deck, balcony, or stair surface. City source uses 5 ft / 152 cm from exterior walls for combustible items on deck surfaces.",
+    inputType: "distance",
+    sourceBasis: "official",
+    appliesToTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Trash bin"],
+    required: false,
+    requiredWhen: { questionId: "deck_attached_location", values: ["on_deck_surface"] },
+  },
+  {
+    id: "storage_contents_combustible",
+    label: "Are the stored contents combustible or flammable?",
+    helpText: "This separates the storage bin/shelf material from what is stored inside.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Outdoor storage", "Firewood / lumber"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "trash_bin_timing",
+    label: "Trash/recycling bin timing",
+    helpText: "City source has a collection-day exception; regular storage is different.",
+    inputType: "choice",
+    options: ["collection_day_only", "regular_storage", "temporary_non_collection", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Trash bin"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "red_flag_bin_plan",
+    label: "Red Flag Warning day bin plan",
+    helpText: "City source says bins should be moved away from homes or into the garage on Red Flag Warning days.",
+    inputType: "choice",
+    options: ["move_away_or_garage", "no_plan", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Trash bin"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "temporary_or_regular",
+    label: "Is it temporary or regularly stored there?",
+    helpText: "This helps distinguish collection-day or temporary placement from normal storage.",
+    inputType: "choice",
+    options: ["temporary", "regular_storage", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Trash bin", "Grill / BBQ", "Generator"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "fence_orientation",
+    label: "Fence/gate orientation",
+    helpText: "Choose the closest orientation.",
+    inputType: "choice",
+    options: ["attached_or_perpendicular", "parallel", "detached_or_unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Wood gate", "Wood fence"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "fence_material",
+    label: "Fence/gate material",
+    helpText: "Choose unknown if material or reinforcement is uncertain.",
+    inputType: "choice",
+    options: ["wood", "vinyl", "metal_or_noncombustible", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Wood gate", "Wood fence"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "combustible_reinforcement",
+    label: "Combustible reinforcement present?",
+    helpText: "This matters for later fence/gate screening.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Wood gate", "Wood fence"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "vegetation_between_fence_structure",
+    label: "Vegetation or debris between fence/gate and structure?",
+    helpText: "This is an app observation prompt for possible fuel pathway review.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "app_inference",
+    appliesToTypes: ["Wood gate", "Wood fence", "Climbing plant on fence"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "equipment_review_notice",
+    label: "Equipment or special object review",
+    helpText: "Saved for inventory/review prompts only until official-source-backed evaluator design exists.",
+    inputType: "notice",
+    sourceBasis: "inventory_only",
+    appliesToTypes: ["HVAC / AC unit", "Generator", "Grill / BBQ", "Wood exterior door", "Other"],
+    required: false,
+  },
+];
+
+function getQuestionDefinition(id) {
+  return QUESTION_DEFINITIONS.find((question) => question.id === id) || null;
+}
+
+function questionsForType(type) {
+  return QUESTION_DEFINITIONS.filter((question) => {
+    if (question.appliesToTypes === "all") return true;
+    return question.appliesToTypes.includes(type);
+  });
+}
+
+
+
+const READINESS = {
+  NOT_STARTED: "not_started",
+  INCOMPLETE: "incomplete",
+  READY_FOR_RULE_CHECK: "ready_for_rule_check",
+  NEEDS_REVIEW: "needs_review",
+};
+
+const FLOW_DEFINITIONS = [
+  {
+    id: "potted_plant_v1",
+    version: "1",
+    label: "Potted plant questions",
+    objectTypes: ["Potted plant"],
+    questionIds: [
+      "zone0_location",
+      "distance_wall",
+      "measured_from_structure_part",
+      "structure_construction_type",
+      "under_window",
+      "distance_opening",
+      "container_size",
+      "container_material",
+      "container_placement",
+      "plant_type",
+      "plant_height",
+      "healthy_maintained",
+      "plant_spacing",
+      "deck_stair_clearance",
+      "deck_balcony_wall_distance",
+      "deck_balcony_away_from_openings",
+      "combustible_mulch",
+      "mulch_context",
+      "plant_fuel_continuity",
+    ],
+  },
+  {
+    id: "inground_plant_shrub_v1",
+    version: "1",
+    label: "In-ground plant and shrub questions",
+    objectTypes: ["In-ground plant", "Shrub"],
+    questionIds: [
+      "zone0_location",
+      "distance_wall",
+      "measured_from_structure_part",
+      "structure_construction_type",
+      "under_window",
+      "distance_opening",
+      "plant_type",
+      "plant_height",
+      "healthy_maintained",
+      "plant_spacing",
+      "deck_stair_clearance",
+      "combustible_mulch",
+      "mulch_context",
+      "plant_fuel_continuity",
+    ],
+  },
+  {
+    id: "tree_v1",
+    version: "1",
+    label: "Tree questions",
+    objectTypes: [
+      "Whole tree / unsure part",
+      "Tree trunk",
+      "Branches / canopy / fronds",
+      "Tree debris / leaves / needles",
+      "New or planned tree",
+    ],
+    questionIds: [
+      "tree_status",
+      "dead_tree_material",
+      "tree_contact",
+      "canopy_clearance_10ft",
+      "ladder_fuels",
+    ],
+  },
+  {
+    id: "storage_debris_v1",
+    version: "1",
+    label: "Storage, debris, and combustible item questions",
+    objectTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Mulch / wood chips / bark"],
+    questionIds: [
+      "zone0_location",
+      "distance_wall",
+      "measured_from_structure_part",
+      "stored_within_5ft",
+      "material_combustible",
+      "furniture_material",
+      "furniture_cushions_fabric",
+      "deck_attached_location",
+      "deck_wall_distance",
+      "storage_contents_combustible",
+      "temporary_or_regular",
+      "combustible_mulch",
+      "mulch_context",
+    ],
+  },
+  {
+    id: "trash_bin_v1",
+    version: "1",
+    label: "Trash and recycling bin questions",
+    objectTypes: ["Trash bin"],
+    questionIds: [
+      "zone0_location",
+      "distance_wall",
+      "measured_from_structure_part",
+      "stored_within_5ft",
+      "deck_attached_location",
+      "deck_wall_distance",
+      "trash_bin_timing",
+      "red_flag_bin_plan",
+    ],
+  },
+  {
+    id: "fence_gate_v1",
+    version: "1",
+    label: "Fence and gate questions",
+    objectTypes: ["Wood gate", "Wood fence"],
+    questionIds: [
+      "zone0_location",
+      "distance_wall",
+      "fence_orientation",
+      "fence_material",
+      "combustible_reinforcement",
+      "vegetation_between_fence_structure",
+    ],
+  },
+  {
+    id: "pergola_climbing_v1",
+    version: "1",
+    label: "Pergola and climbing plant questions",
+    objectTypes: ["Pergola", "Climbing plant on pergola", "Climbing plant on fence"],
+    questionIds: [
+      "zone0_location",
+      "distance_wall",
+      "material_combustible",
+      "fuel_continuity",
+      "vegetation_between_fence_structure",
+    ],
+  },
+  {
+    id: "equipment_review_v1",
+    version: "1",
+    label: "Equipment and special object review prompts",
+    objectTypes: ["HVAC / AC unit", "Generator", "Grill / BBQ", "Wood exterior door", "Other"],
+    questionIds: [
+      "zone0_location",
+      "distance_wall",
+      "stored_within_5ft",
+      "material_combustible",
+      "on_or_under_deck",
+      "equipment_review_notice",
+    ],
+    reviewOnly: true,
+  },
+];
+
+function getFlowForObjectType(type) {
+  return FLOW_DEFINITIONS.find((flow) => flow.objectTypes.includes(type)) || null;
+}
+
+function getFlowDefinition(flowId) {
+  return FLOW_DEFINITIONS.find((flow) => flow.id === flowId) || null;
+}
+
+function getQuestionsForFlow(flowId) {
+  const flow = getFlowDefinition(flowId);
+  if (!flow) return [];
+  return flow.questionIds.map((id) => getQuestionDefinition(id)).filter(Boolean);
+}
+
+function flowForObject(object) {
+  return getFlowForObjectType(object?.type);
+}
+
+function readinessForObject(object) {
+  const flow = flowForObject(object);
+  if (!flow) return READINESS.NOT_STARTED;
+  const answers = object?.questionAnswers && typeof object.questionAnswers === "object" ? object.questionAnswers : {};
+  const questions = getQuestionsForFlow(flow.id).filter((question) => questionAppliesToType(question, object.type));
+  const applicableQuestionIds = questions.map((question) => question.id);
+  const answerKeys = Object.keys(answers).filter((key) => applicableQuestionIds.includes(key));
+
+  if (!answerKeys.length) return READINESS.NOT_STARTED;
+  if (flow.reviewOnly) return READINESS.NEEDS_REVIEW;
+
+  for (const question of questions.filter((question) => questionAppliesToType(question, object.type))) {
+    const required = questionIsRequired(question, answers);
+    if (required && answerIsMissing(answers[question.id])) {
+      return READINESS.INCOMPLETE;
+    }
+    if (question.reviewOnUnknown && answerIsUnknown(answers[question.id])) {
+      return READINESS.NEEDS_REVIEW;
+    }
+  }
+
+  return READINESS.READY_FOR_RULE_CHECK;
+}
+
+function questionIsRequired(question, answers = {}) {
+  if (question.required) return true;
+  if (!question.requiredWhen) return false;
+  const triggerValue = answers[question.requiredWhen.questionId];
+  return question.requiredWhen.values.includes(triggerValue);
+}
+
+function questionAppliesToType(question, type) {
+  if (question.appliesToTypes === "all") return true;
+  return Array.isArray(question.appliesToTypes) && question.appliesToTypes.includes(type);
+}
+
+function flowIntegrityReport() {
+  const objectTypesWithFlows = new Set(FLOW_DEFINITIONS.flatMap((flow) => flow.objectTypes));
+  return {
+    missingObjectTypes: OBJECT_TYPES.filter((type) => !objectTypesWithFlows.has(type)),
+    duplicateFlowIds: duplicates(FLOW_DEFINITIONS.map((flow) => flow.id)),
+    missingQuestionIds: FLOW_DEFINITIONS.flatMap((flow) => flow.questionIds)
+      .filter((id) => !getQuestionDefinition(id)),
+  };
+}
+
+function answerIsMissing(value) {
+  if (value === null || value === undefined || value === "") return true;
+  if (Array.isArray(value)) return value.length === 0;
+  if (typeof value === "object") {
+    return Object.keys(value).length === 0 || Object.values(value).every(answerIsMissing);
+  }
+  return false;
+}
+
+function answerIsUnknown(value) {
+  if (value === "unknown" || value === "other_or_unknown" || value === "detached_or_unknown") return true;
+  if (Array.isArray(value)) return value.includes("unknown");
+  if (value && typeof value === "object") {
+    return Object.values(value).some(answerIsUnknown);
+  }
+  return false;
+}
+
+function duplicates(values) {
+  const seen = new Set();
+  const duplicateValues = new Set();
+  for (const value of values) {
+    if (seen.has(value)) duplicateValues.add(value);
+    seen.add(value);
+  }
+  return [...duplicateValues];
+}
+
+
+function inchesFromFeetAndInches(feet, inches) {
+  const ft = Number(feet || 0);
+  const inch = Number(inches || 0);
+  if (!Number.isFinite(ft) || !Number.isFinite(inch)) return null;
+  return ft * 12 + inch;
+}
+
+function cmFromFeetAndInches(feet, inches) {
+  const totalInches = inchesFromFeetAndInches(feet, inches);
+  if (totalInches === null) return null;
+  return Math.round(totalInches * 2.54 * 10) / 10;
+}
+
+function formatDistance(feet, inches) {
+  if (feet === null && inches === null) return "Not entered";
+  const ft = feet || 0;
+  const inch = inches || 0;
+  const cm = cmFromFeetAndInches(ft, inch);
+  return `${ft} ft ${inch} in / ${cm} cm`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+const DB_NAME = "bloombuffer";
+const DB_VERSION = 1;
+const AREA_STORE = "areas";
+const OBJECT_STORE = "objects";
+
+async function openDatabase() {
+  if (!("indexedDB" in globalThis)) {
+    throw new Error("IndexedDB is not available in this browser.");
+  }
+
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(AREA_STORE)) {
+        db.createObjectStore(AREA_STORE, { keyPath: "id" });
+      }
+      if (!db.objectStoreNames.contains(OBJECT_STORE)) {
+        db.createObjectStore(OBJECT_STORE, { keyPath: "id" });
+      }
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function getAll(db, storeName) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, "readonly");
+    const store = tx.objectStore(storeName);
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result || []);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function putRecord(db, storeName, record) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, "readwrite");
+    tx.objectStore(storeName).put(record);
+    tx.oncomplete = () => resolve(record);
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function deleteRecord(db, storeName, id) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(storeName, "readwrite");
+    tx.objectStore(storeName).delete(id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function replaceAllData(db, data) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction([AREA_STORE, OBJECT_STORE], "readwrite");
+    tx.objectStore(AREA_STORE).clear();
+    tx.objectStore(OBJECT_STORE).clear();
+    for (const area of data.areas || []) tx.objectStore(AREA_STORE).put(area);
+    for (const object of data.objects || []) tx.objectStore(OBJECT_STORE).put(object);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+const stores = {
+  areas: AREA_STORE,
+  objects: OBJECT_STORE,
+};
+
+
+
+const DEBUG_LOG_LIMIT = 150;
+
+const state = {
+  db: null,
+  areas: [],
+  objects: [],
+  route: "home",
+  filterAreaId: "all",
+  filterType: "all",
+  filterStatus: "all",
+  searchQuery: "",
+  sortBy: "updatedAtDesc",
+  selectedTypeGroup: OBJECT_TYPE_GROUPS[0].label,
+  isTypePickerOpen: false,
+  backupMessage: "",
+  lastBackupFileName: "",
+  lastBackupAt: "",
+  lastImportFileName: "",
+  lastImportAt: "",
+  debugEvents: [],
+  storageStatus: "not checked",
+  quickType: "",
+  quickTypeGroup: OBJECT_TYPE_GROUPS[0].label,
+  quickMessage: "Inventory only. No PASS/FAIL rule result yet.",
+  guidedAnswers: {},
+};
+
+const typeHints = {
+  "Potted plant": "Later phases will ask wall distance, opening distance, container size, container material, plant height, spacing, and dead material.",
+  "Shrub": "Later phases will check height, wall/opening distance, health, dead material, spacing, and fuel continuity.",
+  "Whole tree / unsure part": "Inventory only for now. Later phases will ask tree status/date, part, debris, ladder fuels, contact, and roof/eaves/chimney clearance.",
+  "Tree trunk": "Trunk proximity alone is not treated as automatic removal in the current project baseline.",
+  "Branches / canopy / fronds": "Later phases will check contact with structure and 10 ft / 3.05 m roof/eaves/chimney clearance.",
+  "Tree debris / leaves / needles": "Saved as inventory for now. Later phases will ask whether leaf litter, needles, fruit, dead material, or ladder fuels are present under or near the tree.",
+  "New or planned tree": "Saved as inventory for now. Later phases will ask whether the tree is new, recent, planned, or existing before the relevant date before applying any tree rule.",
+  "Wood gate": "Later phases will check attached/perpendicular status and the 5 ft / 1.52 m non-combustible transition rule.",
+  "Wood fence": "Later phases will check orientation, material, fuel pathway, and the limited 4 ft / 1.22 m existing-vinyl exception where relevant.",
+  "Pergola": "Later phases will flag wood/non-combustible structure questions for review.",
+  "Mulch / wood chips / bark": "Later phases will check combustible mulch in Zone 0.",
+  "Grill / BBQ": "Saved as inventory for now. Rule screening is not connected yet; later phases may treat fuel, combustibility, storage, and distance as review questions if official guidance supports it.",
+  "HVAC / AC unit": "Saved as inventory for now. The frozen baseline does not make AC units an automatic PASS/FAIL category; later phases may ask about nearby vegetation, debris, and contact.",
+  "Generator": "Saved as inventory for now. Later phases may ask about fuel, storage, and distance if official guidance supports it.",
+  "Firewood / lumber": "Later phases will treat stored combustibles near the structure as a storage/combustible-material question.",
+  "Doormat / rug": "Later phases will treat mats/rugs near the structure as a combustible-item question.",
+};
+
+async function init() {
+  setupWindowErrorLogging();
+  logDebug("app_start");
+  populateStaticSelects();
+  bindEvents();
+  state.storageStatus = "checking";
+  renderPhoneDiagnostics();
+  try {
+    state.db = await openDatabase();
+    state.storageStatus = "IndexedDB opened";
+    logDebug("storage_opened");
+    await refreshState();
+  } catch (error) {
+    state.storageStatus = `Storage error: ${error.message}`;
+    logDebug("storage_open_failed", errorToDebugDetail(error), "error");
+    renderPhoneDiagnostics();
+    showError(error.message);
+  }
+}
+
+function populateStaticSelects() {
+  const objectType = document.querySelector("#object-type");
+  objectType.innerHTML = [
+    `<option value="">Choose object type</option>`,
+    ...OBJECT_TYPE_GROUPS.map((group) => `
+    <optgroup label="${escapeHtml(group.label)}">
+      ${group.types.map((type) => `<option value="${escapeHtml(type)}">${typeIconText(type)} ${escapeHtml(type)}</option>`).join("")}
+    </optgroup>
+  `),
+  ].join("");
+  objectType.value = "";
+  renderTypePicker();
+
+  const objectStatus = document.querySelector("#object-status");
+  objectStatus.innerHTML = OBJECT_STATUSES.map((status) => `<option>${escapeHtml(status)}</option>`).join("");
+  document.querySelector("#quick-status").innerHTML = objectStatus.innerHTML;
+
+  document.querySelector("#object-type-filter").innerHTML = [
+    `<option value="all">All types</option>`,
+    ...OBJECT_TYPES.map((type) => `<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`),
+  ].join("");
+
+  document.querySelector("#object-status-filter").innerHTML = [
+    `<option value="all">All statuses</option>`,
+    ...OBJECT_STATUSES.map((status) => `<option value="${escapeHtml(status)}">${escapeHtml(status)}</option>`),
+  ].join("");
+}
+
+function bindEvents() {
+  document.querySelectorAll("[data-route]").forEach((button) => {
+    button.addEventListener("click", () => setRoute(button.dataset.route));
+  });
+  document.querySelectorAll("[data-route-button]").forEach((button) => {
+    button.addEventListener("click", () => setRoute(button.dataset.routeButton));
+  });
+  document.querySelectorAll("[data-area-jump]").forEach((button) => {
+    button.addEventListener("click", () => showModePanel(button.dataset.areaJump, "area"));
+  });
+  document.querySelectorAll("[data-object-jump]").forEach((button) => {
+    button.addEventListener("click", () => showModePanel(button.dataset.objectJump, "object"));
+  });
+  document.querySelectorAll("[data-quick-add-start]").forEach((button) => {
+    button.addEventListener("click", startQuickAdd);
+  });
+  document.querySelector("#type-picker-toggle").addEventListener("click", toggleTypePicker);
+  document.querySelector("#type-category-list").addEventListener("click", handleTypeCategoryClick);
+  document.querySelector("#type-option-list").addEventListener("click", handleTypeOptionClick);
+  document.querySelector("#quick-type-category-list").addEventListener("click", handleQuickTypeCategoryClick);
+  document.querySelector("#quick-type-option-list").addEventListener("click", handleQuickTypeOptionClick);
+
+  document.querySelector("#area-form").addEventListener("submit", saveArea);
+  document.querySelector("#area-cancel").addEventListener("click", resetAreaForm);
+  document.querySelector("#quick-add-form").addEventListener("submit", saveQuickObject);
+  document.querySelector("#quick-continue-guided").addEventListener("click", () => copyQuickAddToFullForm({ scrollToQuestions: false }));
+  document.querySelector("#object-form").addEventListener("submit", saveObject);
+  document.querySelector("#object-cancel").addEventListener("click", resetObjectForm);
+  document.querySelector("#object-area").addEventListener("change", syncObjectAreaFilter);
+  document.querySelector("#object-type").addEventListener("change", handleObjectTypeSelect);
+  document.querySelector("#guided-question-list").addEventListener("input", handleGuidedAnswerChange);
+  document.querySelector("#guided-question-list").addEventListener("change", handleGuidedAnswerChange);
+  document.querySelector("#wall-ft").addEventListener("input", renderMetricDistance);
+  document.querySelector("#wall-in").addEventListener("input", renderMetricDistance);
+  document.querySelector("#wall-cm-input").addEventListener("input", handleWallCmInput);
+  document.querySelector("#object-filter").addEventListener("change", (event) => {
+    state.filterAreaId = event.target.value;
+    renderObjects();
+  });
+  document.querySelector("#object-type-filter").addEventListener("change", (event) => {
+    state.filterType = event.target.value;
+    renderObjects();
+  });
+  document.querySelector("#object-status-filter").addEventListener("change", (event) => {
+    state.filterStatus = event.target.value;
+    renderObjects();
+  });
+  document.querySelector("#object-search").addEventListener("input", (event) => {
+    state.searchQuery = event.target.value;
+    renderObjects();
+  });
+  document.querySelector("#object-sort").addEventListener("change", (event) => {
+    state.sortBy = event.target.value;
+    renderObjects();
+  });
+  document.querySelector("#clear-object-filters").addEventListener("click", clearObjectFilters);
+  document.querySelector("#export-json").addEventListener("click", exportJson);
+  document.querySelector("#import-json-button").addEventListener("click", () => document.querySelector("#import-json").click());
+  document.querySelector("#import-json").addEventListener("change", importJson);
+  document.querySelector("#open-debug-log").addEventListener("click", openDebugLog);
+  document.querySelector("#export-debug-log").addEventListener("click", exportDebugLog);
+  document.querySelector("#copy-debug-log").addEventListener("click", copyDebugLog);
+  document.querySelector("#clear-debug-log").addEventListener("click", clearDebugLog);
+  document.querySelector("#copy-phone-diagnostics").addEventListener("click", copyPhoneDiagnostics);
+}
+
+async function refreshState() {
+  state.areas = (await getAll(state.db, stores.areas)).sort((a, b) => a.name.localeCompare(b.name));
+  state.objects = (await getAll(state.db, stores.objects))
+    .map((object) => ({ ...object, type: normalizeObjectType(object.type) }))
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  logDebug("state_refreshed", { areaCount: state.areas.length, objectCount: state.objects.length });
+  render();
+}
+
+function setRoute(route) {
+  const previousRoute = state.route;
+  state.route = route;
+  if (previousRoute !== route) logDebug("route_changed", { from: previousRoute, to: route });
+  document.querySelectorAll(".screen").forEach((screen) => screen.classList.remove("active"));
+  document.querySelector(`#screen-${route}`).classList.add("active");
+  document.querySelectorAll("[data-route]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.route === route);
+  });
+  render();
+}
+
+function showModePanel(panelId, group) {
+  const panel = document.querySelector(`#${panelId}`);
+  if (!panel) return;
+  document.querySelectorAll(`[data-${group}-jump]`).forEach((button) => {
+    button.classList.toggle("active", button.dataset[`${group}Jump`] === panelId);
+  });
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function selectObjectType(type) {
+  const objectType = document.querySelector("#object-type");
+  objectType.value = type;
+  const group = OBJECT_TYPE_GROUPS.find((item) => item.types.includes(type));
+  if (group) state.selectedTypeGroup = group.label;
+  state.isTypePickerOpen = false;
+  state.guidedAnswers = pruneAnswersForType(state.guidedAnswers, type);
+  renderTypeHint();
+  renderTypePicker();
+  renderGuidedQuestions();
+}
+
+function toggleTypePicker() {
+  state.isTypePickerOpen = !state.isTypePickerOpen;
+  renderTypePicker();
+}
+
+function handleTypeCategoryClick(event) {
+  const button = event.target.closest("[data-type-group]");
+  if (!button) return;
+  state.selectedTypeGroup = button.dataset.typeGroup;
+  renderTypePicker();
+}
+
+function handleTypeOptionClick(event) {
+  const button = event.target.closest("[data-type-choice]");
+  if (!button) return;
+  state.guidedAnswers = collectGuidedAnswersForCurrentType();
+  selectObjectType(button.dataset.typeChoice);
+}
+
+function handleObjectTypeSelect(event) {
+  state.guidedAnswers = collectGuidedAnswersForCurrentType();
+  const group = OBJECT_TYPE_GROUPS.find((item) => item.types.includes(event.target.value));
+  if (group) state.selectedTypeGroup = group.label;
+  state.guidedAnswers = pruneAnswersForType(state.guidedAnswers, event.target.value);
+  renderTypeHint();
+  renderTypePicker();
+  renderGuidedQuestions();
+}
+
+function handleGuidedAnswerChange() {
+  state.guidedAnswers = collectGuidedAnswersForCurrentType();
+  updateGuidedDistanceMetrics();
+  renderGuidedReadiness();
+}
+
+function startQuickAdd() {
+  setRoute("objects");
+  showModePanel("quick-add-panel", "object");
+}
+
+function handleQuickTypeCategoryClick(event) {
+  const button = event.target.closest("[data-quick-type-group]");
+  if (!button) return;
+  state.quickTypeGroup = button.dataset.quickTypeGroup;
+  renderQuickAdd();
+}
+
+function handleQuickTypeOptionClick(event) {
+  const button = event.target.closest("[data-quick-type-choice]");
+  if (!button) return;
+  selectQuickType(button.dataset.quickTypeChoice);
+}
+
+function selectQuickType(type) {
+  state.quickType = type;
+  const group = OBJECT_TYPE_GROUPS.find((item) => item.types.includes(type));
+  if (group) state.quickTypeGroup = group.label;
+  state.quickMessage = `${type} selected. Best next step: add details + clues while it is fresh.`;
+  renderQuickAdd();
+}
+
+function copyQuickAddToFullForm({ scrollToQuestions = false } = {}) {
+  const areaId = document.querySelector("#quick-area").value || UNASSIGNED_AREA_ID;
+  const name = document.querySelector("#quick-name").value;
+  document.querySelector("#object-id").value = "";
+  document.querySelector("#object-area").value = areaId;
+  document.querySelector("#object-name").value = name;
+  document.querySelector("#object-status").value = document.querySelector("#quick-status").value;
+  document.querySelector("#object-notes").value = document.querySelector("#quick-notes").value;
+  document.querySelector("#wall-ft").value = "";
+  document.querySelector("#wall-in").value = "";
+  document.querySelector("#wall-cm-input").value = "";
+  document.querySelector("#object-submit").textContent = "Save object";
+  state.guidedAnswers = {};
+  syncObjectAreaFilter();
+  if (state.quickType) {
+    selectObjectType(state.quickType);
+  } else {
+    document.querySelector("#object-type").value = "";
+    state.isTypePickerOpen = true;
+    renderTypeHint();
+    renderTypePicker();
+    renderGuidedQuestions();
+    state.quickMessage = "Choose an object type first, then continue to details + clues.";
+    renderQuickAdd();
+  }
+  renderMetricDistance();
+  showModePanel("object-editor-panel", "object");
+  if (scrollToQuestions && state.quickType) {
+    document.querySelector("#guided-questions-title").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  logDebug("quick_add_copied_to_full_form", { hasType: Boolean(state.quickType), guided: scrollToQuestions });
+}
+
+function renderTypePicker() {
+  const selectedType = document.querySelector("#object-type").value;
+  const hasSelectedType = OBJECT_TYPES.includes(selectedType);
+  const selectedGroup = OBJECT_TYPE_GROUPS.find((group) => group.types.includes(selectedType));
+  const activeGroup = OBJECT_TYPE_GROUPS.find((group) => group.label === state.selectedTypeGroup) || selectedGroup || OBJECT_TYPE_GROUPS[0];
+  document.querySelector(".selected-type-card").classList.toggle("needs-choice", !hasSelectedType);
+  document.querySelector("#selected-type-icon").textContent = hasSelectedType ? typeIconText(selectedType) : "?";
+  document.querySelector("#selected-type-name").textContent = hasSelectedType ? selectedType : "Choose object type";
+  document.querySelector("#selected-type-group").textContent = hasSelectedType ? `Selected type - ${selectedGroup.label}` : "Required before saving";
+  document.querySelector("#type-browser").hidden = !state.isTypePickerOpen;
+  document.querySelector("#type-picker-toggle").textContent = state.isTypePickerOpen ? "Done choosing" : hasSelectedType ? "Change type" : "Choose type";
+  document.querySelector("#type-picker-toggle").setAttribute("aria-expanded", String(state.isTypePickerOpen));
+  document.querySelector("#type-browsing-note").textContent = hasSelectedType
+    ? `Current selection: ${selectedType}. Browsing category: ${activeGroup.label}.`
+    : `Browsing category: ${activeGroup.label}. Choose one object type below.`;
+  document.querySelector("#type-option-heading").textContent = `2. Object types in ${activeGroup.label}`;
+  document.querySelector("#type-category-list").innerHTML = OBJECT_TYPE_GROUPS.map((group) => `
+    <button type="button" class="${group.label === activeGroup.label ? "active" : "inactive"}" data-type-group="${escapeHtml(group.label)}">
+      <span class="type-button-kicker">${group.label === activeGroup.label ? "Selected category" : "Other category"}</span>
+      <span>${escapeHtml(group.label)}</span>
+    </button>
+  `).join("");
+  document.querySelector("#type-option-list").innerHTML = activeGroup.types.map((type) => `
+    <button type="button" class="${hasSelectedType && type === selectedType ? "active" : ""}" data-type-choice="${escapeHtml(type)}">
+      <span aria-hidden="true">${typeIconText(type)}</span>
+      <span><span class="type-button-kicker">Object type</span>${escapeHtml(type)}</span>
+    </button>
+  `).join("");
+}
+
+async function saveArea(event) {
+  event.preventDefault();
+  const id = document.querySelector("#area-id").value || undefined;
+  const draft = createAreaDraft({
+    id,
+    name: document.querySelector("#area-name").value,
+    side: document.querySelector("#area-side").value,
+    access: document.querySelector("#area-access").value,
+    notes: document.querySelector("#area-notes").value,
+    icon: document.querySelector("#area-icon").value,
+    color: document.querySelector("#area-color").value,
+  });
+  if (!draft.name) return alert("Area name is required.");
+  await putRecord(state.db, stores.areas, draft);
+  logDebug("area_saved", { mode: id ? "update" : "create" });
+  resetAreaForm();
+  await refreshState();
+}
+
+async function saveObject(event) {
+  event.preventDefault();
+  const id = document.querySelector("#object-id").value || undefined;
+  const areaId = document.querySelector("#object-area").value || UNASSIGNED_AREA_ID;
+  const name = document.querySelector("#object-name").value;
+  if (!name.trim()) return alert("Object name is required.");
+  if (!document.querySelector("#object-type").value) {
+    state.isTypePickerOpen = true;
+    renderTypeHint();
+    renderTypePicker();
+    return alert("Choose an object type before saving.");
+  }
+
+  const duplicate = findDuplicateObjectName(state.objects, { name, areaId, excludeObjectId: id });
+  if (duplicate && !confirm(`An object named "${name.trim()}" already exists in this area. Save anyway?`)) {
+    return;
+  }
+
+  const type = document.querySelector("#object-type").value;
+  const questionAnswers = collectGuidedAnswersForType(type);
+  const flow = getFlowForObjectType(type);
+  const screeningReadiness = readinessForObject({ type, questionAnswers });
+  const draft = createObjectDraft({
+    id,
+    name,
+    areaId,
+    type,
+    status: document.querySelector("#object-status").value,
+    wallFt: document.querySelector("#wall-ft").value,
+    wallIn: document.querySelector("#wall-in").value,
+    notes: document.querySelector("#object-notes").value,
+    questionAnswers,
+    flowId: flow?.id || "",
+    flowVersion: flow?.version || "",
+    screeningReadiness,
+    treeStatus: String(questionAnswers.tree_status || ""),
+    treePart: treePartFromObjectType(type),
+    sourceBasis: sourceBasisForFlow(flow),
+  });
+  await putRecord(state.db, stores.objects, draft);
+  logDebug("object_saved", {
+    mode: id ? "update" : "create",
+    type: draft.type,
+    area: draft.areaId === UNASSIGNED_AREA_ID ? "unassigned" : "assigned",
+    status: draft.status,
+    screeningReadiness: draft.screeningReadiness,
+  });
+  resetObjectForm();
+  await refreshState();
+}
+
+async function saveQuickObject(event) {
+  event.preventDefault();
+  const areaId = document.querySelector("#quick-area").value || UNASSIGNED_AREA_ID;
+  const name = document.querySelector("#quick-name").value;
+  if (!name.trim()) return alert("Object name is required.");
+  if (!state.quickType) {
+    state.quickMessage = "Choose an object type before saving.";
+    renderQuickAdd();
+    return alert("Choose an object type before saving.");
+  }
+
+  const duplicate = findDuplicateObjectName(state.objects, { name, areaId });
+  if (duplicate && !confirm(`An object named "${name.trim()}" already exists in this area. Save anyway?`)) {
+    return;
+  }
+
+  const draft = createObjectDraft({
+    name,
+    areaId,
+    type: state.quickType,
+    status: document.querySelector("#quick-status").value,
+    wallFt: "",
+    wallIn: "",
+    notes: document.querySelector("#quick-notes").value,
+  });
+  await putRecord(state.db, stores.objects, draft);
+  state.filterAreaId = areaId;
+  state.quickMessage = `Saved ${typeChipLabel(draft.type)} to ${areaName(areaId)}. Add another in this area, or change the area.`;
+  logDebug("quick_object_saved", {
+    type: draft.type,
+    area: draft.areaId === UNASSIGNED_AREA_ID ? "unassigned" : "assigned",
+    status: draft.status,
+  });
+  resetQuickAddAfterSave();
+  await refreshState();
+  showModePanel("quick-add-panel", "object");
+}
+
+async function removeArea(id) {
+  if (!confirm("Delete this area? Objects in it will move to Unassigned / Needs area.")) return;
+  const updates = reassignObjectsFromDeletedArea(state.objects, id);
+  await deleteRecord(state.db, stores.areas, id);
+  for (const object of updates) await putRecord(state.db, stores.objects, object);
+  logDebug("area_deleted", { reassignedObjectCount: updates.length });
+  await refreshState();
+}
+
+async function removeObject(id) {
+  if (!confirm("Delete this object?")) return;
+  await deleteRecord(state.db, stores.objects, id);
+  if (document.querySelector("#object-id").value === id) resetObjectForm();
+  state.objects = state.objects.filter((object) => object.id !== id);
+  logDebug("object_deleted");
+  render();
+  await refreshState();
+}
+
+function editArea(id) {
+  const area = state.areas.find((item) => item.id === id);
+  if (!area) return;
+  setRoute("areas");
+  document.querySelector("#area-id").value = area.id;
+  document.querySelector("#area-name").value = area.name;
+  document.querySelector("#area-side").value = area.side;
+  document.querySelector("#area-access").value = area.access;
+  document.querySelector("#area-icon").value = AREA_ICONS.includes(area.icon) ? area.icon : "Home";
+  document.querySelector("#area-color").value = AREA_COLORS.includes(area.color) ? area.color : "Sage";
+  document.querySelector("#area-notes").value = area.notes;
+  document.querySelector("#area-submit").textContent = "Update area";
+  showModePanel("area-editor-panel", "area");
+}
+
+function editObject(id) {
+  const object = state.objects.find((item) => item.id === id);
+  if (!object) return;
+  setRoute("objects");
+  document.querySelector("#object-id").value = object.id;
+  document.querySelector("#object-name").value = object.name;
+  document.querySelector("#object-area").value = object.areaId || UNASSIGNED_AREA_ID;
+  document.querySelector("#object-status").value = object.status;
+  document.querySelector("#wall-ft").value = object.wallFt ?? object.questionAnswers?.distance_wall?.ft ?? "";
+  document.querySelector("#wall-in").value = object.wallIn ?? object.questionAnswers?.distance_wall?.in ?? "";
+  document.querySelector("#wall-cm-input").value = "";
+  document.querySelector("#object-notes").value = object.notes;
+  document.querySelector("#object-submit").textContent = "Update object";
+  state.guidedAnswers = object.questionAnswers || {};
+  syncObjectAreaFilter();
+  selectObjectType(object.type);
+  renderMetricDistance();
+  renderGuidedQuestions();
+  showModePanel("object-editor-panel", "object");
+}
+
+function resetAreaForm() {
+  document.querySelector("#area-id").value = "";
+  document.querySelector("#area-form").reset();
+  document.querySelector("#area-submit").textContent = "Save area";
+}
+
+function resetObjectForm() {
+  document.querySelector("#object-id").value = "";
+  document.querySelector("#object-form").reset();
+  document.querySelector("#object-type").value = "";
+  document.querySelector("#wall-cm-input").value = "";
+  document.querySelector("#object-submit").textContent = "Save object";
+  state.selectedTypeGroup = OBJECT_TYPE_GROUPS[0].label;
+  state.isTypePickerOpen = false;
+  state.guidedAnswers = {};
+  renderTypeHint();
+  renderTypePicker();
+  renderMetricDistance();
+  renderGuidedQuestions();
+}
+
+function resetQuickAddAfterSave() {
+  document.querySelector("#quick-name").value = "";
+  document.querySelector("#quick-notes").value = "";
+  document.querySelector("#object-filter").value = state.filterAreaId;
+}
+
+function render() {
+  renderMetrics();
+  renderAreaOptions();
+  renderQuickAdd();
+  renderAreas();
+  renderObjects();
+  renderTypeHint();
+  renderGuidedQuestions();
+  renderMetricDistance();
+  renderBackupStatus();
+  renderDebugLog();
+  renderPhoneDiagnostics();
+}
+
+function renderMetrics() {
+  document.querySelector("#metric-areas").textContent = state.areas.length;
+  document.querySelector("#metric-objects").textContent = state.objects.length;
+  document.querySelector("#metric-unassigned").textContent = state.objects.filter((object) => object.areaId === UNASSIGNED_AREA_ID).length;
+  document.querySelector("#metric-review").textContent = state.objects.filter((object) => object.status === "Needs review").length;
+}
+
+function renderAreaOptions() {
+  const selectedObjectArea = document.querySelector("#object-area").value || UNASSIGNED_AREA_ID;
+  const knownAreaIds = new Set([UNASSIGNED_AREA_ID, ...state.areas.map((area) => area.id)]);
+  if (!knownAreaIds.has(state.filterAreaId) && state.filterAreaId !== "all") {
+    state.filterAreaId = "all";
+  }
+
+  const options = [
+    `<option value="${UNASSIGNED_AREA_ID}">${UNASSIGNED_AREA_NAME}</option>`,
+    ...state.areas.map((area) => `<option value="${area.id}">${escapeHtml(area.name)}</option>`),
+  ].join("");
+  const objectArea = document.querySelector("#object-area");
+  objectArea.innerHTML = options;
+  objectArea.value = knownAreaIds.has(selectedObjectArea) ? selectedObjectArea : UNASSIGNED_AREA_ID;
+
+  const quickArea = document.querySelector("#quick-area");
+  const selectedQuickArea = quickArea.value || selectedObjectArea || UNASSIGNED_AREA_ID;
+  quickArea.innerHTML = options;
+  quickArea.value = knownAreaIds.has(selectedQuickArea) ? selectedQuickArea : UNASSIGNED_AREA_ID;
+
+  const objectFilter = document.querySelector("#object-filter");
+  objectFilter.innerHTML = [
+    `<option value="all">All areas</option>`,
+    `<option value="${UNASSIGNED_AREA_ID}">${UNASSIGNED_AREA_NAME}</option>`,
+    ...state.areas.map((area) => `<option value="${area.id}">${escapeHtml(area.name)}</option>`),
+  ].join("");
+  objectFilter.value = state.filterAreaId;
+}
+
+function renderQuickAdd() {
+  const selectedType = state.quickType;
+  const hasSelectedType = OBJECT_TYPES.includes(selectedType);
+  const selectedGroup = OBJECT_TYPE_GROUPS.find((group) => group.types.includes(selectedType));
+  const activeGroup = OBJECT_TYPE_GROUPS.find((group) => group.label === state.quickTypeGroup) || selectedGroup || OBJECT_TYPE_GROUPS[0];
+  document.querySelector(".quick-type-card").classList.toggle("needs-choice", !hasSelectedType);
+  document.querySelector("#quick-selected-type-icon").textContent = hasSelectedType ? typeIconText(selectedType) : "?";
+  document.querySelector("#quick-selected-type-name").textContent = hasSelectedType ? selectedType : "Choose type";
+  document.querySelector("#quick-selected-type-group").textContent = hasSelectedType ? selectedGroup.label : "Tap a category, then a type";
+  document.querySelector("#quick-add-message").textContent = state.quickMessage;
+  document.querySelector("#quick-type-option-heading").textContent = `2. Object types in ${activeGroup.label}`;
+  document.querySelector("#quick-type-category-list").innerHTML = OBJECT_TYPE_GROUPS.map((group) => `
+    <button type="button" class="${group.label === activeGroup.label ? "active" : "inactive"}" data-quick-type-group="${escapeHtml(group.label)}">
+      <span class="type-button-kicker">${group.label === activeGroup.label ? "Selected category" : "Other category"}</span>
+      <span>${escapeHtml(group.label)}</span>
+    </button>
+  `).join("");
+  document.querySelector("#quick-type-option-list").innerHTML = activeGroup.types.map((type) => `
+    <button type="button" class="${hasSelectedType && type === selectedType ? "active" : ""}" data-quick-type-choice="${escapeHtml(type)}">
+      <span aria-hidden="true">${typeIconText(type)}</span>
+      <span><span class="type-button-kicker">Object type</span>${escapeHtml(type)}</span>
+    </button>
+  `).join("");
+}
+
+function syncObjectAreaFilter() {
+  const areaId = document.querySelector("#object-area").value || UNASSIGNED_AREA_ID;
+  state.filterAreaId = areaId;
+  document.querySelector("#object-filter").value = areaId;
+  renderObjects();
+}
+
+function viewObjectsInArea(areaId) {
+  state.filterAreaId = areaId;
+  setRoute("objects");
+  document.querySelector("#object-filter").value = areaId;
+  renderObjects();
+  showModePanel("object-browser-panel", "object");
+}
+
+function clearObjectFilters() {
+  state.filterAreaId = "all";
+  state.filterType = "all";
+  state.filterStatus = "all";
+  state.searchQuery = "";
+  state.sortBy = "updatedAtDesc";
+  document.querySelector("#object-filter").value = "all";
+  document.querySelector("#object-type-filter").value = "all";
+  document.querySelector("#object-status-filter").value = "all";
+  document.querySelector("#object-search").value = "";
+  document.querySelector("#object-sort").value = "updatedAtDesc";
+  logDebug("object_filters_cleared");
+  renderObjects();
+}
+
+function renderAreas() {
+  const list = document.querySelector("#area-list");
+  const unassignedCount = state.objects.filter((object) => object.areaId === UNASSIGNED_AREA_ID).length;
+  if (!state.areas.length && !unassignedCount) {
+    list.innerHTML = `<div class="empty">No custom areas yet. Objects can still be saved under ${UNASSIGNED_AREA_NAME}.</div>`;
+    return;
+  }
+  const unassignedCard = unassignedCount ? `
+      <article class="card unassigned-card">
+        <div class="card-header">
+          <h3>${UNASSIGNED_AREA_NAME}</h3>
+          <span class="pill warn">${unassignedCount} objects</span>
+        </div>
+        <p>Temporary bucket for saved objects that still need an area.</p>
+        <p class="field-note">Use Edit / move on each object to assign it to Front, Back, or another saved area.</p>
+        <div class="actions">
+          <button class="secondary" data-view-area="${UNASSIGNED_AREA_ID}">View these objects</button>
+        </div>
+      </article>` : "";
+  const areaCards = state.areas.map((area) => {
+    const count = state.objects.filter((object) => object.areaId === area.id).length;
+    return `
+      <article class="card area-card area-${areaColorClass(area.color)}">
+        <div class="card-header">
+          <div class="area-title">
+            <span class="area-icon" aria-hidden="true">${areaIconText(area.icon)}</span>
+            <div>
+              <h3>${escapeHtml(area.name)}</h3>
+              <p class="area-cue-line">${escapeHtml(areaIconLabel(area.icon))} · ${escapeHtml(area.color || "Sage")}</p>
+            </div>
+          </div>
+          <span class="pill">${count} objects</span>
+        </div>
+        <p>${escapeHtml(area.side)} side · Access: ${escapeHtml(area.access)}</p>
+        <p>${escapeHtml(area.notes || "No notes")}</p>
+        <div class="actions">
+          <button class="secondary" data-view-area="${area.id}">View objects</button>
+          <button class="secondary" data-edit-area="${area.id}">Edit area</button>
+          <button class="danger" data-delete-area="${area.id}">Delete area</button>
+        </div>
+      </article>`;
+  }).join("");
+  list.innerHTML = `${unassignedCard}${areaCards}`;
+  list.querySelectorAll("[data-view-area]").forEach((button) => button.addEventListener("click", () => viewObjectsInArea(button.dataset.viewArea)));
+  list.querySelectorAll("[data-edit-area]").forEach((button) => button.addEventListener("click", () => editArea(button.dataset.editArea)));
+  list.querySelectorAll("[data-delete-area]").forEach((button) => button.addEventListener("click", () => removeArea(button.dataset.deleteArea)));
+}
+
+function renderObjects() {
+  const list = document.querySelector("#object-list");
+  const objects = getVisibleObjects();
+  renderObjectResultSummary(objects.length);
+
+  if (!objects.length) {
+    list.innerHTML = `<div class="empty">No objects match this view yet.</div>`;
+    return;
+  }
+
+  list.innerHTML = objects.map((object) => `
+    <article class="card object-card object-${typeChipClass(object.type)} ${object.areaId === UNASSIGNED_AREA_ID ? "object-unassigned" : ""}">
+      <div class="card-header">
+        <div class="card-title">
+          <h3>${escapeHtml(object.name)}</h3>
+          <span class="type-chip ${typeChipClass(object.type)}">
+            <span class="type-icon" aria-hidden="true">${typeIconText(object.type)}</span>
+            <span>${typeChipLabel(object.type)}</span>
+          </span>
+        </div>
+        <span class="pill ${statusClass(object.status)}">${escapeHtml(object.status)}</span>
+      </div>
+      <div class="object-meta">
+        <span class="mini-badge">${escapeHtml(object.type)}</span>
+        <span class="mini-badge ${object.areaId === UNASSIGNED_AREA_ID ? "needs-area" : ""}">${escapeHtml(areaName(object.areaId))}</span>
+      </div>
+      <p class="distance-line">Distance from wall: ${escapeHtml(formatDistance(object.wallFt, object.wallIn))}</p>
+      <p class="object-note-line">${escapeHtml(object.notes || "No notes")}</p>
+      ${guidedCardSummaryHtml(object)}
+      <p class="inventory-note">Inventory only. No PASS/FAIL rule result yet.</p>
+      <div class="actions object-actions">
+        <button class="risk-clue-action card-clue-action" data-edit-object="${object.id}"><span aria-hidden="true">🕵️</span><span>Details + clues</span></button>
+        <button class="secondary card-secondary-action" data-edit-object="${object.id}">Edit / move</button>
+        <button class="danger card-danger-action" data-delete-object="${object.id}">Delete</button>
+      </div>
+    </article>
+  `).join("");
+  list.querySelectorAll("[data-edit-object]").forEach((button) => button.addEventListener("click", () => editObject(button.dataset.editObject)));
+  list.querySelectorAll("[data-delete-object]").forEach((button) => button.addEventListener("click", () => removeObject(button.dataset.deleteObject)));
+}
+
+function renderObjectResultSummary(visibleCount) {
+  const total = state.objects.length;
+  const parts = [`Showing ${visibleCount} of ${total} saved objects`];
+  if (state.filterAreaId !== "all") parts.push(`area: ${areaName(state.filterAreaId)}`);
+  if (state.filterType !== "all") parts.push(`type: ${state.filterType}`);
+  if (state.filterStatus !== "all") parts.push(`status: ${state.filterStatus}`);
+  if (state.searchQuery.trim()) parts.push(`search: "${state.searchQuery.trim()}"`);
+  document.querySelector("#object-result-summary").textContent = parts.join(" · ");
+}
+
+function getVisibleObjects() {
+  const query = normalizeSearch(state.searchQuery);
+  return state.objects
+    .filter((object) => state.filterAreaId === "all" || object.areaId === state.filterAreaId)
+    .filter((object) => state.filterType === "all" || object.type === state.filterType)
+    .filter((object) => state.filterStatus === "all" || object.status === state.filterStatus)
+    .filter((object) => {
+      if (!query) return true;
+      return normalizeSearch([
+        object.name,
+        object.notes,
+        object.type,
+        object.status,
+        areaName(object.areaId),
+      ].join(" ")).includes(query);
+    })
+    .sort(compareObjects);
+}
+
+function compareObjects(a, b) {
+  const nameTie = a.name.localeCompare(b.name);
+  if (state.sortBy === "name") return nameTie;
+  if (state.sortBy === "area") return areaName(a.areaId).localeCompare(areaName(b.areaId)) || nameTie;
+  if (state.sortBy === "type") return a.type.localeCompare(b.type) || nameTie;
+  if (state.sortBy === "status") return a.status.localeCompare(b.status) || nameTie;
+  if (state.sortBy === "distance") return distanceSortValue(a) - distanceSortValue(b) || nameTie;
+  return b.updatedAt.localeCompare(a.updatedAt) || nameTie;
+}
+
+function distanceSortValue(object) {
+  const inches = inchesFromFeetAndInches(object.wallFt, object.wallIn);
+  return inches === null ? Number.POSITIVE_INFINITY : inches;
+}
+
+function normalizeSearch(value) {
+  return String(value || "").trim().toLocaleLowerCase();
+}
+
+function typeChipLabel(type) {
+  if (type === "Shrub") return "Shrub";
+  if (isTreeType(type)) return "Tree";
+  if (["Wood gate", "Wood fence", "Wood exterior door", "Pergola"].includes(type)) return "Structure";
+  if (type.includes("Mulch") || type === "Firewood / lumber" || type === "Doormat / rug") return "Fuel";
+  if (type === "HVAC / AC unit") return "AC";
+  if (type === "Grill / BBQ") return "Grill";
+  if (type === "Generator") return "Generator";
+  if (["Furniture", "Trash bin", "Outdoor storage"].includes(type)) return "Object";
+  if (type.includes("plant")) return "Plant";
+  return "Other";
+}
+
+function typeChipClass(type) {
+  if (isTreeType(type)) return "tree";
+  if (["Wood gate", "Wood fence", "Wood exterior door", "Pergola"].includes(type)) return "structure";
+  if (type.includes("Mulch")) return "mulch";
+  if (["HVAC / AC unit", "Generator"].includes(type)) return "equipment";
+  if (type === "Grill / BBQ") return "grill";
+  if (["Furniture", "Trash bin", "Outdoor storage", "Firewood / lumber", "Doormat / rug"].includes(type)) return "item";
+  if (type.includes("plant") || type === "Shrub") return "plant";
+  return "other";
+}
+
+function areaIconText(icon) {
+  return {
+    Home: "⌂",
+    Front: "⇧",
+    Back: "⇩",
+    Side: "⇄",
+    Gate: "▤",
+    Deck: "▥",
+    Garden: "✿",
+    Slope: "▱",
+    Storage: "▣",
+    Other: "□",
+  }[icon] || "⌂";
+}
+
+function areaIconLabel(icon) {
+  return AREA_ICONS.includes(icon) ? icon : "Home";
+}
+
+function areaColorClass(color) {
+  const normalized = AREA_COLORS.includes(color) ? color : "Sage";
+  return normalized.toLowerCase();
+}
+
+function typeIconText(type) {
+  if (type === "Shrub") return "🌿";
+  if (isTreeType(type)) return "🌳";
+  if (type.includes("plant")) return "🪴";
+  if (["Wood gate", "Wood fence", "Wood exterior door", "Pergola"].includes(type)) return "▦";
+  if (type === "HVAC / AC unit") return "❄";
+  if (type === "Grill / BBQ") return "◉";
+  if (type === "Generator") return "⚙";
+  if (type.includes("Mulch") || type === "Firewood / lumber" || type === "Doormat / rug") return "▰";
+  return "□";
+}
+
+function isTreeType(type) {
+  return [
+    "Whole tree / unsure part",
+    "Tree trunk",
+    "Branches / canopy / fronds",
+    "Tree debris / leaves / needles",
+    "New or planned tree",
+  ].includes(type);
+}
+
+function renderTypeHint() {
+  const type = document.querySelector("#object-type").value;
+  document.querySelector("#object-type-hint").textContent = type
+    ? typeHints[type] || "Later phases will ask only the fields relevant to this object type."
+    : "Choose one object type. This is inventory only and will not show a rule result yet.";
+}
+
+function renderGuidedQuestions() {
+  const type = document.querySelector("#object-type").value;
+  const flow = getFlowForObjectType(type);
+  const flowLabel = document.querySelector("#guided-flow-label");
+  const list = document.querySelector("#guided-question-list");
+
+  if (!type || !flow) {
+    flowLabel.textContent = "Choose an object type to see what matters here.";
+    list.innerHTML = `<div class="empty">Choose an object type first. The clue questions appear here.</div>`;
+    renderGuidedReadiness();
+    return;
+  }
+
+  state.guidedAnswers = pruneAnswersForType(state.guidedAnswers, type);
+  const questions = getQuestionsForFlow(flow.id).filter((question) => questionAppliesToType(question, type));
+  const visibleQuestions = questions.filter((question) => question.id !== "distance_wall");
+  const linkedDistance = questions.some((question) => question.id === "distance_wall")
+    ? `<div class="guided-linked-field">${distanceDiagramSvg()}<span>Distance from wall uses the distance fields below. Feet/inches or cm both count.</span></div>`
+    : "";
+  const linkedTreePart = treePartFromObjectType(type)
+    ? `<div class="guided-linked-field"><span class="linked-icon" aria-hidden="true">${typeIconText(type)}</span><span>Tree part comes from the object type you chose: ${escapeHtml(type)}.</span></div>`
+    : "";
+  flowLabel.textContent = flow.reviewOnly
+    ? `${type}: review-only clue set. Save location and material details; no result yet.`
+    : `${type}: answer what you can now. ${visibleQuestions.length} clues here.`;
+  list.innerHTML = `${linkedTreePart}${linkedDistance}${visibleQuestions.map((question) => renderGuidedQuestion(question, state.guidedAnswers[question.id])).join("")}${sourceLegendHtml()}`;
+  updateGuidedDistanceMetrics();
+  renderGuidedReadiness();
+}
+
+function renderGuidedQuestion(question, value) {
+  const requiredText = questionRequirementText(question);
+  return `
+    <div class="guided-question" data-question-id="${escapeHtml(question.id)}" data-input-type="${escapeHtml(question.inputType)}">
+      <div class="guided-question-title">
+        <label for="guided-${escapeHtml(question.id)}">${escapeHtml(question.label)}</label>
+        <span class="source-badge ${escapeHtml(question.sourceBasis)}">${sourceBasisLabel(question.sourceBasis)}</span>
+      </div>
+      <p class="guided-help">${escapeHtml(question.helpText || requiredText)}</p>
+      ${questionVisualHtml(question)}
+      ${renderGuidedInput(question, value)}
+      <p class="guided-required">${requiredText}</p>
+    </div>
+  `;
+}
+
+function renderGuidedInput(question, value) {
+  if (question.inputType === "notice") {
+    return `<p class="notice-only">Inventory/review prompt only. No automatic rule result is connected.</p>`;
+  }
+  if (question.inputType === "distance") {
+    const ft = value && typeof value === "object" ? value.ft ?? "" : "";
+    const inch = value && typeof value === "object" ? value.in ?? "" : "";
+    return `
+      <div class="two-col guided-distance">
+        <div>
+          <label for="guided-${escapeHtml(question.id)}-ft">Feet</label>
+          <input id="guided-${escapeHtml(question.id)}-ft" data-distance-part="ft" type="number" min="0" step="1" value="${escapeHtml(ft)}">
+        </div>
+        <div>
+          <label for="guided-${escapeHtml(question.id)}-in">Inches</label>
+          <input id="guided-${escapeHtml(question.id)}-in" data-distance-part="in" type="number" min="0" max="11" step="1" value="${escapeHtml(inch)}">
+        </div>
+      </div>
+      <p class="guided-distance-metric" data-distance-metric>${escapeHtml(guidedDistanceMetricText(ft, inch))}</p>
+    `;
+  }
+  if (question.inputType === "number") {
+    return `<input id="guided-${escapeHtml(question.id)}" data-answer-control type="number" value="${escapeHtml(value ?? "")}">`;
+  }
+  if (question.inputType === "text") {
+    return `<input id="guided-${escapeHtml(question.id)}" data-answer-control value="${escapeHtml(value ?? "")}">`;
+  }
+
+  const options = question.inputType === "yes_no_unknown"
+    ? ["yes", "no", "unknown"]
+    : question.options || [];
+  return `
+    <select id="guided-${escapeHtml(question.id)}" data-answer-control>
+      <option value="">Choose answer</option>
+      ${options.map((option) => `<option value="${escapeHtml(option)}" ${String(value ?? "") === option ? "selected" : ""}>${escapeHtml(answerLabel(option))}</option>`).join("")}
+    </select>
+  `;
+}
+
+function questionRequirementText(question) {
+  if (question.id === "plant_type") return "Helpful if you know; choose Not sure if needed.";
+  if (question.requiredWhen) return "Needed when the related clue applies";
+  return question.required ? "Needed before later rule check" : "Optional";
+}
+
+function sourceLegendHtml() {
+  return `
+    <div class="source-legend" aria-label="Source legend">
+      <p><span class="source-badge official">City source</span> From City of San Diego Zone 0 guidance. It tells us why we ask, but this screen does not give PASS/FAIL.</p>
+      <p><span class="source-badge app_inference">App note</span> A BloomBuffer helper question or interpretation to organize details for later review.</p>
+      <p><span class="source-badge inventory_only">Inventory</span> Saved for organization only.</p>
+    </div>
+  `;
+}
+
+function updateGuidedDistanceMetrics() {
+  document.querySelectorAll(".guided-question[data-input-type='distance']").forEach((card) => {
+    const ft = card.querySelector('[data-distance-part="ft"]')?.value ?? "";
+    const inch = card.querySelector('[data-distance-part="in"]')?.value ?? "";
+    const metric = card.querySelector("[data-distance-metric]");
+    if (metric) metric.textContent = guidedDistanceMetricText(ft, inch);
+  });
+}
+
+function guidedDistanceMetricText(ft, inch) {
+  if ((ft === "" || ft === null || ft === undefined) && (inch === "" || inch === null || inch === undefined)) {
+    return "Metric: not entered";
+  }
+  return `Metric: ${cmFromFeetAndInches(ft || 0, inch || 0)} cm`;
+}
+
+function questionVisualHtml(question) {
+  if (question.id === "material_combustible" || question.id === "furniture_material") return materialDiagramHtml();
+  if (question.id === "on_or_under_deck" || question.id === "deck_attached_location") return deckDiagramHtml();
+  return "";
+}
+
+function distanceDiagramSvg() {
+  return `
+    <svg class="mini-diagram" viewBox="0 0 160 70" role="img" aria-label="Measure from wall to object">
+      <rect x="8" y="8" width="30" height="54" rx="3"></rect>
+      <circle cx="126" cy="35" r="15"></circle>
+      <line x1="42" y1="35" x2="108" y2="35"></line>
+      <text x="13" y="40">Wall</text>
+      <text x="104" y="62">Object</text>
+    </svg>
+  `;
+}
+
+function materialDiagramHtml() {
+  return `
+    <div class="material-examples" aria-label="Material examples">
+      <span>Wood</span>
+      <span>Plastic/resin</span>
+      <span>Fabric cushion</span>
+      <span>Metal</span>
+      <span>Mixed</span>
+    </div>
+  `;
+}
+
+function deckDiagramHtml() {
+  return `
+    <svg class="mini-diagram" viewBox="0 0 160 70" role="img" aria-label="Object on or under deck">
+      <rect x="20" y="28" width="120" height="8" rx="2"></rect>
+      <line x1="34" y1="36" x2="34" y2="62"></line>
+      <line x1="126" y1="36" x2="126" y2="62"></line>
+      <circle cx="66" cy="18" r="9"></circle>
+      <circle cx="96" cy="52" r="9"></circle>
+      <text x="53" y="14">On</text>
+      <text x="78" y="66">Under</text>
+    </svg>
+  `;
+}
+
+function handleGuidedCardAnswer(card) {
+  const inputType = card.dataset.inputType;
+  if (inputType === "notice") return undefined;
+  if (inputType === "distance") {
+    const ft = card.querySelector('[data-distance-part="ft"]')?.value ?? "";
+    const inch = card.querySelector('[data-distance-part="in"]')?.value ?? "";
+    if (ft === "" && inch === "") return undefined;
+    return { ft, in: inch };
+  }
+  const value = card.querySelector("[data-answer-control]")?.value ?? "";
+  return value === "" ? undefined : value;
+}
+
+function collectGuidedAnswersForCurrentType() {
+  return collectGuidedAnswersForType(document.querySelector("#object-type").value);
+}
+
+function collectGuidedAnswersForType(type) {
+  const flow = getFlowForObjectType(type);
+  if (!flow) return {};
+  const list = document.querySelector("#guided-question-list");
+  const cards = [...list.querySelectorAll("[data-question-id]")];
+  if (!cards.length) return pruneAnswersForType(state.guidedAnswers, type);
+
+  const answers = {};
+  for (const card of cards) {
+    const answer = handleGuidedCardAnswer(card);
+    if (answer !== undefined) answers[card.dataset.questionId] = answer;
+  }
+  const distanceAnswer = linkedWallDistanceAnswer();
+  if (flow.questionIds.includes("distance_wall") && distanceAnswer) {
+    answers.distance_wall = distanceAnswer;
+  }
+  return pruneAnswersForType(answers, type);
+}
+
+function linkedWallDistanceAnswer() {
+  const ft = document.querySelector("#wall-ft").value;
+  const inch = document.querySelector("#wall-in").value;
+  if (ft === "" && inch === "") return null;
+  return { ft, in: inch };
+}
+
+function handleWallCmInput(event) {
+  const cm = Number(event.target.value);
+  if (!Number.isFinite(cm) || event.target.value === "") {
+    renderMetricDistance();
+    return;
+  }
+  const totalInches = cm / 2.54;
+  let feet = Math.floor(totalInches / 12);
+  let inches = Math.round(totalInches - feet * 12);
+  if (inches === 12) {
+    feet += 1;
+    inches = 0;
+  }
+  document.querySelector("#wall-ft").value = String(feet);
+  document.querySelector("#wall-in").value = String(inches);
+  renderMetricDistance();
+}
+
+function pruneAnswersForType(answers, type) {
+  const flow = getFlowForObjectType(type);
+  if (!flow || !answers || typeof answers !== "object") return {};
+  const allowed = new Set(
+    getQuestionsForFlow(flow.id)
+      .filter((question) => questionAppliesToType(question, type))
+      .map((question) => question.id),
+  );
+  return Object.fromEntries(
+    Object.entries(answers).filter(([key, value]) => allowed.has(key) && value !== undefined && value !== ""),
+  );
+}
+
+function renderGuidedReadiness() {
+  const type = document.querySelector("#object-type").value;
+  const answers = collectGuidedAnswersForType(type);
+  state.guidedAnswers = answers;
+  const readiness = readinessForObject({ type, questionAnswers: answers });
+  const progress = guidedProgress(type, answers);
+  const badge = document.querySelector("#guided-readiness");
+  badge.textContent = readinessLabel(readiness);
+  badge.className = `readiness-badge ${readinessClass(readiness)}`;
+  document.querySelector("#guided-progress").textContent = progress.text;
+}
+
+function sourceBasisForFlow(flow) {
+  if (!flow) return {};
+  return Object.fromEntries(
+    getQuestionsForFlow(flow.id).map((question) => [question.id, question.sourceBasis]),
+  );
+}
+
+function guidedReadinessBadgeHtml(object) {
+  const readiness = SCREENING_READINESS.includes(object.screeningReadiness)
+    ? object.screeningReadiness
+    : readinessForObject(object);
+  return `<span class="mini-badge readiness-mini ${readinessClass(readiness)}">Clues: ${escapeHtml(readinessLabel(readiness))}</span>`;
+}
+
+function guidedCardSummaryHtml(object) {
+  const readiness = SCREENING_READINESS.includes(object.screeningReadiness)
+    ? object.screeningReadiness
+    : readinessForObject(object);
+  const answers = answersWithObjectDistance(object);
+  const progress = guidedProgress(object.type, answers);
+  const next = readiness === "not_started"
+    ? "Add when ready."
+    : progress.text;
+  return `<p class="guided-card-summary ${readinessClass(readiness)}"><span aria-hidden="true">🕵️</span><span><strong>Clues: ${escapeHtml(readinessLabel(readiness))}</strong><small>${escapeHtml(next)}</small></span></p>`;
+}
+
+function answersWithObjectDistance(object) {
+  const answers = object.questionAnswers && typeof object.questionAnswers === "object" ? { ...object.questionAnswers } : {};
+  if (object.wallFt !== null || object.wallIn !== null) {
+    answers.distance_wall = { ft: object.wallFt ?? "", in: object.wallIn ?? "" };
+  }
+  return answers;
+}
+
+function guidedProgress(type, answers) {
+  const flow = getFlowForObjectType(type);
+  if (!flow) return { answeredRequired: 0, required: 0, answeredTotal: 0, text: "Choose an object type to start clues." };
+  const questions = getQuestionsForFlow(flow.id).filter((question) => questionAppliesToType(question, type));
+  const requiredQuestions = questions.filter((question) => questionIsRequired(question, answers));
+  const answeredRequired = requiredQuestions.filter((question) => !answerIsMissingForUi(answers[question.id])).length;
+  const answeredTotal = questions.filter((question) => !answerIsMissingForUi(answers[question.id])).length;
+  return {
+    answeredRequired,
+    required: requiredQuestions.length,
+    answeredTotal,
+    text: `${answeredRequired}/${requiredQuestions.length} key clues answered; ${answeredTotal} total saved`,
+  };
+}
+
+function answerIsMissingForUi(value) {
+  if (value === null || value === undefined || value === "") return true;
+  if (Array.isArray(value)) return value.length === 0;
+  if (typeof value === "object") {
+    return Object.keys(value).length === 0 || Object.values(value).every(answerIsMissingForUi);
+  }
+  return false;
+}
+
+function readinessLabel(readiness) {
+  const labels = {
+    not_started: "Not started",
+    incomplete: "Incomplete",
+    ready_for_rule_check: "Ready for later screening",
+    needs_review: "Needs review",
+  };
+  return labels[readiness] || labels.not_started;
+}
+
+function readinessClass(readiness) {
+  if (readiness === "ready_for_rule_check") return "ready";
+  if (readiness === "needs_review") return "review";
+  if (readiness === "incomplete") return "incomplete";
+  return "not-started";
+}
+
+function sourceBasisLabel(sourceBasis) {
+  const labels = {
+    official: "City source",
+    app_inference: "App note",
+    inventory_only: "Inventory",
+  };
+  return labels[sourceBasis] || "Unlabeled";
+}
+
+function answerLabel(value) {
+  const labels = {
+    yes: "Yes",
+    no: "No",
+    unknown: "Unknown",
+    small: "Small",
+    medium: "Medium",
+    large: "Large",
+    exterior_wall: "Exterior wall",
+    attached_deck: "Attached deck",
+    stairs: "Stairs",
+    pergola: "Pergola",
+    balcony: "Balcony",
+    ordinary_existing: "Ordinary existing",
+    ignition_resistant: "Ignition-resistant",
+    non_combustible_structure: "Non-combustible structure",
+    historic_structure: "Historic structure",
+    non_combustible: "Non-combustible",
+    combustible: "Combustible",
+    ground: "Ground",
+    balcony_floor: "Balcony floor",
+    deck_surface: "Deck surface",
+    raised_stand_table: "Raised stand / table",
+    hanging: "Hanging",
+    at_least_1ft: "At least 1 ft / 30 cm",
+    less_than_1ft: "Less than 1 ft / 30 cm",
+    no_deck_stairs_nearby: "No deck/stairs nearby",
+    standalone_mulch_area: "Standalone mulch area",
+    in_or_around_pot: "In or around pot",
+    around_plant_or_object: "Around plant/object",
+    fire_smart: "Fire-Smart",
+    herbaceous: "Herbaceous",
+    other_or_unknown: "Other / unknown",
+    existing_before_2026: "Existing before 2026",
+    new_or_recent: "New or recent",
+    planned_future: "Planned / future",
+    whole_or_unsure: "Whole tree / unsure part",
+    trunk: "Trunk",
+    branches_canopy_fronds: "Branches / canopy / fronds",
+    debris: "Debris",
+    ladder_fuels: "Ladder fuels",
+    temporary: "Temporary",
+    temporary_non_collection: "Temporary, not collection day",
+    collection_day_only: "Collection day only",
+    regular_storage: "Regular storage",
+    move_away_or_garage: "Move away / into garage",
+    no_plan: "No plan yet",
+    on_deck_surface: "On deck/balcony/stair surface",
+    beneath_deck: "Beneath deck/balcony/stair",
+    neither: "Neither",
+    attached_or_perpendicular: "Attached or perpendicular",
+    parallel: "Parallel",
+    detached_or_unknown: "Detached / unknown",
+    wood: "Wood",
+    plastic_resin: "Plastic / resin",
+    fabric_cushion: "Fabric / cushion",
+    mixed: "Mixed materials",
+    vinyl: "Vinyl",
+    metal_or_noncombustible: "Metal / non-combustible",
+  };
+  return labels[value] || String(value || "").replaceAll("_", " ");
+}
+
+function renderMetricDistance() {
+  const feet = document.querySelector("#wall-ft").value;
+  const inches = document.querySelector("#wall-in").value;
+  if (feet === "" && inches === "") {
+    document.querySelector("#wall-cm").textContent = "Metric: not entered";
+    renderGuidedReadiness();
+    return;
+  }
+  document.querySelector("#wall-cm").textContent = `Metric: ${cmFromFeetAndInches(feet, inches)} cm`;
+  renderGuidedReadiness();
+}
+
+function areaName(areaId) {
+  if (!areaId || areaId === UNASSIGNED_AREA_ID) return UNASSIGNED_AREA_NAME;
+  return state.areas.find((area) => area.id === areaId)?.name || "Deleted area";
+}
+
+function statusClass(status) {
+  if (status === "Needs review") return "warn";
+  if (status === "Fixed" || status === "Keep/monitor") return "ok";
+  if (status === "Removed") return "neutral";
+  return "";
+}
+
+function exportJson() {
+  const exportedAt = new Date();
+  const payload = {
+    exportedAt: exportedAt.toISOString(),
+    app: "BloomBuffer",
+    version: 1,
+    areas: state.areas,
+    objects: state.objects,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const filename = `bloombuffer-backup-${exportedAt.toISOString().slice(0, 10)}.json`;
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+  state.lastBackupFileName = filename;
+  state.lastBackupAt = exportedAt.toISOString();
+  state.backupMessage = `Export started: ${filename}. This is your JSON backup file.`;
+  logDebug("backup_export_started", { filename, areaCount: state.areas.length, objectCount: state.objects.length });
+  renderBackupStatus();
+}
+
+async function importJson(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  state.backupMessage = `Selected import file: ${file.name} (${formatFileModified(file)}).`;
+  logDebug("backup_import_selected", { filename: file.name, size: file.size, lastModified: file.lastModified || null });
+  renderBackupStatus();
+  const text = await file.text();
+  try {
+    const parsed = JSON.parse(text);
+    const data = normalizeImportedBackup(parsed);
+    const shouldImport = confirm(
+      `Import ${file.name}?\n\nThis backup contains ${data.areas.length} areas and ${data.objects.length} objects. Importing will replace local BloomBuffer data in this browser.`,
+    );
+    if (!shouldImport) {
+      state.backupMessage = `Import canceled: ${file.name}. Local browser data was not replaced.`;
+      logDebug("backup_import_canceled", { filename: file.name });
+      renderBackupStatus();
+      return;
+    }
+    await replaceAllData(state.db, data);
+    await refreshState();
+    state.lastImportFileName = file.name;
+    state.lastImportAt = new Date().toISOString();
+    state.backupMessage = `Imported ${file.name}: ${data.areas.length} areas and ${data.objects.length} objects. Export again after changes to update a backup file.`;
+    logDebug("backup_import_completed", { filename: file.name, areaCount: data.areas.length, objectCount: data.objects.length });
+    renderBackupStatus();
+  } catch (error) {
+    state.backupMessage = `Import failed for ${file.name}. Local browser data was not replaced. Choose a backup made with Save backup JSON.`;
+    logDebug("backup_import_failed", { filename: file.name, ...errorToDebugDetail(error) }, "error");
+    renderBackupStatus();
+    console.error("BloomBuffer import failed:", error);
+    alert(`That file is not a valid BloomBuffer backup.\n\nYour current areas and objects were not changed.\n\nTry choosing a JSON file made with Save backup JSON.`);
+  } finally {
+    event.target.value = "";
+  }
+}
+
+function formatFileModified(file) {
+  if (!file.lastModified) return "modified date unknown";
+  return `modified ${new Date(file.lastModified).toLocaleString()}`;
+}
+
+function renderBackupStatus() {
+  const latestLocal = latestLocalUpdate();
+  const localText = latestLocal ? `Latest local change: ${formatDateTime(latestLocal)}.` : "No saved local changes yet.";
+  const backupText = state.lastBackupFileName
+    ? `Last backup this session: ${state.lastBackupFileName} at ${formatDateTime(state.lastBackupAt)}.`
+    : "No backup saved this session.";
+  const importText = state.lastImportFileName
+    ? `Last import this session: ${state.lastImportFileName} at ${formatDateTime(state.lastImportAt)}.`
+    : "";
+  document.querySelector("#backup-status").textContent = [
+    state.backupMessage || "Local autosave is on in this browser. Save backup JSON to make a file copy.",
+    localText,
+    backupText,
+    importText,
+  ].filter(Boolean).join(" ");
+}
+
+function latestLocalUpdate() {
+  const dates = [...state.areas, ...state.objects]
+    .map((item) => item.updatedAt)
+    .filter(Boolean)
+    .sort();
+  return dates.at(-1) || "";
+}
+
+function formatDateTime(value) {
+  if (!value) return "";
+  return new Date(value).toLocaleString();
+}
+
+function showError(message) {
+  logDebug("ui_error_shown", { message }, "error");
+  document.querySelector("main").insertAdjacentHTML(
+    "afterbegin",
+    `<div class="panel error"><strong>Storage error:</strong> ${escapeHtml(message)}</div>`,
+  );
+}
+
+function setupWindowErrorLogging() {
+  window.addEventListener("error", (event) => {
+    logDebug("window_error", {
+      message: event.message,
+      source: event.filename,
+      line: event.lineno,
+      column: event.colno,
+    }, "error");
+  });
+  window.addEventListener("unhandledrejection", (event) => {
+    logDebug("unhandled_rejection", errorToDebugDetail(event.reason), "error");
+  });
+}
+
+function logDebug(type, detail = {}, level = "info") {
+  state.debugEvents.push({
+    at: new Date().toISOString(),
+    level,
+    type,
+    detail: sanitizeDebugDetail(detail),
+  });
+  if (state.debugEvents.length > DEBUG_LOG_LIMIT) {
+    state.debugEvents = state.debugEvents.slice(-DEBUG_LOG_LIMIT);
+  }
+  renderDebugLog();
+}
+
+function sanitizeDebugDetail(value) {
+  if (value instanceof Error) return errorToDebugDetail(value);
+  if (value === null || value === undefined) return value;
+  if (["string", "number", "boolean"].includes(typeof value)) return String(value).slice(0, 160);
+  if (Array.isArray(value)) return { arrayLength: value.length };
+  if (typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, sanitizeDebugDetail(item)]),
+    );
+  }
+  return String(value).slice(0, 160);
+}
+
+function errorToDebugDetail(error) {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+    };
+  }
+  return { message: String(error || "Unknown error") };
+}
+
+function renderDebugLog() {
+  const count = document.querySelector("#debug-log-count");
+  const output = document.querySelector("#debug-log-output");
+  if (!count || !output) return;
+  const errorCount = state.debugEvents.filter((event) => event.level === "error").length;
+  count.textContent = `${state.debugEvents.length} debug events this session${errorCount ? `; ${errorCount} errors` : ""}.`;
+  output.textContent = JSON.stringify(state.debugEvents.slice(-40), null, 2);
+}
+
+function debugLogPayload() {
+  return {
+    app: "BloomBuffer",
+    kind: "session_debug_log",
+    exportedAt: new Date().toISOString(),
+    areaCount: state.areas.length,
+    objectCount: state.objects.length,
+    diagnostics: collectPhoneDiagnostics(),
+    events: state.debugEvents,
+  };
+}
+
+function exportDebugLog() {
+  const exportedAt = new Date();
+  const payload = debugLogPayload();
+  payload.exportedAt = exportedAt.toISOString();
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const filename = `bloombuffer-debug-log-${exportedAt.toISOString().slice(0, 10)}.json`;
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+  logDebug("debug_log_exported", { filename, eventCount: state.debugEvents.length });
+}
+
+async function copyDebugLog() {
+  const text = JSON.stringify(debugLogPayload(), null, 2);
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      fallbackCopyText(text);
+    }
+    showDebugCopyStatus("Debug log copied. You can paste it into a message.");
+    logDebug("debug_log_copied", { eventCount: state.debugEvents.length });
+  } catch (error) {
+    logDebug("debug_log_copy_failed", errorToDebugDetail(error), "error");
+    showDebugCopyStatus("Copy did not work in this browser. Use Save debug log JSON instead.");
+  }
+}
+
+function fallbackCopyText(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.setAttribute("readonly", "");
+  textArea.style.position = "fixed";
+  textArea.style.left = "-9999px";
+  document.body.append(textArea);
+  textArea.select();
+  const copied = document.execCommand("copy");
+  textArea.remove();
+  if (!copied) throw new Error("Fallback copy command failed.");
+}
+
+function showDebugCopyStatus(message) {
+  const status = document.querySelector("#debug-copy-status");
+  status.hidden = false;
+  status.textContent = message;
+}
+
+function collectPhoneDiagnostics() {
+  return {
+    build: "Phase 2 clue motivation UI v43",
+    pageMode: location.protocol || "unknown",
+    pathEndsWith: location.pathname.split("/").pop() || "",
+    userAgent: navigator.userAgent || "unknown",
+    language: navigator.language || "unknown",
+    online: String(navigator.onLine),
+    viewport: `${window.innerWidth} x ${window.innerHeight}`,
+    devicePixelRatio: String(window.devicePixelRatio || 1),
+    indexedDBAvailable: String("indexedDB" in globalThis),
+    storageStatus: state.storageStatus,
+    localStorageAvailable: localStorageStatus(),
+    objectCount: String(state.objects.length),
+    areaCount: String(state.areas.length),
+    debugEvents: String(state.debugEvents.length),
+  };
+}
+
+function localStorageStatus() {
+  try {
+    const key = "__bloombuffer_test__";
+    localStorage.setItem(key, "1");
+    localStorage.removeItem(key);
+    return "available";
+  } catch (error) {
+    return `not available: ${error.name || "error"}`;
+  }
+}
+
+function renderPhoneDiagnostics() {
+  const list = document.querySelector("#phone-diagnostics-list");
+  if (!list) return;
+  const diagnostics = collectPhoneDiagnostics();
+  list.innerHTML = Object.entries(diagnostics)
+    .map(([key, value]) => `
+      <div>
+        <dt>${escapeHtml(diagnosticLabel(key))}</dt>
+        <dd>${escapeHtml(value)}</dd>
+      </div>
+    `)
+    .join("");
+}
+
+function diagnosticLabel(key) {
+  return key
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (letter) => letter.toUpperCase());
+}
+
+async function copyPhoneDiagnostics() {
+  const text = JSON.stringify({
+    app: "BloomBuffer",
+    kind: "phone_diagnostics",
+    exportedAt: new Date().toISOString(),
+    diagnostics: collectPhoneDiagnostics(),
+  }, null, 2);
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      fallbackCopyText(text);
+    }
+    showPhoneDiagnosticsStatus("Phone diagnostics copied. You can paste it into a message.");
+    logDebug("phone_diagnostics_copied");
+  } catch (error) {
+    logDebug("phone_diagnostics_copy_failed", errorToDebugDetail(error), "error");
+    showPhoneDiagnosticsStatus("Copy did not work in this browser. Use the Debug log save button instead.");
+  }
+}
+
+function showPhoneDiagnosticsStatus(message) {
+  const status = document.querySelector("#phone-diagnostics-copy-status");
+  status.hidden = false;
+  status.textContent = message;
+}
+
+function clearDebugLog() {
+  state.debugEvents = [];
+  showDebugCopyStatus("Debug log cleared.");
+  renderDebugLog();
+}
+
+function openDebugLog() {
+  setRoute("rules");
+  logDebug("debug_log_opened");
+  document.querySelector("#debug-log-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+init();
+
+  </script>
+</body>
+</html>

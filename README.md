@@ -4,7 +4,7 @@ This folder is the publish-ready static app for GitHub Pages.
 
 Current build:
 
-- `Build: Phase 2 mobile utility bar UI v48`
+- `Build: Phase 2 picker title UI v52`
 - Phase 2 Risk clues only.
 - No PASS/FAIL/REVIEW rule screening is connected.
 
@@ -45,7 +45,7 @@ Expected URL shape:
 
 On the phone:
 
-1. Confirm the top bar says `Build: Phase 2 mobile utility bar UI v48`.
+1. Confirm the top bar says `Build: Phase 2 picker title UI v52`.
 2. Add one test object.
 3. Close and reopen the same phone browser.
 4. Confirm the object is still there.

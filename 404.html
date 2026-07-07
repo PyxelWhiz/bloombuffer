@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 2 mobile utility bar UI v48</title>
+  <title>BloomBuffer - Phase 2 picker title UI v52</title>
   <style>
 :root {
   color-scheme: light;
@@ -127,7 +127,7 @@ textarea {
 }
 
 main {
-  padding: 14px 12px 24px;
+  padding: 14px 12px 92px;
 }
 
 .screen {
@@ -246,16 +246,22 @@ textarea {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 58px;
-  border: 1px solid var(--green);
-  border-radius: 12px;
-  padding: 10px;
-  background: var(--surface-soft);
+  min-height: 48px;
+  border: 0;
+  border-left: 4px solid #b7c8ae;
+  border-radius: 0;
+  padding: 6px 0 6px 10px;
+  background: transparent;
 }
 
 .quick-type-card.needs-choice {
-  border-color: #e1ba4f;
-  background: #fff8df;
+  border-left-color: #d4a937;
+  background: transparent;
+}
+
+.selected-type-summary {
+  cursor: default;
+  box-shadow: none;
 }
 
 .quick-type-card strong,
@@ -293,16 +299,17 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  min-height: 58px;
-  border: 1px solid var(--green);
-  border-radius: 12px;
-  padding: 10px;
-  background: var(--surface-soft);
+  min-height: 48px;
+  border: 0;
+  border-left: 4px solid #b7c8ae;
+  border-radius: 0;
+  padding: 6px 0 6px 10px;
+  background: transparent;
 }
 
 .selected-type-card.needs-choice {
-  border-color: #e1ba4f;
-  background: #fff8df;
+  border-left-color: #d4a937;
+  background: transparent;
 }
 
 .selected-type-main {
@@ -334,6 +341,15 @@ textarea {
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
+}
+
+.selection-preview-label {
+  margin: 0 0 2px !important;
+  color: var(--green-dark) !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .compact-button {
@@ -404,6 +420,7 @@ textarea {
   color: var(--text);
   font-weight: 800;
   text-align: left;
+  cursor: pointer;
 }
 
 .type-category-list button {
@@ -1332,46 +1349,61 @@ button.card-danger-action {
 }
 
 .backup-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 10;
   display: grid;
-  gap: 7px;
-  width: min(536px, calc(100vw - 24px));
-  margin: 0 auto;
-  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 3px 8px;
+  align-items: center;
+  width: min(560px, 100vw);
+  min-height: 58px;
+  padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
   border-top: 2px solid #b7c8ae;
   background: #e7efe2;
   box-shadow: 0 -6px 18px rgba(23, 32, 24, 0.08);
+  transform: translateX(-50%);
 }
 
 .backup-kicker {
   margin: 0;
+  border-radius: 999px;
+  padding: 5px 8px;
+  background: #f8fbf6;
   color: var(--green-dark);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  line-height: 1;
 }
 
 .backup-status {
   margin: 0;
+  min-width: 0;
+  overflow: hidden;
   color: #40523f;
-  font-size: 11px;
-  line-height: 1.35;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .backup-actions {
   display: grid;
+  grid-column: 1 / -1;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
+  gap: 6px;
 }
 
 .utility-button {
-  min-height: 36px;
+  min-height: 32px;
   border: 1px solid #b7c8ae;
   border-radius: 9px;
-  padding: 8px 6px;
+  padding: 6px;
   background: #f8fbf6;
   color: var(--green-dark);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -1379,6 +1411,10 @@ button.card-danger-action {
   border-color: var(--green);
   background: var(--green);
   color: #fff;
+}
+
+.utility-button-save {
+  font-size: 13px;
 }
 
 .error {
@@ -1394,7 +1430,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p>Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 2 mobile utility bar UI v48</p>
+        <p class="build-label">Build: Phase 2 picker title UI v52</p>
       </div>
       <span class="phase-badge">Phase 2</span>
     </header>
@@ -1446,12 +1482,13 @@ button.card-danger-action {
           <h2>Add / edit area</h2>
           <form id="area-form" class="form">
             <input type="hidden" id="area-id">
-            <label for="area-name">Area name</label>
+            <label for="area-name">⭐ Area name - required</label>
             <input id="area-name" required placeholder="Front / North side">
+            <p class="field-note">Only area name is required. Side, access, icon, color, and notes are optional helpers for scanning later.</p>
 
             <div class="two-col">
               <div>
-                <label for="area-side">Side</label>
+                <label for="area-side">🧭 Side - optional</label>
                 <select id="area-side">
                   <option>Front</option>
                   <option>Back</option>
@@ -1463,7 +1500,7 @@ button.card-danger-action {
                 </select>
               </div>
               <div>
-                <label for="area-access">Access</label>
+                <label for="area-access">🚪 Access - optional</label>
                 <select id="area-access">
                   <option>Easy</option>
                   <option>Moderate</option>
@@ -1474,7 +1511,7 @@ button.card-danger-action {
 
             <div class="two-col">
               <div>
-                <label for="area-icon">Area icon</label>
+                <label for="area-icon">🏷️ Area icon - optional</label>
                 <select id="area-icon">
                   <option>Home</option>
                   <option>Front</option>
@@ -1489,7 +1526,7 @@ button.card-danger-action {
                 </select>
               </div>
               <div>
-                <label for="area-color">Area color</label>
+                <label for="area-color">🎨 Area color - optional</label>
                 <select id="area-color">
                   <option>Sage</option>
                   <option>Blue</option>
@@ -1501,7 +1538,7 @@ button.card-danger-action {
               </div>
             </div>
 
-            <label for="area-notes">Notes</label>
+            <label for="area-notes">📝 Notes - optional</label>
             <textarea id="area-notes" placeholder="Narrow strip, many windows, hard to reach"></textarea>
 
             <div class="actions">
@@ -1535,26 +1572,27 @@ button.card-danger-action {
             <label for="quick-area">Area</label>
             <select id="quick-area"></select>
 
-            <span class="field-label" id="quick-type-label">Object type - required</span>
-            <div class="quick-type-card" aria-labelledby="quick-type-label">
+            <span class="field-label" id="quick-type-label">⭐ Object category + subtype - required</span>
+            <div class="quick-type-card selected-type-summary" aria-labelledby="quick-type-label">
               <span id="quick-selected-type-icon" class="selected-type-icon" aria-hidden="true">?</span>
               <div>
-                <strong id="quick-selected-type-name">Choose type</strong>
-                <span id="quick-selected-type-group">Tap a category, then a type</span>
+                <span class="selection-preview-label">Current selection</span>
+                <strong id="quick-selected-type-name">No subtype selected</strong>
+                <span id="quick-selected-type-group">Tap category, then tap subtype below</span>
               </div>
             </div>
-            <p class="type-step-label">1. Choose a category</p>
+            <p class="type-step-label">1. Tap a category button</p>
             <div id="quick-type-category-list" class="type-category-list quick-type-category-list"></div>
-            <p id="quick-type-option-heading" class="type-step-label">2. Choose one object type</p>
+            <p id="quick-type-option-heading" class="type-step-label">2. Tap one subtype</p>
             <div id="quick-type-option-list" class="type-option-list quick-type-option-list"></div>
 
-            <label for="quick-name">Object name</label>
+            <label for="quick-name">⭐ Object name - required</label>
             <input id="quick-name" required placeholder="Example: red pot, palm fronds, side AC">
 
-            <label for="quick-status">Inventory status</label>
+            <label for="quick-status">📋 Inventory status</label>
             <select id="quick-status"></select>
 
-            <label for="quick-notes">Notes</label>
+            <label for="quick-notes">📝 Notes - optional</label>
             <textarea id="quick-notes" placeholder="Short note; measurements can come later"></textarea>
 
             <p id="quick-add-message" class="field-note">Save basic only if you are rushing. Details + clues make this object useful for later screening.</p>
@@ -1573,31 +1611,32 @@ button.card-danger-action {
           <h2>Add / edit object</h2>
           <form id="object-form" class="form">
             <input type="hidden" id="object-id">
-            <label for="object-name">Object name</label>
+            <label for="object-name">⭐ Object name - required</label>
             <input id="object-name" required placeholder="Red pot by front window">
 
-            <label for="object-area">Area / move to</label>
+            <label for="object-area">📍 Area / move to</label>
             <select id="object-area"></select>
             <p class="field-note">No area yet is okay. You can move this object later from its saved card.</p>
 
-            <span class="field-label" id="object-type-label">Object type - required before saving and risk clues</span>
+            <span class="field-label" id="object-type-label">⭐ Object category + subtype - required before saving and risk clues</span>
             <div class="type-picker" aria-labelledby="object-type-label">
-              <div class="selected-type-card">
+              <div class="selected-type-card selected-type-summary">
                 <div class="selected-type-main">
                   <span id="selected-type-icon" class="selected-type-icon" aria-hidden="true"></span>
                   <div>
+                <span class="selection-preview-label">Current selection</span>
                     <strong id="selected-type-name"></strong>
                     <span id="selected-type-group"></span>
                   </div>
                 </div>
-                <button class="secondary compact-button" type="button" id="type-picker-toggle" aria-expanded="false" aria-controls="type-browser">Change type</button>
+                <button class="secondary compact-button" type="button" id="type-picker-toggle" aria-expanded="false" aria-controls="type-browser">Select below</button>
               </div>
               <div id="type-browser" class="type-browser" hidden>
-                <p class="field-note">Choose a category first, then choose one object type from that category.</p>
+                <p class="field-note">The preview above does not choose anything by itself. Tap a category button, then tap one subtype button.</p>
                 <p id="type-browsing-note" class="type-browsing-note"></p>
-                <p class="type-step-label">1. Categories</p>
+                <p class="type-step-label">1. Tap a category button</p>
                 <div id="type-category-list" class="type-category-list"></div>
-                <p id="type-option-heading" class="type-step-label">2. Object types</p>
+                <p id="type-option-heading" class="type-step-label">2. Tap one subtype</p>
                 <div id="type-option-list" class="type-option-list"></div>
               </div>
             </div>
@@ -1787,12 +1826,12 @@ button.card-danger-action {
       </section>
     </main>
 
-    <footer class="backup-bar" aria-label="Backup and support tools">
-      <p class="backup-kicker">Backup and support</p>
+    <footer class="backup-bar" aria-label="Save and support tools">
+      <p class="backup-kicker">Save</p>
       <p id="backup-status" class="backup-status">Autosave is on. Save backup JSON to make a file copy.</p>
       <div class="backup-actions">
-        <button class="utility-button" id="export-json">Save backup</button>
-        <button class="utility-button utility-button-strong" id="import-json-button">Import backup</button>
+        <button class="utility-button utility-button-strong utility-button-save" id="export-json">Save</button>
+        <button class="utility-button" id="import-json-button">Import</button>
         <button class="utility-button" id="open-debug-log" type="button">Debug log</button>
       </div>
       <input id="import-json" type="file" accept="application/json" hidden>
@@ -3240,25 +3279,25 @@ function renderTypePicker() {
   const activeGroup = OBJECT_TYPE_GROUPS.find((group) => group.label === state.selectedTypeGroup) || selectedGroup || OBJECT_TYPE_GROUPS[0];
   document.querySelector(".selected-type-card").classList.toggle("needs-choice", !hasSelectedType);
   document.querySelector("#selected-type-icon").textContent = hasSelectedType ? typeIconText(selectedType) : "?";
-  document.querySelector("#selected-type-name").textContent = hasSelectedType ? selectedType : "Choose object type";
-  document.querySelector("#selected-type-group").textContent = hasSelectedType ? `Selected type - ${selectedGroup.label}` : "Required before saving";
+  document.querySelector("#selected-type-name").textContent = hasSelectedType ? selectedType : "No subtype selected";
+  document.querySelector("#selected-type-group").textContent = hasSelectedType ? `Selected subtype in ${selectedGroup.label}` : "Tap category, then subtype below";
   document.querySelector("#type-browser").hidden = !state.isTypePickerOpen;
-  document.querySelector("#type-picker-toggle").textContent = state.isTypePickerOpen ? "Done choosing" : hasSelectedType ? "Change type" : "Choose type";
+  document.querySelector("#type-picker-toggle").textContent = state.isTypePickerOpen ? "Hide choices" : hasSelectedType ? "Change subtype" : "Select below";
   document.querySelector("#type-picker-toggle").setAttribute("aria-expanded", String(state.isTypePickerOpen));
   document.querySelector("#type-browsing-note").textContent = hasSelectedType
     ? `Current selection: ${selectedType}. Browsing category: ${activeGroup.label}.`
-    : `Browsing category: ${activeGroup.label}. Choose one object type below.`;
-  document.querySelector("#type-option-heading").textContent = `2. Object types in ${activeGroup.label}`;
+    : `Browsing category: ${activeGroup.label}. Tap one subtype below.`;
+  document.querySelector("#type-option-heading").textContent = `2. Tap one subtype in ${activeGroup.label}`;
   document.querySelector("#type-category-list").innerHTML = OBJECT_TYPE_GROUPS.map((group) => `
     <button type="button" class="${group.label === activeGroup.label ? "active" : "inactive"}" data-type-group="${escapeHtml(group.label)}">
-      <span class="type-button-kicker">${group.label === activeGroup.label ? "Selected category" : "Other category"}</span>
+      <span class="type-button-kicker">${group.label === activeGroup.label ? "Selected category" : "Tap category"}</span>
       <span>${escapeHtml(group.label)}</span>
     </button>
   `).join("");
   document.querySelector("#type-option-list").innerHTML = activeGroup.types.map((type) => `
     <button type="button" class="${hasSelectedType && type === selectedType ? "active" : ""}" data-type-choice="${escapeHtml(type)}">
       <span aria-hidden="true">${typeIconText(type)}</span>
-      <span><span class="type-button-kicker">Object type</span>${escapeHtml(type)}</span>
+      <span><span class="type-button-kicker">${hasSelectedType && type === selectedType ? "Selected subtype" : "Tap subtype"}</span>${escapeHtml(type)}</span>
     </button>
   `).join("");
 }
@@ -3511,20 +3550,20 @@ function renderQuickAdd() {
   const activeGroup = OBJECT_TYPE_GROUPS.find((group) => group.label === state.quickTypeGroup) || selectedGroup || OBJECT_TYPE_GROUPS[0];
   document.querySelector(".quick-type-card").classList.toggle("needs-choice", !hasSelectedType);
   document.querySelector("#quick-selected-type-icon").textContent = hasSelectedType ? typeIconText(selectedType) : "?";
-  document.querySelector("#quick-selected-type-name").textContent = hasSelectedType ? selectedType : "Choose type";
-  document.querySelector("#quick-selected-type-group").textContent = hasSelectedType ? selectedGroup.label : "Tap a category, then a type";
+  document.querySelector("#quick-selected-type-name").textContent = hasSelectedType ? selectedType : "No subtype selected";
+  document.querySelector("#quick-selected-type-group").textContent = hasSelectedType ? `Selected subtype in ${selectedGroup.label}` : "Tap category, then tap subtype below";
   document.querySelector("#quick-add-message").textContent = state.quickMessage;
-  document.querySelector("#quick-type-option-heading").textContent = `2. Object types in ${activeGroup.label}`;
+  document.querySelector("#quick-type-option-heading").textContent = `2. Tap one subtype in ${activeGroup.label}`;
   document.querySelector("#quick-type-category-list").innerHTML = OBJECT_TYPE_GROUPS.map((group) => `
     <button type="button" class="${group.label === activeGroup.label ? "active" : "inactive"}" data-quick-type-group="${escapeHtml(group.label)}">
-      <span class="type-button-kicker">${group.label === activeGroup.label ? "Selected category" : "Other category"}</span>
+      <span class="type-button-kicker">${group.label === activeGroup.label ? "Selected category" : "Tap category"}</span>
       <span>${escapeHtml(group.label)}</span>
     </button>
   `).join("");
   document.querySelector("#quick-type-option-list").innerHTML = activeGroup.types.map((type) => `
     <button type="button" class="${hasSelectedType && type === selectedType ? "active" : ""}" data-quick-type-choice="${escapeHtml(type)}">
       <span aria-hidden="true">${typeIconText(type)}</span>
-      <span><span class="type-button-kicker">Object type</span>${escapeHtml(type)}</span>
+      <span><span class="type-button-kicker">${hasSelectedType && type === selectedType ? "Selected subtype" : "Tap subtype"}</span>${escapeHtml(type)}</span>
     </button>
   `).join("");
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 status design v75</title>
+  <title>BloomBuffer - Phase 5 action log v77</title>
   <style>
 :root {
   color-scheme: light;
@@ -1558,6 +1558,11 @@ button.active {
   background: #fff4dc;
 }
 
+.report-done {
+  border-color: #9fc58f;
+  background: #ddf1da;
+}
+
 .report-temporary {
   border-left-color: #557255;
   background: #f5faf1;
@@ -1650,6 +1655,7 @@ button.active {
 .report-row-missing { border-left-color: var(--info); background: #e7f2f7; }
 .report-row-review { border-left-color: var(--review); background: #fff1d2; }
 .report-row-temporary { border-left-color: #6b7568; background: #f3f4ef; }
+.report-row-done { border-left-color: var(--good); background: #ddf1da; }
 .report-row-ok { border-left-color: var(--good); background: #e8f3e6; }
 .report-row-neutral { border-left-color: #7d8277; background: #f7f6f0; }
 
@@ -2000,7 +2006,19 @@ button.card-danger-action {
   background: var(--danger-bg);
 }
 
-  </style>
+  
+
+@media print {
+  body { background: #fff; color: #111; }
+  .topbar, .bottom-dock, nav, .report-filters, .report-actions, .feedback-details summary, .drawer, .debug-panel { display: none !important; }
+  main, .screen, #screen-report { display: block !important; padding: 0 !important; }
+  .panel, .report-panel { box-shadow: none !important; border: 1px solid #bbb; page-break-inside: avoid; }
+  .report-row { break-inside: avoid; box-shadow: none; border: 1px solid #bbb; }
+  .report-table-head { display: grid; }
+  .area-checklist-group { break-inside: avoid; }
+  details.report-detail-toggle { display: none; }
+}
+</style>
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -2008,7 +2026,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p class="tagline">Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 status design v75</p>
+        <p class="build-label">Build: Phase 5 action log v77</p>
       </div>
       <span class="phase-badge">Local yard log</span>
     </header>
@@ -2307,10 +2325,12 @@ button.card-danger-action {
       <section id="screen-report" class="screen" aria-labelledby="report-title">
         <div class="panel report-panel" id="yard-report-panel">
           <h2 id="report-title">Yard report</h2>
-          <p>Scan, filter, sort, then work the checklist. Rule-of-thumb planning help only.</p>
+          <p>Three report views: scan on screen, export a table, or print a work list.</p>
           <div id="report-summary-grid" class="report-summary-grid"></div>
           <div class="actions report-actions">
-            <button class="secondary" type="button" id="export-report">Export report TXT</button>
+            <button class="primary" type="button" id="export-report-csv">Export report CSV</button>
+            <button class="secondary" type="button" id="print-report">Print report</button>
+            <button class="secondary" type="button" id="export-report">Export checklist TXT</button>
           </div>
           <div class="report-filters filter-grid">
             <label>Search<input id="report-search" type="search" placeholder="Object, area, fix"></label>
@@ -2318,6 +2338,7 @@ button.card-danger-action {
             <label>Status<select id="report-status-filter">
               <option value="all">All statuses</option>
               <option value="change">Move/fix</option>
+                <option value="done">Logged done</option>
               <option value="missing">Needs info</option>
               <option value="review">Review</option>
               <option value="temporary">Temporary</option>
@@ -2477,6 +2498,7 @@ button.card-danger-action {
   </div>
 
   <script>
+
 const UNASSIGNED_AREA_ID = "unassigned";
 const UNASSIGNED_AREA_NAME = "Unassigned / Needs area";
 
@@ -5263,6 +5285,8 @@ function bindEvents() {
   document.querySelector("#load-small-sample").addEventListener("click", () => loadSampleTable("small", "small test sample"));
   document.querySelector("#load-yard-sample").addEventListener("click", () => loadSampleTable("requestedYard", "requested yard sample"));
   document.querySelector("#export-report").addEventListener("click", exportYardReport);
+  document.querySelector("#export-report-csv").addEventListener("click", exportYardReportCsv);
+  document.querySelector("#print-report").addEventListener("click", printYardReport);
   document.querySelector("#report-search").addEventListener("input", (event) => {
     state.reportSearch = event.target.value;
     renderYardReport();
@@ -5570,6 +5594,22 @@ async function removeArea(id) {
   await refreshState();
 }
 
+async function markObjectDone(id) {
+  const object = state.objects.find((item) => item.id === id);
+  if (!object) return;
+  const note = prompt("What did you do? Optional. Example: moved pot 6 ft away, trimmed vine, removed mulch.") || "";
+  const stamp = new Date();
+  const stampText = stamp.toLocaleDateString();
+  const doneLine = `✅ Done ${stampText}${note.trim() ? ` — ${note.trim()}` : ""}`;
+  object.status = "Fixed";
+  object.notes = [safeText(object.notes), doneLine].filter(Boolean).join("\n");
+  object.updatedAt = stamp.toISOString();
+  await saveState();
+  state.backupMessage = `Done note saved for ${safeText(object.name) || "object"}.`;
+  logDebug("object_done_note_saved", { objectId: id, hasNote: Boolean(note.trim()) });
+  render();
+}
+
 async function removeObject(id) {
   if (!confirm("Delete this object?")) return;
   await deleteRecord(state.db, stores.objects, id);
@@ -5841,7 +5881,8 @@ function renderObjects() {
       ${guidedCardSummaryHtml(object)}
       ${feedbackPreviewCardHtml(object)}
       <div class="actions object-actions">
-        <button class="risk-clue-action card-clue-action" data-edit-object="${object.id}"><span aria-hidden="true">🕵️</span><span>Info</span></button>
+        <button class="primary card-done-action" data-mark-done="${object.id}"><span aria-hidden="true">✅</span><span>Done note</span></button>
+        <button class="risk-clue-action card-clue-action" data-edit-object="${object.id}"><span aria-hidden="true">→</span><span>Info</span></button>
         <button class="secondary card-secondary-action" data-edit-object="${object.id}">Edit / move</button>
         <button class="danger card-danger-action" data-delete-object="${object.id}">Delete</button>
       </div>
@@ -5849,6 +5890,7 @@ function renderObjects() {
   `).join("");
   list.querySelectorAll("[data-edit-object]").forEach((button) => button.addEventListener("click", () => editObject(button.dataset.editObject)));
   list.querySelectorAll("[data-delete-object]").forEach((button) => button.addEventListener("click", () => removeObject(button.dataset.deleteObject)));
+  list.querySelectorAll("[data-mark-done]").forEach((button) => button.addEventListener("click", () => markObjectDone(button.dataset.markDone)));
 }
 
 function renderObjectResultSummary(visibleCount) {
@@ -6387,6 +6429,7 @@ function statusIcon(groupId) {
     missing: "?",
     review: "👀",
     temporary: "⏱",
+    done: "✅",
     ok: "✓",
     neutral: "○",
   }[groupId] || "○";
@@ -6404,7 +6447,10 @@ function reportTableRows(summary) {
         type: safeText(item.object.type) || "Object",
         area: areaName(item.object.areaId),
         areaId: item.object.areaId || UNASSIGNED_AREA_ID,
+        distance: formatDistance(item.object.wallFt ?? null, item.object.wallIn ?? null),
         next: safeText(item.action) || shortFeedbackLabel(item.feedback.label),
+        reason: safeText(item.feedback.summary),
+        source: safeText(item.feedback.sourceNote),
       });
     }
   }
@@ -6430,7 +6476,7 @@ function filteredReportRows(rows) {
 }
 
 function reportGroupRank(groupId) {
-  return { change: 1, missing: 2, review: 3, temporary: 4, ok: 5, neutral: 6 }[groupId] || 9;
+  return { change: 1, missing: 2, review: 3, temporary: 4, done: 5, ok: 6, neutral: 7 }[groupId] || 9;
 }
 
 function priorityActionListHtml(summary) {
@@ -6462,7 +6508,7 @@ function priorityActionListHtml(summary) {
 }
 
 function priorityActionItems(summary) {
-  return state.objects.flatMap((object) => {
+  return state.objects.filter((object) => !["Fixed", "Removed"].includes(object.status)).flatMap((object) => {
     const area = areaName(object.areaId);
     const objectName = safeText(object.name) || "Unnamed object";
     return previewObjectActionItems(object).map((item) => priorityActionItem({
@@ -6535,6 +6581,13 @@ function areaChecklistHtml(summary) {
 
 const REPORT_GROUPS = [
   {
+    id: "done",
+    tone: "done",
+    shortLabel: "Logged done",
+    label: "Done / logged",
+    description: "Items you marked fixed, removed, or handled. This is your progress log, not City sign-off.",
+  },
+  {
     id: "change",
     tone: "change",
     shortLabel: "Move/fix",
@@ -6582,7 +6635,7 @@ function reportSummary() {
   const groups = Object.fromEntries(REPORT_GROUPS.map((group) => [group.id, []]));
   for (const object of state.objects) {
     const feedback = previewObjectFeedback(object);
-    const groupId = reportGroupId(feedback);
+    const groupId = reportGroupId(feedback, object);
     groups[groupId].push({
       object,
       feedback,
@@ -6606,7 +6659,8 @@ function areaChecklistItems(summary) {
   )).sort((a, b) => safeText(a.area).localeCompare(safeText(b.area)) || safeText(a.name).localeCompare(safeText(b.name)));
 }
 
-function reportGroupId(feedback) {
+function reportGroupId(feedback, object = {}) {
+  if (["Fixed", "Removed"].includes(object.status)) return "done";
   if (feedback.tone === "change") return "change";
   if (feedback.tone === "missing") return "missing";
   if (feedback.tone === "review") return "review";
@@ -6631,6 +6685,77 @@ function exportYardReport() {
   state.backupMessage = `Report export started: ${filename}.`;
   logDebug("yard_report_export_started", { filename, objectCount: state.objects.length });
   renderBackupStatus();
+}
+
+
+function exportYardReportCsv() {
+  const exportedAt = new Date();
+  const csv = yardReportCsv(exportedAt);
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const filename = `bloombuffer-action-report-${exportedAt.toISOString().slice(0, 10)}.csv`;
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+  state.lastBackupFileName = filename;
+  state.lastBackupAt = exportedAt.toISOString();
+  state.backupMessage = `Report table export started: ${filename}.`;
+  logDebug("yard_report_csv_export_started", { filename, objectCount: state.objects.length });
+  renderBackupStatus();
+}
+
+function printYardReport() {
+  setRoute("report");
+  logDebug("yard_report_print_started", { objectCount: state.objects.length });
+  window.print();
+}
+
+function yardReportCsv(exportedAt = new Date()) {
+  const summary = reportSummary();
+  const rows = reportTableRows(summary);
+  const headers = [
+    "priority",
+    "status",
+    "icon",
+    "color",
+    "area",
+    "object",
+    "type",
+    "distance",
+    "action",
+    "reason",
+    "source",
+    "exported_at",
+  ];
+  const body = rows.map((row) => [
+    row.rank,
+    row.status,
+    statusIcon(row.groupId),
+    statusColorLabel(row.groupId),
+    row.area,
+    row.name,
+    row.type,
+    row.distance,
+    row.next,
+    row.reason,
+    row.source,
+    exportedAt.toISOString(),
+  ]);
+  return [headers, ...body].map((line) => line.map(csvCell).join(",")).join("\n");
+}
+
+function statusColorLabel(groupId) {
+  return {
+    change: "ember",
+    missing: "blue",
+    review: "gold",
+    temporary: "gray",
+    done: "green",
+    ok: "green",
+    neutral: "sand",
+  }[groupId] || "sand";
 }
 
 function yardReportText(exportedAt = new Date()) {
@@ -7185,7 +7310,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 status design v75",
+    build: "Phase 5 action log v77",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",
@@ -7278,6 +7403,7 @@ function openDebugLog() {
 
 init();
 
+  
   </script>
 </body>
 </html>

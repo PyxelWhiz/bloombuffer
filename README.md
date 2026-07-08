@@ -6,7 +6,7 @@ Use it to list yard areas, plants, trees, fences, gates, bins, furniture, mulch,
 
 Current build:
 
-`Build: Phase 5 status design v75`
+`Build: Phase 5 action log v77`
 
 ## What It Does
 
@@ -108,7 +108,7 @@ If someone forks or copies the project, they should publish their own GitHub Pag
 ## Quick Test
 
 1. Open the app.
-2. Confirm the top says `Build: Phase 5 status design v75`.
+2. Confirm the top says `Build: Phase 5 action log v77`.
 3. Tap `Areas`, `Objects`, and `Rules` to make sure buttons respond.
 4. Use the bottom dock to try JSON export/import or CSV export/import.
 5. Add one test object.
@@ -117,9 +117,14 @@ If someone forks or copies the project, they should publish their own GitHub Pag
 8. Open `Report` and confirm the colored table, filters, sort controls, and area checklist update from saved objects.
 9. Use `Reset testing data` only when you want to clear this browser and start over.
 
-If buttons do not respond, you are probably opening an older broken build. Use v75 or newer.
+If buttons do not respond, you are probably opening an older broken build. Use v77 or newer.
 
 
-## v75 note
+## v77 note
 
 Status wording is action-first: `Move / fix` means the saved info already points to a practical next step. `Need info` is reserved for items where one missing answer blocks a clearer result. The report table uses stronger colors and icons so it is easier to scan on a phone.
+
+
+## Reports
+
+The Report tab has three report formats: screen table, CSV table export, and print view. TXT is only a simple checklist copy.

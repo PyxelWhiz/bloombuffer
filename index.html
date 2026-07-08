@@ -3,29 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 storage hardening v72</title>
+  <title>BloomBuffer - Phase 5 status design v75</title>
   <style>
 :root {
   color-scheme: light;
-  --bg: #f5f7f2;
-  --surface: #ffffff;
-  --surface-soft: #eef5ec;
-  --text: #172018;
-  --muted: #5d6e5b;
-  --line: #d8e0d3;
-  --green: #2f7d4d;
-  --green-dark: #245f3c;
-  --warn: #8a5b00;
-  --warn-bg: #fff2c7;
-  --risk: #6f5a1f;
-  --risk-bg: #fff3cf;
-  --clue-blue: #315d82;
-  --clue-sage: #557255;
-  --danger: #a63c31;
-  --danger-bg: #fde5df;
-  --blue-bg: #edf6fb;
-  --blue: #315d82;
-  --shadow: 0 12px 28px rgba(23, 32, 24, 0.09);
+  --bg: #f3f1ea;
+  --surface: #fffdf8;
+  --surface-soft: #e8eee2;
+  --text: #1b2119;
+  --muted: #596456;
+  --line: #d8d0c0;
+  --green: #214f35;
+  --green-dark: #173925;
+  --ember: #a94722;
+  --amber: #c78826;
+  --good: #2f6d45;
+  --info: #2d5f7d;
+  --review: #936116;
+  --danger: #a94722;
+  --danger-bg: #ffe7dc;
+  --blue-bg: #e7f2f7;
+  --blue: #2d5f7d;
+  --shadow: 0 7px 18px rgba(35, 30, 20, 0.10);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -50,7 +49,7 @@ textarea {
   max-width: 560px;
   min-height: 100svh;
   margin: 0 auto;
-  background: linear-gradient(180deg, #fbfdf9 0%, #edf4ea 100%);
+  background: radial-gradient(circle at top left, rgba(169, 71, 34, 0.13), transparent 34%), linear-gradient(180deg, #fffaf0 0%, #ece8db 100%);
 }
 
 .topbar {
@@ -62,14 +61,16 @@ textarea {
   justify-content: space-between;
   gap: 14px;
   padding: 14px 14px 10px;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 253, 248, 0.97);
   border-bottom: 1px solid var(--line);
 }
 
 .topbar h1 {
   margin: 0;
-  font-size: 26px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
   line-height: 1;
+  letter-spacing: -0.03em;
 }
 
 .topbar p {
@@ -110,7 +111,7 @@ textarea {
   top: 66px;
   z-index: 4;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 6px;
   padding: 10px 12px;
   background: rgba(245, 247, 242, 0.96);
@@ -149,7 +150,7 @@ main {
   margin-bottom: 12px;
   padding: 15px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 9px;
   background: var(--surface);
   box-shadow: var(--shadow);
 }
@@ -160,7 +161,9 @@ main {
 
 .panel h2 {
   margin: 0 0 8px;
-  font-size: 20px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 21px;
+  letter-spacing: -0.02em;
 }
 
 .panel p {
@@ -170,7 +173,24 @@ main {
 }
 
 .hero h2 {
-  font-size: 24px;
+  font-size: 25px;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-color: #c9b89e;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -24px;
+  top: -22px;
+  width: 92px;
+  height: 92px;
+  border: 2px solid rgba(169, 71, 34, 0.22);
+  border-radius: 34% 66% 44% 56%;
 }
 
 .metric-grid {
@@ -1275,25 +1295,29 @@ button.active {
 }
 
 .feedback-ok {
-  border-left-color: #2f7d4d;
-  background: #e7f4e6;
+  border-left-color: var(--good);
+  background: #e8f3e6;
 }
 
 .feedback-change {
-  border-left-color: #d4a937;
-  background: #fff2c7;
+  border-left-color: var(--ember);
+  background: #ffe7dc;
 }
 
-.feedback-missing,
+.feedback-missing {
+  border-left-color: var(--info);
+  background: #e7f2f7;
+}
+
 .feedback-review {
-  border-left-color: #d4a937;
-  background: #fff2c7;
+  border-left-color: var(--review);
+  background: #fff1d2;
 }
 
 .feedback-temporary,
 .feedback-neutral {
-  border-left-color: #315d82;
-  background: #edf6fb;
+  border-left-color: #6b7568;
+  background: #f3f4ef;
 }
 
 .report-summary-grid {
@@ -1329,6 +1353,76 @@ button.active {
   display: grid;
   gap: 10px;
   margin-top: 12px;
+}
+
+.priority-action-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #c9b89e;
+  border-radius: 9px;
+  background: #fffaf0;
+}
+
+.priority-action-panel h3 {
+  margin: 0;
+}
+
+.priority-action-panel > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.priority-action-panel ol {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.priority-item {
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid #315d82;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.priority-item strong,
+.priority-item span,
+.priority-item small {
+  display: block;
+}
+
+.priority-item span {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.priority-item small {
+  margin-top: 4px;
+  color: #223023;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.priority-change {
+  border-left-color: var(--ember);
+  background: #ffe7dc;
+}
+
+.priority-review {
+  border-left-color: var(--review);
+  background: #fff1d2;
+}
+
+.priority-missing {
+  border-left-color: var(--info);
+  background: #e7f2f7;
 }
 
 .area-checklist-panel {
@@ -1450,18 +1544,18 @@ button.active {
 }
 
 .report-change {
-  border-left-color: #a63c31;
-  background: #fff7f4;
+  border-left-color: var(--ember);
+  background: #fff0e9;
 }
 
 .report-missing {
-  border-left-color: #315d82;
-  background: #f5fbff;
+  border-left-color: var(--info);
+  background: #eef8fc;
 }
 
 .report-review {
-  border-left-color: #d4a937;
-  background: #fff8e5;
+  border-left-color: var(--review);
+  background: #fff4dc;
 }
 
 .report-temporary {
@@ -1477,6 +1571,110 @@ button.active {
 .report-neutral {
   border-left-color: #8a9588;
   background: #fafbf9;
+}
+
+
+.report-actions {
+  margin-bottom: 10px;
+}
+
+.report-filters {
+  margin: 10px 0;
+}
+
+.report-action-table {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.report-table-head,
+.report-row {
+  display: grid;
+  grid-template-columns: 78px 1.3fr 0.9fr 1.6fr;
+  gap: 7px;
+  align-items: stretch;
+}
+
+.report-table-head {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.report-row {
+  border: 1px solid var(--line);
+  border-left: 6px solid #315d82;
+  border-radius: 10px;
+  padding: 8px;
+  background: #fff;
+}
+
+.report-row > div {
+  min-width: 0;
+}
+
+.report-status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 6px 7px;
+  background: rgba(255,255,255,0.68);
+  color: #1f3123;
+  font-size: 11px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.report-object-cell strong,
+.report-object-cell small {
+  display: block;
+}
+
+.report-object-cell small,
+.report-area-cell,
+.report-next-cell {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.report-next-cell {
+  color: #172018;
+}
+
+.report-row-change { border-left-color: var(--ember); background: #ffe7dc; }
+.report-row-missing { border-left-color: var(--info); background: #e7f2f7; }
+.report-row-review { border-left-color: var(--review); background: #fff1d2; }
+.report-row-temporary { border-left-color: #6b7568; background: #f3f4ef; }
+.report-row-ok { border-left-color: var(--good); background: #e8f3e6; }
+.report-row-neutral { border-left-color: #7d8277; background: #f7f6f0; }
+
+.report-detail-toggle {
+  margin-top: 12px;
+}
+
+.report-detail-toggle summary {
+  cursor: pointer;
+  color: var(--green-dark);
+  font-weight: 900;
+}
+
+@media (max-width: 460px) {
+  .report-table-head {
+    display: none;
+  }
+  .report-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .report-status-chip {
+    justify-content: flex-start;
+    width: fit-content;
+  }
 }
 
 .object-actions {
@@ -1810,7 +2008,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p class="tagline">Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 storage hardening v72</p>
+        <p class="build-label">Build: Phase 5 status design v75</p>
       </div>
       <span class="phase-badge">Local yard log</span>
     </header>
@@ -1819,7 +2017,8 @@ button.card-danger-action {
       <button class="tab active" data-route="home">Home</button>
       <button class="tab" data-route="areas">Areas</button>
       <button class="tab" data-route="objects">Objects</button>
-      <button class="tab" data-route="rules">Rules</button>
+      <button class="tab" data-route="report">Report</button>
+      <button class="tab" data-route="rules">Tools</button>
     </nav>
 
     <main>
@@ -2050,6 +2249,7 @@ button.card-danger-action {
             <label for="wall-cm-input">Or enter distance in cm</label>
             <input id="wall-cm-input" type="number" min="0" step="1" placeholder="15">
             <p id="wall-cm" class="field-note">Metric: not entered</p>
+            <p class="field-note">No tape measure? A normal step is about 2.5 ft; many patio pavers are about 12 in.</p>
 
             <label for="object-status">Inventory status - your progress, not a rule result</label>
             <select id="object-status"></select>
@@ -2104,33 +2304,53 @@ button.card-danger-action {
         </div>
       </section>
 
-      <section id="screen-rules" class="screen" aria-labelledby="rules-title">
-        <div class="panel">
-          <h2 id="rules-title">Rule status</h2>
-          <p>Inventory, saved info, rule-of-thumb feedback, CSV files, and yard report.</p>
-        </div>
+      <section id="screen-report" class="screen" aria-labelledby="report-title">
         <div class="panel report-panel" id="yard-report-panel">
-          <h2>Yard report</h2>
-          <p>Grouped next steps and an area checklist from saved objects. Not City sign-off.</p>
+          <h2 id="report-title">Yard report</h2>
+          <p>Scan, filter, sort, then work the checklist. Rule-of-thumb planning help only.</p>
           <div id="report-summary-grid" class="report-summary-grid"></div>
-          <div class="actions">
+          <div class="actions report-actions">
             <button class="secondary" type="button" id="export-report">Export report TXT</button>
           </div>
+          <div class="report-filters filter-grid">
+            <label>Search<input id="report-search" type="search" placeholder="Object, area, fix"></label>
+            <label>Area<select id="report-area-filter"></select></label>
+            <label>Status<select id="report-status-filter">
+              <option value="all">All statuses</option>
+              <option value="change">Move/fix</option>
+              <option value="missing">Needs info</option>
+              <option value="review">Review</option>
+              <option value="temporary">Temporary</option>
+              <option value="ok">Looks okay</option>
+              <option value="neutral">Outside/not checked</option>
+            </select></label>
+            <label>Sort<select id="report-sort">
+              <option value="severity">Worst first</option>
+              <option value="area">Area</option>
+              <option value="name">Name</option>
+              <option value="status">Status</option>
+            </select></label>
+          </div>
+          <p id="report-table-summary" class="list-summary"></p>
+          <div id="report-action-table" class="report-action-table"></div>
           <div id="area-checklist" class="area-checklist"></div>
-          <div id="report-groups" class="report-groups"></div>
+          <details class="report-detail-toggle">
+            <summary>Grouped details</summary>
+            <div id="priority-action-list" class="priority-action-list"></div>
+            <div id="report-groups" class="report-groups"></div>
+          </details>
+        </div>
+      </section>
+
+      <section id="screen-rules" class="screen" aria-labelledby="rules-title">
+        <div class="panel">
+          <h2 id="rules-title">Tools</h2>
+          <p>CSV, samples, reset, debug, and project notes.</p>
         </div>
         <div class="panel compact-panel">
           <h2>About BloomBuffer</h2>
-          <p>BloomBuffer is a local-first yard inventory and rule-of-thumb planning helper. Your saved yard data stays in this browser unless you export it.</p>
-          <p><a href="https://github.com/PyxelWhiz/bloombuffer" target="_blank" rel="noreferrer">View the project on GitHub</a></p>
-        </div>
-        <div class="panel">
-          <h2>What comes next</h2>
-          <ol class="step-list">
-            <li>Object info answers drive the rule-of-thumb preview.</li>
-            <li>Status shows what needs action, more info, or review.</li>
-            <li>Future priority buckets and reports will help plan what to do first.</li>
-          </ol>
+          <p>Local-first yard inventory with rule-of-thumb planning help. Your saved yard data stays in this browser unless you export it.</p>
+          <p><a href="https://github.com/PyxelWhiz/bloombuffer" target="_blank" rel="noreferrer">GitHub project</a></p>
         </div>
         <div class="panel table-tools-panel" id="table-tools-panel">
           <h2>CSV files</h2>
@@ -4461,11 +4681,39 @@ function previewObjectsFeedback(objects = []) {
   };
 }
 
+function previewObjectActionItems(object) {
+  const internal = evaluateObjectInternal(object);
+  const formula = internal.formula || {};
+  const changes = Array.isArray(formula.suggestedChanges) ? formula.suggestedChanges : [];
+  const failures = Array.isArray(formula.doesNotWork) ? formula.doesNotWork : [];
+  const reviews = Array.isArray(formula.review) ? formula.review : [];
+  const unknown = Array.isArray(formula.unknown) ? formula.unknown : [];
+  const status = formula.label || "Not checked yet";
+
+  return [
+    ...failures.map((reason, index) => actionItem({ kind: "change", rank: 1, status, issue: reason, fix: changes[index] })),
+    ...reviews.map((reason, index) => actionItem({ kind: "review", rank: 2, status, issue: reason, fix: changes[failures.length + unknown.length + index] })),
+    ...unknown.map((reason, index) => actionItem({ kind: "missing", rank: 3, status, issue: reason, fix: changes[failures.length + index] })),
+  ].filter(Boolean);
+}
+
 function firstNonEmptyList(lists) {
   for (const list of lists) {
     if (Array.isArray(list) && list.length) return list;
   }
   return [];
+}
+
+function actionItem({ kind, rank, status, issue, fix }) {
+  const safeIssue = String(issue || "");
+  if (!safeIssue) return null;
+  return {
+    kind,
+    rank,
+    status,
+    issue: safeIssue,
+    fix: String(fix || safeIssue),
+  };
 }
 
 
@@ -4734,6 +4982,10 @@ const state = {
   filterStatus: "all",
   searchQuery: "",
   sortBy: "updatedAtDesc",
+  reportSearch: "",
+  reportAreaId: "all",
+  reportStatus: "all",
+  reportSort: "severity",
   selectedTypeGroup: OBJECT_TYPE_GROUPS[0].label,
   isTypePickerOpen: false,
   backupMessage: "",
@@ -5011,6 +5263,22 @@ function bindEvents() {
   document.querySelector("#load-small-sample").addEventListener("click", () => loadSampleTable("small", "small test sample"));
   document.querySelector("#load-yard-sample").addEventListener("click", () => loadSampleTable("requestedYard", "requested yard sample"));
   document.querySelector("#export-report").addEventListener("click", exportYardReport);
+  document.querySelector("#report-search").addEventListener("input", (event) => {
+    state.reportSearch = event.target.value;
+    renderYardReport();
+  });
+  document.querySelector("#report-area-filter").addEventListener("change", (event) => {
+    state.reportAreaId = event.target.value;
+    renderYardReport();
+  });
+  document.querySelector("#report-status-filter").addEventListener("change", (event) => {
+    state.reportStatus = event.target.value;
+    renderYardReport();
+  });
+  document.querySelector("#report-sort").addEventListener("change", (event) => {
+    state.reportSort = event.target.value;
+    renderYardReport();
+  });
   document.querySelector("#export-debug-log").addEventListener("click", exportDebugLog);
   document.querySelector("#copy-debug-log").addEventListener("click", copyDebugLog);
   document.querySelector("#clear-debug-log").addEventListener("click", clearDebugLog);
@@ -5424,6 +5692,19 @@ function renderAreaOptions() {
     ...state.areas.map((area) => `<option value="${area.id}">${escapeHtml(area.name)}</option>`),
   ].join("");
   objectFilter.value = state.filterAreaId;
+
+  if (!knownAreaIds.has(state.reportAreaId) && state.reportAreaId !== "all") {
+    state.reportAreaId = "all";
+  }
+  const reportAreaFilter = document.querySelector("#report-area-filter");
+  if (reportAreaFilter) {
+    reportAreaFilter.innerHTML = [
+      `<option value="all">All areas</option>`,
+      `<option value="${UNASSIGNED_AREA_ID}">${UNASSIGNED_AREA_NAME}</option>`,
+      ...state.areas.map((area) => `<option value="${area.id}">${escapeHtml(area.name)}</option>`),
+    ].join("");
+    reportAreaFilter.value = state.reportAreaId;
+  }
 }
 
 function renderQuickAdd() {
@@ -6025,7 +6306,7 @@ function feedbackPreviewCardHtml(object) {
 function shortFeedbackLabel(label) {
   const labels = {
     "Mapped checks look okay": "Looks okay",
-    "Mapped checks need changes": "Change / check",
+    "Mapped checks need changes": "Move / fix",
     "Need more information": "Needs info",
     "Needs review": "Review",
     "Temporary only": "Temporary only",
@@ -6044,7 +6325,9 @@ function renderYardReport() {
     </div>
   `).join("");
 
+  document.querySelector("#priority-action-list").innerHTML = priorityActionListHtml(summary);
   document.querySelector("#area-checklist").innerHTML = areaChecklistHtml(summary);
+  renderReportActionTable(summary);
 
   document.querySelector("#report-groups").innerHTML = REPORT_GROUPS.map((group) => {
     const items = summary.groups[group.id] || [];
@@ -6067,6 +6350,148 @@ function renderYardReport() {
       </section>
     `;
   }).join("");
+}
+
+function renderReportActionTable(summary) {
+  const allRows = reportTableRows(summary);
+  const rows = filteredReportRows(allRows);
+  const table = document.querySelector("#report-action-table");
+  document.querySelector("#report-table-summary").textContent = rows.length
+    ? `${rows.length} item${rows.length === 1 ? "" : "s"} shown. Use filters to make a smaller work list.`
+    : "No report items match these filters.";
+  if (!rows.length) {
+    table.innerHTML = `<p class="field-note">Try clearing the search or status filter.</p>`;
+    return;
+  }
+  table.innerHTML = `
+    <div class="report-table-head" aria-hidden="true">
+      <span>Status</span><span>Object</span><span>Area</span><span>Next</span>
+    </div>
+    ${rows.map((row) => `
+      <article class="report-row report-row-${escapeHtml(row.groupId)}">
+        <div class="report-status-chip">${escapeHtml(statusIcon(row.groupId))} ${escapeHtml(row.status)}</div>
+        <div class="report-object-cell">
+          <strong>${escapeHtml(row.name)}</strong>
+          <small>${escapeHtml(row.type)}</small>
+        </div>
+        <div class="report-area-cell">${escapeHtml(row.area)}</div>
+        <div class="report-next-cell">${escapeHtml(row.next)}</div>
+      </article>
+    `).join("")}
+  `;
+}
+
+function statusIcon(groupId) {
+  return {
+    change: "🔥",
+    missing: "?",
+    review: "👀",
+    temporary: "⏱",
+    ok: "✓",
+    neutral: "○",
+  }[groupId] || "○";
+}
+
+function reportTableRows(summary) {
+  const rows = [];
+  for (const group of REPORT_GROUPS) {
+    for (const item of summary.groups[group.id] || []) {
+      rows.push({
+        groupId: group.id,
+        rank: reportGroupRank(group.id),
+        status: group.shortLabel,
+        name: safeText(item.object.name) || "Unnamed object",
+        type: safeText(item.object.type) || "Object",
+        area: areaName(item.object.areaId),
+        areaId: item.object.areaId || UNASSIGNED_AREA_ID,
+        next: safeText(item.action) || shortFeedbackLabel(item.feedback.label),
+      });
+    }
+  }
+  return rows;
+}
+
+function filteredReportRows(rows) {
+  const query = safeText(state.reportSearch).toLowerCase();
+  return rows.filter((row) => {
+    if (state.reportAreaId !== "all" && row.areaId !== state.reportAreaId) return false;
+    if (state.reportStatus !== "all" && row.groupId !== state.reportStatus) return false;
+    if (query) {
+      const haystack = `${row.name} ${row.type} ${row.area} ${row.status} ${row.next}`.toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+    return true;
+  }).sort((a, b) => {
+    if (state.reportSort === "area") return safeText(a.area).localeCompare(safeText(b.area)) || a.rank - b.rank || safeText(a.name).localeCompare(safeText(b.name));
+    if (state.reportSort === "name") return safeText(a.name).localeCompare(safeText(b.name)) || a.rank - b.rank;
+    if (state.reportSort === "status") return safeText(a.status).localeCompare(safeText(b.status)) || safeText(a.area).localeCompare(safeText(b.area));
+    return a.rank - b.rank || safeText(a.area).localeCompare(safeText(b.area)) || safeText(a.name).localeCompare(safeText(b.name));
+  });
+}
+
+function reportGroupRank(groupId) {
+  return { change: 1, missing: 2, review: 3, temporary: 4, ok: 5, neutral: 6 }[groupId] || 9;
+}
+
+function priorityActionListHtml(summary) {
+  const items = priorityActionItems(summary);
+  if (!items.length) {
+    return `
+      <section class="priority-action-panel">
+        <h3>Do first</h3>
+        <p class="field-note">No change/review items yet. Export the report for the full status summary.</p>
+      </section>
+    `;
+  }
+  return `
+    <section class="priority-action-panel">
+      <h3>Do first</h3>
+      <p>Start here. Biggest yard actions first.</p>
+      <ol>
+        ${items.slice(0, 12).map((item) => `
+          <li class="priority-item priority-${escapeHtml(item.kind)}">
+            <strong>${escapeHtml(item.objectName)}</strong>
+            <span>${escapeHtml(item.area)} · ${escapeHtml(statusIcon(item.kind))} ${escapeHtml(item.status)}</span>
+            <small>${escapeHtml(item.fix)}</small>
+          </li>
+        `).join("")}
+      </ol>
+      ${items.length > 12 ? `<p class="field-note">${items.length - 12} more in the exported report.</p>` : ""}
+    </section>
+  `;
+}
+
+function priorityActionItems(summary) {
+  return state.objects.flatMap((object) => {
+    const area = areaName(object.areaId);
+    const objectName = safeText(object.name) || "Unnamed object";
+    return previewObjectActionItems(object).map((item) => priorityActionItem({
+      ...item,
+      objectName,
+      area,
+      status: shortFeedbackLabel(item.status),
+    }));
+  }).filter(Boolean).sort((a, b) => (
+    a.rank - b.rank
+    || safeText(a.area).localeCompare(safeText(b.area))
+    || safeText(a.objectName).localeCompare(safeText(b.objectName))
+    || safeText(a.issue).localeCompare(safeText(b.issue))
+  ));
+}
+
+function priorityActionItem({ kind, rank, objectName, area, status, issue, fix }) {
+  const safeIssue = safeText(issue);
+  if (!safeIssue) return null;
+  const safeFix = safeText(fix) || safeIssue;
+  return {
+    kind,
+    rank,
+    objectName,
+    area,
+    status,
+    issue: safeIssue,
+    fix: safeFix,
+  };
 }
 
 function areaChecklistHtml(summary) {
@@ -6112,9 +6537,9 @@ const REPORT_GROUPS = [
   {
     id: "change",
     tone: "change",
-    shortLabel: "Change/check",
-    label: "Change or check next",
-    description: "Saved info suggests something to move, change, or confirm.",
+    shortLabel: "Move/fix",
+    label: "Move or fix next",
+    description: "Saved info already points to a practical next step.",
   },
   {
     id: "missing",
@@ -6210,6 +6635,7 @@ function exportYardReport() {
 
 function yardReportText(exportedAt = new Date()) {
   const summary = reportSummary();
+  const priorityItems = priorityActionItems(summary);
   const checklistItems = areaChecklistItems(summary);
   const lines = [
     "BloomBuffer yard report",
@@ -6224,6 +6650,16 @@ function yardReportText(exportedAt = new Date()) {
   ];
   for (const group of REPORT_GROUPS) {
     lines.push(`- ${group.label}: ${summary.counts[group.id] || 0}`);
+  }
+  lines.push("", "Do first:");
+  if (!priorityItems.length) {
+    lines.push("- No change/review items yet.");
+  } else {
+    for (const item of priorityItems) {
+      lines.push(`- ${item.objectName} (${item.area})`);
+      lines.push(`  Status: ${item.status}`);
+      lines.push(`  Fix: ${item.fix}`);
+    }
   }
   lines.push("", "Area checklist:");
   if (!checklistItems.length) {
@@ -6749,7 +7185,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 storage hardening v72",
+    build: "Phase 5 status design v75",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

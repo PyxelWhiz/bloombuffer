@@ -6,14 +6,14 @@ Use it to list yard areas, plants, trees, fences, gates, bins, furniture, mulch,
 
 Current build:
 
-`Build: Phase 5 storage hardening v72`
+`Build: Phase 5 status design v75`
 
 ## What It Does
 
 - Saves your areas and objects in your own browser.
 - Lets you add measurements and object info.
 - Shows rule-of-thumb planning feedback.
-- Shows a grouped yard report and area checklist for testing and planning.
+- Shows a Do first list, grouped yard report, and area checklist for testing and planning.
 - Keeps object cards compact, with notes and longer feedback details collapsed.
 - Makes the next-step button clearer and hides info questions until an object type is chosen.
 - Leads with the current status when the app already has a useful rule-of-thumb conclusion.
@@ -37,7 +37,7 @@ If you choose a CSV file with `Import JSON`, the app will reject it and keep you
 
 ## Yard Report
 
-`Rules` includes `Yard report`.
+`Report` shows the visual yard report. `Tools` has CSV, samples, reset, debug, and About.
 
 The report groups saved objects into practical planning buckets:
 
@@ -48,7 +48,7 @@ The report groups saved objects into practical planning buckets:
 - Mapped checks look okay
 - Outside scope or not checked
 
-You can also export the report as a `.txt` file. It includes an area checklist plus a short `Status` and `Next` line for each object. The report is rule-of-thumb planning help, not City sign-off.
+You can also export the report as a `.txt` file. It includes a worst-first Do first list, an area checklist, and a short `Status` and `Next` line for each object. The report is rule-of-thumb planning help, not City sign-off.
 
 ## Project Link
 
@@ -108,13 +108,18 @@ If someone forks or copies the project, they should publish their own GitHub Pag
 ## Quick Test
 
 1. Open the app.
-2. Confirm the top says `Build: Phase 5 storage hardening v72`.
+2. Confirm the top says `Build: Phase 5 status design v75`.
 3. Tap `Areas`, `Objects`, and `Rules` to make sure buttons respond.
 4. Use the bottom dock to try JSON export/import or CSV export/import.
 5. Add one test object.
 6. Close and reopen the same browser.
 7. Confirm the object is still there.
-8. Open `Rules` > `Yard report` and confirm objects appear in grouped planning buckets and the area checklist.
+8. Open `Report` and confirm the colored table, filters, sort controls, and area checklist update from saved objects.
 9. Use `Reset testing data` only when you want to clear this browser and start over.
 
-If buttons do not respond, you are probably opening an older broken build. Use v72 or newer.
+If buttons do not respond, you are probably opening an older broken build. Use v75 or newer.
+
+
+## v75 note
+
+Status wording is action-first: `Move / fix` means the saved info already points to a practical next step. `Need info` is reserved for items where one missing answer blocks a clearer result. The report table uses stronger colors and icons so it is easier to scan on a phone.

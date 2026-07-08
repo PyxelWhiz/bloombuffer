@@ -1,13 +1,15 @@
-Privacy reminder for BloomBuffer.
+Privacy reminder.
 
-This GitHub Pages folder should contain app files only.
+This folder is for the public BloomBuffer app files only.
 
 Do not upload:
-- BloomBuffer JSON backups
+- JSON backups with real yard data
+- CSV exports with real yard notes
 - Photos
 - Addresses
-- Yard notes
 - Debug logs
-- Any file containing real home or property details
+- Contractor, HOA, insurance, or personal notes
+- Anything that reveals private home or property details
 
-GitHub Pages should publish the app code. Your yard data should stay local in your browser unless you intentionally export/import a JSON backup.
+The public GitHub Pages site should contain app code only.
+Your yard inventory should stay in your browser unless you intentionally export and move it.

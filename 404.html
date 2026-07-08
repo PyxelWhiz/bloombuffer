@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 button fix v61</title>
+  <title>BloomBuffer - Phase 5 clearer tools v62</title>
   <style>
 :root {
   color-scheme: light;
@@ -1480,7 +1480,7 @@ button.card-danger-action {
   bottom: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: minmax(62px, 0.7fr) repeat(4, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 6px;
   align-items: center;
   width: min(560px, 100vw);
@@ -1493,20 +1493,18 @@ button.card-danger-action {
 }
 
 .backup-status {
-  margin: 0;
-  min-width: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
   overflow: hidden;
-  color: #f3f7ee;
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1.2;
-  text-overflow: ellipsis;
+  clip: rect(0 0 0 0);
   white-space: nowrap;
 }
 
 .backup-actions {
   display: grid;
-  grid-column: auto / span 4;
+  grid-column: 1 / -1;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 6px;
 }
@@ -1546,7 +1544,6 @@ button.card-danger-action {
   }
 
   .backup-bar {
-    grid-template-columns: 54px repeat(4, minmax(0, 1fr));
     gap: 4px;
   }
 
@@ -1570,7 +1567,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p class="tagline">Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 button fix v61</p>
+        <p class="build-label">Build: Phase 5 clearer tools v62</p>
       </div>
       <span class="phase-badge">Preview + tools</span>
     </header>
@@ -1586,7 +1583,7 @@ button.card-danger-action {
       <section id="screen-home" class="screen active" aria-labelledby="home-title">
         <div class="panel hero">
           <h2 id="home-title">Save the yard first. Judge it later.</h2>
-          <p>Risk clues and guarded feedback preview are connected. It still does not make official PASS/FAIL compliance decisions.</p>
+          <p>Risk clues and rule-of-thumb feedback preview are connected. This is planning help, not City sign-off.</p>
           <p class="field-note">If your screen says Phase 1 or shows Export JSON / Import JSON, you opened an older BloomBuffer file.</p>
         </div>
 
@@ -1793,7 +1790,7 @@ button.card-danger-action {
                 <span id="guided-readiness" class="readiness-badge">Not started</span>
               </div>
               <div id="guided-question-list" class="guided-question-list"></div>
-              <p class="field-note">Risk clues feed feedback preview. The preview is not an official PASS/FAIL compliance decision.</p>
+              <p class="field-note">Risk clues feed a rule-of-thumb preview. It is planning help, not City sign-off.</p>
             </section>
 
             <div class="two-col">
@@ -1866,7 +1863,7 @@ button.card-danger-action {
       <section id="screen-rules" class="screen" aria-labelledby="rules-title">
         <div class="panel">
           <h2 id="rules-title">Rule status</h2>
-          <p>BloomBuffer stores inventory, risk-clue answers, guarded feedback preview, and table tools. It does not claim official compliance.</p>
+          <p>BloomBuffer stores inventory, risk-clue answers, rule-of-thumb feedback preview, and CSV table tools.</p>
         </div>
         <div class="panel">
           <h2>What comes next</h2>
@@ -1876,7 +1873,7 @@ button.card-danger-action {
             <li>Future priority buckets and reports will help plan what to do first.</li>
           </ol>
         </div>
-        <div class="panel table-tools-panel">
+        <div class="panel table-tools-panel" id="table-tools-panel">
           <h2>Table tools</h2>
           <p>Export a CSV table for testing, comparison, or advanced editing. Importing a table or loading a sample replaces local areas and objects in this browser after confirmation.</p>
           <div class="actions">
@@ -1903,7 +1900,7 @@ button.card-danger-action {
               <li><strong>Fence/gate:</strong> orientation and material questions appear.</li>
               <li><strong>Equipment:</strong> HVAC / AC, grill, and generator stay review/inventory prompts.</li>
               <li><strong>Saving:</strong> partial answers save and show again when editing.</li>
-              <li><strong>Readiness:</strong> missing answers show Incomplete or Need more information, not official PASS/FAIL.</li>
+              <li><strong>Readiness:</strong> missing answers show Incomplete or Need more information, not a City decision.</li>
               <li><strong>Unknown:</strong> unknown answers show Needs review or Need more information.</li>
               <li><strong>Backup:</strong> JSON export/import keeps risk-clue answers.</li>
               <li><strong>Feedback:</strong> object cards show feedback preview with a boundary note.</li>
@@ -1950,7 +1947,7 @@ button.card-danger-action {
               <li><strong>Mobile:</strong> controls do not overlap; search/filter are not buried.</li>
               <li><strong>Type picker:</strong> selected type is clear; Change type opens categories; no long native dropdown opens.</li>
               <li><strong>Tree labels:</strong> tree choices are understandable and inventory-only.</li>
-              <li><strong>Rule boundary:</strong> app says preview only; no official PASS/FAIL compliance result appears.</li>
+              <li><strong>Rule boundary:</strong> app says rule-of-thumb preview only; no City sign-off appears.</li>
             </ol>
           </details>
         </div>
@@ -1984,9 +1981,9 @@ button.card-danger-action {
     <footer class="backup-bar" aria-label="Save tools dock">
       <p id="backup-status" class="backup-status">Autosave on</p>
       <div class="backup-actions">
-        <button class="utility-button utility-button-strong utility-button-save" id="export-json" type="button">Save</button>
-        <button class="utility-button" id="import-json-button" type="button">Import</button>
-        <button class="utility-button" id="export-table-shortcut" type="button">Table</button>
+        <button class="utility-button utility-button-strong utility-button-save" id="export-json" type="button">Save JSON</button>
+        <button class="utility-button" id="import-json-button" type="button">Import JSON</button>
+        <button class="utility-button" id="export-table-shortcut" type="button">CSV tools</button>
         <button class="utility-button" id="open-debug-log" type="button">Log</button>
       </div>
       <input id="import-json" type="file" accept="application/json" hidden>
@@ -4183,7 +4180,7 @@ function previewObjectFeedback(object) {
     summary: formula.summary || "No feedback preview is available for this object yet.",
     tone,
     sourceNote: formula.sourceNote || "",
-    boundaryNote: "BloomBuffer feedback preview. It is not an official City determination or legal advice.",
+    boundaryNote: "BloomBuffer rule-of-thumb preview. Planning help only, not City sign-off or legal advice.",
     primaryActions: primaryActions.slice(0, 3),
   };
 }
@@ -4194,7 +4191,7 @@ function previewObjectsFeedback(objects = []) {
     version: FEEDBACK_PREVIEW_VERSION,
     previews,
     summary: summarizeInternalEvaluations(objects.map((object) => evaluateObjectInternal(object))).counts,
-    boundaryNote: "BloomBuffer feedback preview. It is not an official City determination or legal advice.",
+    boundaryNote: "BloomBuffer rule-of-thumb preview. Planning help only, not City sign-off or legal advice.",
   };
 }
 
@@ -4482,7 +4479,7 @@ const state = {
   storageStatus: "not checked",
   quickType: "",
   quickTypeGroup: OBJECT_TYPE_GROUPS[0].label,
-  quickMessage: "Inventory plus guarded feedback preview. No official PASS/FAIL compliance result.",
+  quickMessage: "Inventory plus rule-of-thumb feedback preview. Planning help only.",
   guidedAnswers: {},
 };
 
@@ -4496,7 +4493,7 @@ const typeHints = {
   "Pergola": "Feedback preview is review-heavy for pergolas. Add material, distance, and fuel-continuity clues; add the vine separately as a Vine / climbing plant if needed.",
   "Mulch / wood chips / bark": "Feedback preview checks combustible mulch in Zone 0.",
   "Grill / BBQ": "Saved as review-only for now. Feedback preview can flag storage/material clues, but no automatic equipment-specific compliance result is mapped.",
-  "HVAC / AC unit": "Saved as inventory for now. The frozen baseline does not make AC units an automatic PASS/FAIL category; later phases may ask about nearby vegetation, debris, and contact.",
+  "HVAC / AC unit": "Saved as inventory for now. AC units are review-only in this build; later phases may ask about nearby vegetation, debris, and contact.",
   "Generator": "Saved as review-only for now. Feedback preview can flag fuel/storage/material clues, but no automatic equipment-specific compliance result is mapped.",
   "Firewood / lumber": "Feedback preview treats stored combustibles near the structure as a storage/combustible-material question.",
   "Doormat / rug": "Feedback preview treats mats/rugs near the structure as a combustible-item question.",
@@ -4741,7 +4738,7 @@ function bindEvents() {
   document.querySelector("#import-json-button").addEventListener("click", () => document.querySelector("#import-json").click());
   document.querySelector("#import-json").addEventListener("change", importJson);
   document.querySelector("#export-table").addEventListener("click", exportTableCsv);
-  document.querySelector("#export-table-shortcut").addEventListener("click", exportTableCsv);
+  document.querySelector("#export-table-shortcut").addEventListener("click", openTableTools);
   document.querySelector("#import-table-button").addEventListener("click", () => document.querySelector("#import-table").click());
   document.querySelector("#import-table").addEventListener("change", importTableCsv);
   document.querySelector("#load-small-sample").addEventListener("click", () => loadSampleTable("small", "small test sample"));
@@ -5531,7 +5528,7 @@ function questionRequirementText(question) {
 function sourceLegendHtml() {
   return `
     <div class="source-legend" aria-label="Source legend">
-      <p><span class="source-badge official">City source</span> From City of San Diego Zone 0 guidance. It tells us why we ask, but this screen does not give PASS/FAIL.</p>
+      <p><span class="source-badge official">City source</span> From City of San Diego Zone 0 guidance. It tells us why we ask; this screen is still rule-of-thumb planning help.</p>
       <p><span class="source-badge app_inference">App note</span> A BloomBuffer helper question or interpretation to organize details for later review.</p>
       <p><span class="source-badge inventory_only">Inventory</span> Saved for organization only.</p>
     </div>
@@ -5941,6 +5938,14 @@ function exportTableCsv() {
   renderBackupStatus();
 }
 
+function openTableTools() {
+  setRoute("rules");
+  document.querySelector("#table-tools-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  state.backupMessage = "CSV tools: export CSV, import CSV, or load a test sample.";
+  logDebug("table_tools_opened_from_bar");
+  renderBackupStatus();
+}
+
 async function importTableCsv(event) {
   const file = event.target.files?.[0];
   if (!file) return;
@@ -6010,7 +6015,7 @@ async function loadSampleTable(sampleKey, label) {
 async function importJson(event) {
   const file = event.target.files?.[0];
   if (!file) return;
-  state.backupMessage = `Selected import file: ${file.name} (${formatFileModified(file)}).`;
+  state.backupMessage = `JSON selected: ${file.name}.`;
   logDebug("backup_import_selected", { filename: file.name, size: file.size, lastModified: file.lastModified || null });
   renderBackupStatus();
   const text = await file.text();
@@ -6034,11 +6039,11 @@ async function importJson(event) {
     logDebug("backup_import_completed", { filename: file.name, areaCount: data.areas.length, objectCount: data.objects.length });
     renderBackupStatus();
   } catch (error) {
-    state.backupMessage = `Import failed for ${file.name}. Local browser data was not replaced. Choose a backup made with Save backup JSON.`;
+    state.backupMessage = "JSON import failed. For CSV, use Rules > Table tools.";
     logDebug("backup_import_failed", { filename: file.name, ...errorToDebugDetail(error) }, "error");
     renderBackupStatus();
     console.error("BloomBuffer import failed:", error);
-    alert(`That file is not a valid BloomBuffer backup.\n\nYour current areas and objects were not changed.\n\nTry choosing a JSON file made with Save backup JSON.`);
+    alert(`This button imports BloomBuffer JSON backups only.\n\nYour current areas and objects were not changed.\n\nFor a CSV table, use Rules > Table tools > Import table CSV.`);
   } finally {
     event.target.value = "";
   }
@@ -6059,7 +6064,7 @@ function renderBackupStatus() {
     ? `Last import this session: ${state.lastImportFileName} at ${formatDateTime(state.lastImportAt)}.`
     : "";
   document.querySelector("#backup-status").textContent = [
-    state.backupMessage || "Local autosave is on in this browser. Save backup JSON to make a file copy.",
+    state.backupMessage || "Autosave on. Use Save JSON for a backup.",
     localText,
     backupText,
     importText,
@@ -6210,7 +6215,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 button fix v61",
+    build: "Phase 5 clearer tools v62",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

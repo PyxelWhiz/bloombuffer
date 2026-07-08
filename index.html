@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 sample import UI v59</title>
+  <title>BloomBuffer - Phase 5 button fix v61</title>
   <style>
 :root {
   color-scheme: light;
@@ -61,21 +61,28 @@ textarea {
   align-items: flex-start;
   justify-content: space-between;
   gap: 14px;
-  padding: 18px 16px 12px;
+  padding: 14px 14px 10px;
   background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid var(--line);
 }
 
 .topbar h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 26px;
   line-height: 1;
 }
 
 .topbar p {
   margin: 6px 0 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
+}
+
+.topbar .tagline {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .topbar .build-label {
@@ -90,17 +97,17 @@ textarea {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  padding: 5px 9px;
+  padding: 5px 8px;
   background: var(--surface-soft);
   color: var(--green-dark);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   white-space: nowrap;
 }
 
 .tabs {
   position: sticky;
-  top: 72px;
+  top: 66px;
   z-index: 4;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -127,7 +134,7 @@ textarea {
 }
 
 main {
-  padding: 14px 12px 92px;
+  padding: 14px 12px 64px;
 }
 
 .screen {
@@ -663,10 +670,72 @@ textarea {
   align-items: flex-start;
 }
 
+.guided-label-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  min-width: 0;
+}
+
 .guided-question-title label {
   margin: 0;
   font-size: 13px;
   line-height: 1.25;
+}
+
+.info-helper {
+  position: relative;
+  flex: 0 0 auto;
+  margin-top: -2px;
+}
+
+.info-helper summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #b9c8b4;
+  border-radius: 999px;
+  background: #f8faf5;
+  color: #245f3c;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  list-style: none;
+  cursor: pointer;
+}
+
+.info-helper summary::-webkit-details-marker {
+  display: none;
+}
+
+.info-helper-card {
+  position: absolute;
+  left: -8px;
+  top: 26px;
+  z-index: 3;
+  width: min(260px, calc(100vw - 52px));
+  border: 1px solid #cfd9ca;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(23, 32, 24, 0.16);
+}
+
+.info-helper-card strong {
+  display: block;
+  color: #245f3c;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.info-helper-card p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .source-badge {
@@ -1411,28 +1480,16 @@ button.card-danger-action {
   bottom: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 4px 8px;
+  grid-template-columns: minmax(62px, 0.7fr) repeat(4, minmax(0, 1fr));
+  gap: 6px;
   align-items: center;
   width: min(560px, 100vw);
-  min-height: 60px;
-  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-  border-top: 3px solid #d4a937;
+  min-height: 44px;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  border-top: 2px solid #d4a937;
   background: #223023;
   box-shadow: 0 -8px 24px rgba(20, 28, 21, 0.28);
   transform: translateX(-50%);
-}
-
-.backup-kicker {
-  margin: 0;
-  border-radius: 999px;
-  padding: 5px 9px;
-  background: #d4a937;
-  color: #1f271f;
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1;
-  text-transform: uppercase;
 }
 
 .backup-status {
@@ -1440,7 +1497,7 @@ button.card-danger-action {
   min-width: 0;
   overflow: hidden;
   color: #f3f7ee;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   line-height: 1.2;
   text-overflow: ellipsis;
@@ -1449,8 +1506,8 @@ button.card-danger-action {
 
 .backup-actions {
   display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-column: auto / span 4;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 6px;
 }
 
@@ -1458,7 +1515,7 @@ button.card-danger-action {
   min-height: 32px;
   border: 1px solid #dbe6d5;
   border-radius: 9px;
-  padding: 6px;
+  padding: 5px 4px;
   background: #f7faf3;
   color: #223023;
   font-size: 11px;
@@ -1472,7 +1529,32 @@ button.card-danger-action {
 }
 
 .utility-button-save {
-  font-size: 13px;
+  font-size: 11px;
+}
+
+@media (max-width: 390px) {
+  .topbar {
+    gap: 8px;
+  }
+
+  .topbar h1 {
+    font-size: 23px;
+  }
+
+  .phase-badge {
+    font-size: 10px;
+  }
+
+  .backup-bar {
+    grid-template-columns: 54px repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .backup-status,
+  .utility-button,
+  .utility-button-save {
+    font-size: 10px;
+  }
 }
 
 .error {
@@ -1487,8 +1569,8 @@ button.card-danger-action {
     <header class="topbar">
       <div>
         <h1>BloomBuffer</h1>
-        <p>Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 sample import UI v59</p>
+        <p class="tagline">Yard inventory before rule panic.</p>
+        <p class="build-label">Build: Phase 5 button fix v61</p>
       </div>
       <span class="phase-badge">Preview + tools</span>
     </header>
@@ -1555,7 +1637,6 @@ button.card-danger-action {
                   <option>East</option>
                   <option>West</option>
                   <option>Other</option>
-                </select>
               </div>
               <div>
                 <label for="area-access">🚪 Access - optional</label>
@@ -1901,13 +1982,12 @@ button.card-danger-action {
     </main>
 
     <footer class="backup-bar" aria-label="Save tools dock">
-      <p class="backup-kicker">Save tools</p>
-      <p id="backup-status" class="backup-status">Autosave is on. Save backup JSON to make a file copy.</p>
+      <p id="backup-status" class="backup-status">Autosave on</p>
       <div class="backup-actions">
-        <button class="utility-button utility-button-strong utility-button-save" id="export-json">Save file</button>
-        <button class="utility-button" id="import-json-button">Import</button>
+        <button class="utility-button utility-button-strong utility-button-save" id="export-json" type="button">Save</button>
+        <button class="utility-button" id="import-json-button" type="button">Import</button>
         <button class="utility-button" id="export-table-shortcut" type="button">Table</button>
-        <button class="utility-button" id="open-debug-log" type="button">Debug log</button>
+        <button class="utility-button" id="open-debug-log" type="button">Log</button>
       </div>
       <input id="import-json" type="file" accept="application/json" hidden>
     </footer>
@@ -3840,9 +3920,9 @@ function draftItemFormula(evaluation) {
   const safeEvaluation = evaluation && typeof evaluation === "object" ? evaluation : {};
   const status = safeEvaluation.status || EVALUATOR_RESULTS.NOT_APPLICABLE;
   const statusCopy = STATUS_COPY[status] || STATUS_COPY[EVALUATOR_RESULTS.NOT_APPLICABLE];
-  const reasons = unique(safeEvaluation.reasons || []);
-  const missingFields = unique(safeEvaluation.missingFields || []);
-  const reviewNotes = unique(safeEvaluation.reviewNotes || []);
+  const reasons = uniqueFormulaValues(safeEvaluation.reasons || []);
+  const missingFields = uniqueFormulaValues(safeEvaluation.missingFields || []);
+  const reviewNotes = uniqueFormulaValues(safeEvaluation.reviewNotes || []);
   const source = safeEvaluation.source || null;
 
   return {
@@ -3870,7 +3950,7 @@ function worksForStatus(status, reasons) {
 }
 
 function reviewForStatus(status, reasons, reviewNotes) {
-  if (status === EVALUATOR_RESULTS.REVIEW_NEEDED) return unique([...reasons, ...reviewNotes]);
+  if (status === EVALUATOR_RESULTS.REVIEW_NEEDED) return uniqueFormulaValues([...reasons, ...reviewNotes]);
   return reviewNotes;
 }
 
@@ -3883,7 +3963,7 @@ function suggestedChangesFor(status, reasons, missingFields, reviewNotes) {
   for (const reason of reasons) suggestions.push(suggestionForReason(reason));
   for (const field of missingFields) suggestions.push(`Answer or confirm: ${formatMissingField(field)}.`);
   for (const note of reviewNotes) suggestions.push(reviewSuggestionFor(note));
-  return unique(suggestions);
+  return uniqueFormulaValues(suggestions);
 }
 
 function suggestionForReason(reason) {
@@ -3952,7 +4032,7 @@ function formatMissingField(field) {
   return labels[field] || String(field).replaceAll("_", " ");
 }
 
-function unique(values) {
+function uniqueFormulaValues(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
@@ -3960,16 +4040,16 @@ function unique(values) {
 
 const INTERNAL_RULE_ENGINE_VERSION = "phase3_internal_engine_v1";
 
-const POTTED_TYPES = new Set(["Potted plant"]);
-const IN_GROUND_PLANT_TYPES = new Set(["In-ground plant", "Shrub", "Vine / climbing plant"]);
-const EQUIPMENT_REVIEW_TYPES = new Set([
+const ENGINE_POTTED_TYPES = new Set(["Potted plant"]);
+const ENGINE_IN_GROUND_PLANT_TYPES = new Set(["In-ground plant", "Shrub", "Vine / climbing plant"]);
+const ENGINE_EQUIPMENT_REVIEW_TYPES = new Set([
   "HVAC / AC unit",
   "Generator",
   "Grill / BBQ",
   "Wood exterior door",
   "Other",
 ]);
-const STORAGE_TYPES = new Set([
+const ENGINE_STORAGE_TYPES = new Set([
   "Mulch / wood chips / bark",
   "Furniture",
   "Firewood / lumber",
@@ -3977,11 +4057,11 @@ const STORAGE_TYPES = new Set([
   "Outdoor storage",
   "Trash bin",
 ]);
-const TREE_TYPES = new Set([
+const ENGINE_TREE_TYPES = new Set([
   "Tree",
 ]);
-const FENCE_GATE_TYPES = new Set(["Wood gate", "Wood fence"]);
-const PERGOLA_CLIMBING_TYPES = new Set(["Pergola"]);
+const ENGINE_FENCE_GATE_TYPES = new Set(["Wood gate", "Wood fence"]);
+const ENGINE_PERGOLA_CLIMBING_TYPES = new Set(["Pergola"]);
 
 function evaluateObjectInternal(object) {
   const facts = toRuleFacts(object);
@@ -4048,13 +4128,13 @@ function summarizeInternalEvaluations(results = []) {
 }
 
 function evaluatorFor(object) {
-  if (POTTED_TYPES.has(object?.objectType)) return evaluatePottedPlantInternal;
-  if (IN_GROUND_PLANT_TYPES.has(object?.objectType)) return evaluateInGroundPlantShrubInternal;
-  if (STORAGE_TYPES.has(object?.objectType)) return evaluateStorageBinFurnitureInternal;
-  if (EQUIPMENT_REVIEW_TYPES.has(object?.objectType)) return evaluateEquipmentReviewInternal;
-  if (TREE_TYPES.has(object?.objectType)) return evaluateTreeInternal;
-  if (FENCE_GATE_TYPES.has(object?.objectType)) return evaluateFenceGateInternal;
-  if (PERGOLA_CLIMBING_TYPES.has(object?.objectType)) return evaluatePergolaClimbingInternal;
+  if (ENGINE_POTTED_TYPES.has(object?.objectType)) return evaluatePottedPlantInternal;
+  if (ENGINE_IN_GROUND_PLANT_TYPES.has(object?.objectType)) return evaluateInGroundPlantShrubInternal;
+  if (ENGINE_STORAGE_TYPES.has(object?.objectType)) return evaluateStorageBinFurnitureInternal;
+  if (ENGINE_EQUIPMENT_REVIEW_TYPES.has(object?.objectType)) return evaluateEquipmentReviewInternal;
+  if (ENGINE_TREE_TYPES.has(object?.objectType)) return evaluateTreeInternal;
+  if (ENGINE_FENCE_GATE_TYPES.has(object?.objectType)) return evaluateFenceGateInternal;
+  if (ENGINE_PERGOLA_CLIMBING_TYPES.has(object?.objectType)) return evaluatePergolaClimbingInternal;
   return notApplicableEvaluation;
 }
 
@@ -4266,7 +4346,7 @@ function objectToTableRow(object, areas) {
     id: object.id,
     name: object.name,
     area_id: object.areaId,
-    area_name: areaName(object.areaId, areas),
+    area_name: tableAreaName(object.areaId, areas),
     side: "",
     access: "",
     icon: "",
@@ -4361,7 +4441,7 @@ function sanitizedTableId(value) {
   return /^[A-Za-z0-9_.:-]{1,120}$/.test(text) ? text : "";
 }
 
-function areaName(areaId, areas) {
+function tableAreaName(areaId, areas) {
   if (!areaId || areaId === UNASSIGNED_AREA_ID) return UNASSIGNED_AREA_NAME;
   return areas.find((area) => area.id === areaId)?.name || "";
 }
@@ -4420,6 +4500,137 @@ const typeHints = {
   "Generator": "Saved as review-only for now. Feedback preview can flag fuel/storage/material clues, but no automatic equipment-specific compliance result is mapped.",
   "Firewood / lumber": "Feedback preview treats stored combustibles near the structure as a storage/combustible-material question.",
   "Doormat / rug": "Feedback preview treats mats/rugs near the structure as a combustible-item question.",
+};
+
+const questionHelpers = {
+  zone0_location: {
+    title: "Zone 0",
+    text: "Zone 0 means the first 5 ft / 152 cm around the structure. Choose Unknown if the measurement is unclear.",
+  },
+  distance_wall: {
+    title: "Distance",
+    text: "Measure the shortest distance from the object to the exterior wall or attached part named in the question.",
+  },
+  measured_from_structure_part: {
+    title: "Structure",
+    text: "Structure usually means the home/building and attached parts such as decks, stairs, balconies, or attached pergolas when the question says so.",
+  },
+  structure_construction_type: {
+    title: "Stucco?",
+    text: "Stucco-looking walls do not prove ignition-resistant or non-combustible construction. Choose Unknown unless you have reliable building information.",
+  },
+  under_window: {
+    title: "Opening",
+    text: "Opening means a window, door, vent, or similar place where embers or heat could reach into or through the building envelope.",
+  },
+  distance_opening: {
+    title: "Opening",
+    text: "Measure to the nearest window, door, vent, or similar building opening. Choose what you can observe from outside.",
+  },
+  container_material: {
+    title: "Material",
+    text: "Non-combustible examples include metal, stone, concrete, and some ceramics. If the item is mixed or unclear, choose Unknown.",
+  },
+  plant_type: {
+    title: "Plant type",
+    text: "Use Other / unknown when you cannot confidently identify whether the plant is fire-smart or herbaceous.",
+  },
+  healthy_maintained: {
+    title: "Maintained",
+    text: "Look for a plant that is alive, watered if needed, trimmed, and mostly free of dead or dry material.",
+  },
+  plant_spacing: {
+    title: "Spacing",
+    text: "Measure to the nearest plant, container, mulch, fence, deck, or other burnable item if that creates a connection.",
+  },
+  combustible_mulch: {
+    title: "Mulch",
+    text: "Combustible mulch usually means bark, wood chips, shredded wood, or similar organic material. Rock/gravel is usually not combustible.",
+  },
+  plant_fuel_continuity: {
+    title: "Fuel path",
+    text: "Fuel continuity is a connected path of burnable material, such as mulch touching plants, vines reaching walls, or debris under shrubs.",
+  },
+  fuel_continuity: {
+    title: "Fuel path",
+    text: "Horizontal fuel continuity connects burnable material side-to-side. Vertical fuel continuity lets fire move upward.",
+  },
+  plant_support_context: {
+    title: "Vine support",
+    text: "Enter the vine once as a plant/vine object, then answer what it grows on or touches.",
+  },
+  plant_touching_structure: {
+    title: "Touching",
+    text: "Look for contact with the building, opening, deck, railing, pergola, or other attached structure.",
+  },
+  tree_part: {
+    title: "One tree",
+    text: "Use one Tree object for the real tree. Trunk, canopy, debris, ladder fuels, and timing are saved as tree clues.",
+  },
+  tree_contact: {
+    title: "Canopy",
+    text: "Canopy means the branches, leaves, needles, or fronds of a tree. Eaves are the roof edge or overhang.",
+  },
+  canopy_clearance_10ft: {
+    title: "Eaves",
+    text: "If branches or fronds are near the roof edge, eaves, chimney, stovepipe, vents, or similar projections, capture it here.",
+  },
+  dead_tree_material: {
+    title: "Dead material",
+    text: "Dead material can mean dry leaves, needles, fronds, bark, fruit/debris, or branches that are no longer green or healthy.",
+  },
+  tree_debris_under: {
+    title: "Debris",
+    text: "Record debris here if it belongs to this tree so you do not need a second duplicate object.",
+  },
+  mature_dripline_distance: {
+    title: "Drip-line",
+    text: "The drip-line is the outer edge of a tree canopy when mature. Use a reliable plant source if estimating a planned tree.",
+  },
+  ladder_fuels: {
+    title: "Ladder fuel",
+    text: "Ladder fuel is burnable material that can help fire climb from the ground into taller plants, trees, fences, decks, or the structure.",
+  },
+  stored_within_5ft: {
+    title: "Stored",
+    text: "Regular storage means it normally stays there. Temporary means it is there briefly and not normally stored there.",
+  },
+  material_combustible: {
+    title: "Combustible",
+    text: "Combustible means something that can burn, such as wood, plastic/resin, fabric, cardboard, bark, dry leaves, or stored fuel.",
+  },
+  storage_contents_combustible: {
+    title: "Contents",
+    text: "Answer based on what is stored inside, not only the outside bin or shelf material.",
+  },
+  trash_bin_timing: {
+    title: "Collection day",
+    text: "Collection day only means the bin is near the structure only for pickup, then moved back after collection.",
+  },
+  red_flag_bin_plan: {
+    title: "Red Flag",
+    text: "A Red Flag Warning is a weather warning for high fire danger. Live alerts are a future feature.",
+  },
+  temporary_or_regular: {
+    title: "Timing",
+    text: "If it usually stays there, choose regular storage. If it is there briefly, choose temporary.",
+  },
+  fence_orientation: {
+    title: "Orientation",
+    text: "Attached/perpendicular means the fence or gate meets or points toward the structure. Parallel means it runs alongside it.",
+  },
+  combustible_reinforcement: {
+    title: "Reinforcement",
+    text: "Look for burnable added material on or near a fence/gate, such as wood bracing, plastic mesh, reed screening, or similar material.",
+  },
+  vegetation_between_fence_structure: {
+    title: "Between",
+    text: "Look for plants, vines, dry leaves, debris, or other burnable material between the fence/gate and the structure.",
+  },
+  equipment_review_notice: {
+    title: "Review-only",
+    text: "This is saved for organization and later review. It is not an official City compliance decision.",
+  },
 };
 
 async function init() {
@@ -5244,7 +5455,10 @@ function renderGuidedQuestion(question, value) {
   return `
     <div class="guided-question" data-question-id="${escapeHtml(question.id)}" data-input-type="${escapeHtml(question.inputType)}">
       <div class="guided-question-title">
-        <label for="guided-${escapeHtml(question.id)}">${escapeHtml(question.label)}</label>
+        <div class="guided-label-row">
+          <label for="guided-${escapeHtml(question.id)}">${escapeHtml(question.label)}</label>
+          ${questionHelperHtml(question.id)}
+        </div>
         <span class="source-badge ${escapeHtml(question.sourceBasis)}">${sourceBasisLabel(question.sourceBasis)}</span>
       </div>
       <p class="guided-help">${escapeHtml(question.helpText || requiredText)}</p>
@@ -5252,6 +5466,20 @@ function renderGuidedQuestion(question, value) {
       ${renderGuidedInput(question, value)}
       <p class="guided-required">${requiredText}</p>
     </div>
+  `;
+}
+
+function questionHelperHtml(questionId) {
+  const helper = questionHelpers[questionId];
+  if (!helper) return "";
+  return `
+    <details class="info-helper">
+      <summary aria-label="${escapeHtml(helper.title)} help">i</summary>
+      <div class="info-helper-card">
+        <strong>${escapeHtml(helper.title)}</strong>
+        <p>${escapeHtml(helper.text)}</p>
+      </div>
+    </details>
   `;
 }
 
@@ -5982,7 +6210,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 sample import UI v59",
+    build: "Phase 5 button fix v61",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

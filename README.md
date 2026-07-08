@@ -4,8 +4,8 @@ This folder is the publish-ready static app for GitHub Pages.
 
 Current build:
 
-- `Build: Phase 5 sample import UI v59`
-- Risk clues, guarded feedback preview, CSV table tools, and built-in test samples are connected.
+- `Build: Phase 5 button fix v61`
+- Risk clues, guarded feedback preview, CSV table tools, built-in test samples, little `i` helpers, and the single-file button fix are connected.
 - No official PASS/FAIL/REVIEW compliance result is connected.
 
 ## Files To Upload
@@ -45,7 +45,7 @@ Expected URL shape:
 
 On the phone:
 
-1. Confirm the top bar says `Build: Phase 5 sample import UI v59`.
+1. Confirm the top bar says `Build: Phase 5 button fix v61`.
 2. Add one test object.
 3. Close and reopen the same phone browser.
 4. Confirm the object is still there.

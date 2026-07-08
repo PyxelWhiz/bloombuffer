@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 info wording v69</title>
+  <title>BloomBuffer - Phase 5 storage hardening v72</title>
   <style>
 :root {
   color-scheme: light;
@@ -896,7 +896,7 @@ button.risk-clue-action {
 
 button.continue-action {
   flex: 2 1 360px;
-  min-height: 84px;
+  min-height: 64px;
   border-width: 2px;
   box-shadow: 0 12px 24px rgba(49, 93, 130, 0.26);
 }
@@ -915,16 +915,21 @@ button.quick-save-action {
   width: 42px;
   height: 42px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
+  color: #17452a;
+  background: #f7d667;
   box-shadow: inset 0 0 0 2px rgba(49, 93, 130, 0.14);
   font-size: 26px;
   line-height: 1;
 }
 
 button.continue-action .clue-agent-icon {
-  width: 54px;
-  height: 54px;
-  font-size: 32px;
+  width: 42px;
+  height: 42px;
+  font-size: 27px;
+}
+
+button.continue-action .button-text strong::after {
+  content: " →";
 }
 
 .button-text {
@@ -952,7 +957,7 @@ button.active {
 
 .card-list {
   display: grid;
-  gap: 10px;
+  gap: 18px;
 }
 
 .list-summary {
@@ -1044,6 +1049,7 @@ button.active {
   position: relative;
   overflow: hidden;
   border-left: 6px solid #c8d8c0;
+  box-shadow: 0 7px 18px rgba(34, 48, 35, 0.08);
 }
 
 .object-card.object-plant {
@@ -1170,10 +1176,10 @@ button.active {
 .guided-card-summary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  border-radius: 10px;
-  margin: 8px 0 0;
-  padding: 7px 9px;
+  gap: 7px;
+  border-radius: 999px;
+  margin: 7px 0 0;
+  padding: 5px 8px;
   font-weight: 800;
   line-height: 1.35;
 }
@@ -1184,7 +1190,7 @@ button.active {
 }
 
 .guided-card-summary small {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   opacity: 0.85;
 }
@@ -1218,15 +1224,15 @@ button.active {
 
 .feedback-preview {
   display: grid;
-  gap: 3px;
+  gap: 2px;
   margin: 8px 0 0;
-  padding: 9px 10px;
+  padding: 8px 9px;
   border-left: 4px solid #315d82;
   border-radius: 10px;
   background: #f2f6f8;
   color: #223023;
   font-size: 12px;
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
 .feedback-preview strong {
@@ -1323,6 +1329,77 @@ button.active {
   display: grid;
   gap: 10px;
   margin-top: 12px;
+}
+
+.area-checklist-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.area-checklist-panel h3 {
+  margin: 0;
+}
+
+.area-checklist-panel > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.area-checklist-group {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfdf9;
+  overflow: hidden;
+}
+
+.area-checklist-group summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  color: var(--green-dark);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.area-checklist-group summary span {
+  color: var(--muted);
+}
+
+.area-checklist-group ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0 12px 12px;
+  list-style: none;
+}
+
+.area-checklist-group label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: start;
+  padding: 8px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.area-checklist-group input {
+  margin-top: 3px;
+}
+
+.area-checklist-group strong,
+.area-checklist-group small {
+  display: block;
+}
+
+.area-checklist-group small {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 .report-group {
@@ -1733,7 +1810,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p class="tagline">Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 info wording v69</p>
+        <p class="build-label">Build: Phase 5 storage hardening v72</p>
       </div>
       <span class="phase-badge">Local yard log</span>
     </header>
@@ -1748,7 +1825,7 @@ button.card-danger-action {
     <main>
       <section id="screen-home" class="screen active" aria-labelledby="home-title">
         <div class="panel hero">
-          <h2 id="home-title">Save the yard. See what needs attention.</h2>
+          <h2 id="home-title">Save yard notes. Find next steps.</h2>
         </div>
 
         <div class="metric-grid">
@@ -1870,7 +1947,7 @@ button.card-danger-action {
 
         <div class="panel quick-add-panel" id="quick-add-panel">
           <h2>Quick add</h2>
-          <p>Fast yard-walk capture. Add details now if you can.</p>
+          <p>Fast yard-walk capture. Save basics now; add info only when useful.</p>
           <form id="quick-add-form" class="form">
             <label for="quick-area">Area</label>
             <select id="quick-area"></select>
@@ -1898,12 +1975,12 @@ button.card-danger-action {
             <label for="quick-notes">📝 Notes - optional</label>
             <textarea id="quick-notes" placeholder="Short note; measurements can come later"></textarea>
 
-            <p id="quick-add-message" class="field-note">Save basic if rushing. Add info for better feedback.</p>
+            <p id="quick-add-message" class="field-note">Save basic if rushing. Add info only if it helps.</p>
 
             <div class="actions">
               <button class="risk-clue-action continue-action" type="button" id="quick-continue-guided">
-                <span class="clue-agent-icon" aria-hidden="true">🕵️</span>
-                <span class="button-text"><strong>Best next step: add info</strong><small>Makes feedback more useful</small></span>
+                <span class="clue-agent-icon" aria-hidden="true">→</span>
+                <span class="button-text"><strong>Tap: easiest next step</strong><small>Answer only what you know</small></span>
               </button>
               <button class="secondary quick-save-action" type="submit">Save basic only</button>
             </div>
@@ -1946,18 +2023,18 @@ button.card-danger-action {
             <select id="object-type" hidden></select>
             <p id="object-type-hint" class="info-note"></p>
 
-            <section class="guided-panel" aria-labelledby="guided-questions-title">
+            <section class="guided-panel" id="guided-panel" aria-labelledby="guided-questions-title" hidden>
               <div class="guided-header">
                 <div>
-                  <h3 id="guided-questions-title"><span class="risk-clue-person" aria-hidden="true">🕵️</span> Info: check what matters</h3>
+                  <h3 id="guided-questions-title"><span class="risk-clue-person" aria-hidden="true">→</span> Useful info</h3>
                   <p id="guided-flow-label">Choose an object type to see what matters here.</p>
-                  <p class="risk-clue-nudge">Answer what you can now. These details feed feedback preview and reduce guessing later.</p>
+                  <p class="risk-clue-nudge">Answer what you know. Skip what you do not know.</p>
                   <p id="guided-progress" class="guided-progress">No info answered yet.</p>
                 </div>
                 <span id="guided-readiness" class="readiness-badge">Not started</span>
               </div>
               <div id="guided-question-list" class="guided-question-list"></div>
-              <p class="field-note">Saved info feeds the rule-of-thumb preview.</p>
+              <p class="field-note">Saved info updates the rule-of-thumb preview.</p>
             </section>
 
             <div class="two-col">
@@ -2034,12 +2111,18 @@ button.card-danger-action {
         </div>
         <div class="panel report-panel" id="yard-report-panel">
           <h2>Yard report</h2>
-          <p>Grouped next steps from saved objects. Not City sign-off.</p>
+          <p>Grouped next steps and an area checklist from saved objects. Not City sign-off.</p>
           <div id="report-summary-grid" class="report-summary-grid"></div>
           <div class="actions">
-            <button class="secondary" type="button" id="export-report">Save report TXT</button>
+            <button class="secondary" type="button" id="export-report">Export report TXT</button>
           </div>
+          <div id="area-checklist" class="area-checklist"></div>
           <div id="report-groups" class="report-groups"></div>
+        </div>
+        <div class="panel compact-panel">
+          <h2>About BloomBuffer</h2>
+          <p>BloomBuffer is a local-first yard inventory and rule-of-thumb planning helper. Your saved yard data stays in this browser unless you export it.</p>
+          <p><a href="https://github.com/PyxelWhiz/bloombuffer" target="_blank" rel="noreferrer">View the project on GitHub</a></p>
         </div>
         <div class="panel">
           <h2>What comes next</h2>
@@ -2556,7 +2639,7 @@ const QUESTION_DEFINITIONS = [
   {
     id: "container_size",
     label: "Legacy container size",
-    helpText: "Older saved clue. New potted plant entries should use the 5 gal / 18.9 L capacity question instead.",
+    helpText: "Older saved info. New potted plant entries should use the 5 gal / 18.9 L capacity question instead.",
     inputType: "choice",
     options: ["small", "medium", "large", "unknown"],
     sourceBasis: "official",
@@ -2662,7 +2745,7 @@ const QUESTION_DEFINITIONS = [
   {
     id: "plant_spacing",
     label: "Distance to nearest plant or container",
-    helpText: "This helps later screening consider the 1.5 x plant-height spacing clue and fuel continuity.",
+    helpText: "This helps later screening consider 1.5 x plant-height spacing and fuel continuity.",
     inputType: "distance",
     sourceBasis: "official",
     appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
@@ -2845,7 +2928,7 @@ const QUESTION_DEFINITIONS = [
   {
     id: "furniture_cushions_fabric",
     label: "Fabric cushions or soft parts present?",
-    helpText: "Saved as a clue because City source names cushions, mats, and rugs as ember-ignition examples.",
+    helpText: "Saved because City source names cushions, mats, and rugs as ember-ignition examples.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
     appliesToTypes: ["Furniture"],
@@ -2865,7 +2948,7 @@ const QUESTION_DEFINITIONS = [
   {
     id: "deck_attached_location",
     label: "Exact deck / balcony / stair location",
-    helpText: "This is more precise than the older on/under-deck clue.",
+    helpText: "This is more precise than the older on/under-deck info.",
     inputType: "choice",
     options: ["on_deck_surface", "beneath_deck", "neither", "unknown"],
     sourceBasis: "official",
@@ -3713,7 +3796,7 @@ function evaluateStorageBinFurnitureInternal(object) {
   const review = [];
   const notes = [
     "Internal Phase 3 trial only. Do not show as official compliance.",
-    "Material categories remain user-entered clues and need Phase 4A taxonomy review before any user-facing result.",
+    "Material categories remain user-entered info and need Phase 4A taxonomy review before any user-facing result.",
   ];
 
   if (facts.zone.location === "no") {
@@ -3795,7 +3878,7 @@ function evaluateTreeInternal(object) {
   const review = [];
   const notes = [
     "Internal Phase 3 trial only. Do not show as official compliance.",
-    "Tree UI now uses one Tree object with tree-part/debris/timing clues inside it.",
+    "Tree UI now uses one Tree object with tree-part/debris/timing info inside it.",
     "This evaluator does not recommend tree removal. Removal/species/condition risk remains official/arborist review.",
   ];
 
@@ -4633,8 +4716,8 @@ function csvCell(value) {
 
 
 const SAMPLE_TABLES = {
-  small: "record_type,id,name,area_id,area_name,side,access,icon,color,type,status,wall_ft,wall_in,notes,question_answers_json,feedback_label,feedback_action\narea,front-entry,Front entry,,,Front,Easy,Home,Sage,,,,\"\",\"Front door, walkway, small planter area.\",,,\narea,side-yard,Side yard,,,Left,Moderate,Path,Gray,,,,\"\",\"Narrow side path with bins and fence.\",,,\narea,back-patio,Back patio,,,Back,Easy,Patio,Clay,,,,\"\",\"Deck/patio area used often.\",,,\narea,slope-edge,Slope edge,,,Back,Hard,Slope,Gold,,,,\"\",\"Lower slope edge with trees and dry material.\",,,\nobject,front-pot-ceramic,Ceramic pot by stucco wall,front-entry,Front entry,,,,,Potted plant,Measured,1,6,Large ceramic pot with green plant; user is unsure whether wall is ordinary stucco or ignition resistant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-doormat,Coir doormat at front door,front-entry,Front entry,,,,,Doormat / rug,Needs details,0,2,Combustible-looking mat directly at door; some clues intentionally missing for testing.,,,\nobject,front-shrub-window,Shrub under front window,front-entry,Front entry,,,,,Shrub,Measured,2,8,Green shrub below a window; mulch nearby.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":8},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"ordinary_existing\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":1,\"\"in\"\":3},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"around_plant_or_object\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,front-metal-chair,Metal chair near walkway,front-entry,Front entry,,,,,Furniture,Measured,6,0,Mostly metal chair outside Zone 0; includes complete furniture clues.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"stored_within_5ft\"\":\"\"no\"\",\"\"material_combustible\"\":\"\"no\"\",\"\"furniture_material\"\":\"\"metal_or_noncombustible\"\",\"\"furniture_cushions_fabric\"\":\"\"no\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-trash-bins,Trash bins along side wall,side-yard,Side yard,,,,,Trash bin,Measured,1,0,Regular bin storage next to side wall; has Red Flag plan answered.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"trash_bin_timing\"\":\"\"regular_storage\"\",\"\"red_flag_bin_plan\"\":\"\"move_away_or_garage\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-wood-fence,Wood fence section near wall,side-yard,Side yard,,,,,Wood fence,Needs details,3,0,Wood fence perpendicular to house; vegetation question left unknown.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"unknown\"\"}\",,\nobject,side-storage-bin,Plastic storage bin,side-yard,Side yard,,,,,Outdoor storage,Measured,4,6,Plastic bin with garden supplies; contents partly unknown.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"storage_contents_combustible\"\":\"\"unknown\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-vine-fence,Jasmine vine on fence,side-yard,Side yard,,,,,Vine / climbing plant,Measured,2,0,Vine is entered once as a plant; support context says fence to avoid duplicate object confusion.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"fence\"\",\"\"plant_touching_structure\"\":\"\"unknown\"\"}\",,\nobject,back-wood-table,Wood patio table with cushions,back-patio,Back patio,,,,,Furniture,Measured,2,6,Wood table and fabric cushions on patio near wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"furniture_material\"\":\"\"mixed\"\",\"\"furniture_cushions_fabric\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,back-deck-pot,Potted herb on deck,back-patio,Back patio,,,,,Potted plant,Measured,0,10,Small herb pot on deck surface; deck-specific fields included.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"measured_from_structure_part\"\":\"\"attached_deck\"\",\"\"structure_construction_type\"\":\"\"ordinary_existing\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"deck_surface\"\",\"\"deck_stair_clearance\"\":\"\"less_than_1ft\"\",\"\"deck_balcony_wall_distance\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"deck_balcony_away_from_openings\"\":\"\"yes\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,back-bbq,Gas grill by patio edge,back-patio,Back patio,,,,,Grill / BBQ,Needs details,4,0,Special object currently inventory/review; not a final evaluator result.,,,\nobject,back-firewood-stack,Firewood stack under eave,back-patio,Back patio,,,,,Firewood / lumber,Measured,1,4,Stack of firewood under covered patio edge.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"yes\"\",\"\"deck_attached_location\"\":\"\"beneath_deck\"\",\"\"storage_contents_combustible\"\":\"\"yes\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,slope-mature-tree,Mature pine near roofline,slope-edge,Slope edge,,,,,Tree,Measured,4,0,\"One tree object: canopy, debris, and ladder fuel answered inside clues.\",\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,slope-new-tree,Planned small tree location,slope-edge,Slope edge,,,,,Tree,Planned,8,0,Planned tree outside immediate wall line but mature drip-line unknown.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"tree_status\"\":\"\"planned_future\"\",\"\"tree_part\"\":\"\"new_or_planned\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"no\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,slope-mulch-strip,Bark mulch strip,slope-edge,Slope edge,,,,,Mulch / wood chips / bark,Measured,2,0,Combustible mulch area near structure and plants.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"standalone_mulch_area\"\",\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,slope-ac-unit,AC unit with dry leaves nearby,slope-edge,Slope edge,,,,,HVAC / AC unit,Needs details,1,6,Inventory-only/special review object; dry leaves noted but no official AC result yet.,,,\n",
-  requestedYard: "record_type,id,name,area_id,area_name,side,access,icon,color,type,status,wall_ft,wall_in,notes,question_answers_json,feedback_label,feedback_action\narea,front-grass,Front grass,,,Front,Easy,Front,Sage,,,,\"\",\"Front lawn/grass area.\",,,\narea,front-left-flower-area,Front left flower area,,,Front,Easy,Garden,Lavender,,,,\"\",\"Flower/pot area on front left. Some pots are near wall or windows.\",,,\narea,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,Front,Moderate,Side,Gold,,,,\"\",\"Narrow strip next to front wall/window line. Future idea: area-level wall/default distance context.\",,,\narea,front-bush,Front bush,,,Front,Easy,Garden,Clay,,,,\"\",\"Bush area near front.\",,,\narea,west-side,West side,,,West,Moderate,Side,Gray,,,,\"\",\"West side with trees near masonry/brick wall and a wood gate. House is behind wall; needs source-backed review.\",,,\narea,back-yard,Back yard,,,Back,Easy,Back,Blue,,,,\"\",\"Back of house with pergolas, climbing plants, and mixed plants.\",,,\narea,east-side,East side,,,East,Moderate,Side,Sage,,,,\"\",\"East side with climbing plant, wood wall/fence, and wood gate near structure.\",,,\nobject,front-palm-01,Front palm 1,front-grass,Front grass,,,,,Tree,Measured,4,6,Older than 2026 palm. Canopy near roofline but not touching.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-02,Front palm 2,front-grass,Front grass,,,,,Tree,Measured,7,0,Older than 2026 palm in lawn. Outside 5 ft but canopy may still be relevant.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"no\"\",\"\"ladder_fuels\"\":\"\"no\"\"}\",,\nobject,front-palm-03,Front palm 3,front-grass,Front grass,,,,,Tree,Measured,3,0,Older than 2026 palm; fronds need review.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"branches_canopy_fronds\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-04,Front palm 4,front-grass,Front grass,,,,,Tree,Measured,11,0,Older than 2026 palm farther from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":11,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"no\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"no\"\"}\",,\nobject,front-palm-05,Front palm 5,front-grass,Front grass,,,,,Tree,Needs review,5,0,Older than 2026 palm right at the 5 ft line; measure again.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"unknown\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-06,Front palm 6,front-grass,Front grass,,,,,Tree,Measured,2,6,Older than 2026 palm close to front wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,front-lawn-grass,Front lawn grass,front-grass,Front grass,,,,,In-ground plant,Measured,6,0,Lawn/grass area. App uses In-ground plant until a lawn-specific type exists.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":4},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,front-wall-pot-01,Front wall pot 1,front-grass,Front grass,,,,,Potted plant,Measured,1,0,Potted plant next to front wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-wall-pot-02,Front wall pot 2,front-grass,Front grass,,,,,Potted plant,Needs details,0,8,Potted plant next to front wall; details intentionally incomplete.,,,\nobject,front-wall-pot-03,Front wall pot 3,front-grass,Front grass,,,,,Potted plant,Measured,2,0,Potted plant near wall and near another pot.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-01,Narrow strip window pot 1,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,0,6,Near wall and under window; short plant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-02,Narrow strip window pot 2,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,1,2,Near wall and near window; taller plant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":3},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-03,Narrow strip window pot 3,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,2,4,Near wall but not directly under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":4},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,narrow-window-pot-04,Narrow strip window pot 4,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Needs review,0,10,Near wall/window; dead leaves observed.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":6},\"\"container_capacity_class\"\":\"\"unknown\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"no\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-05,Narrow strip window pot 5,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,3,6,Near wall but farther from nearest opening.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-main-bush,Front bush object,front-bush,Front bush,,,,,Shrub,Measured,2,0,Bush in front bush area.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"around_plant_or_object\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-01,Left flower pot 1,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,1,6,Near wall; not under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-02,Left flower pot 2,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,6,0,Not near wall; outside immediate 5 ft.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,left-flower-pot-03,Left flower pot 3,front-left-flower-area,Front left flower area,,,,,Potted plant,Needs details,2,2,Near wall; intentionally missing detailed clues.,,,\nobject,left-flower-pot-04,Left flower pot 4,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,0,9,Near wall and under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-05,Left flower pot 5,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,4,6,Near 5 ft line but not under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":6},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":7},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,left-flower-pot-06,Left flower pot 6,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,8,0,Farther pot for comparison.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":3},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,left-flower-pot-07,Left flower pot 7,front-left-flower-area,Front left flower area,,,,,Potted plant,Needs review,3,0,Near wall and near another pot; uncertain material.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"unknown\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,west-tree-01,West side healthy tree near brick wall,west-side,West side,,,,,Tree,Needs review,3,0,Older than 2026. Healthy tree near brick/masonry wall with house less than 5 ft behind wall. Treat as review scenario; no assumption that wall removes concern.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,west-tree-02,West side healthy tree touching wall,west-side,West side,,,,,Tree,Needs review,2,0,Older than 2026. Appears to touch masonry/brick wall; house is behind wall. Needs official/source-backed interpretation.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,west-tree-03,West side struggling tree,west-side,West side,,,,,Tree,Needs review,4,0,Older than 2026. Tree is not doing well and has dry/dead material.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,west-wood-gate,West side wood gate,west-side,West side,,,,,Wood gate,Measured,2,0,Wood gate less than 5 ft from house/wall line.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"unknown\"\"}\",,\nobject,back-wood-pergola-01,Back wood pergola 1,back-yard,Back yard,,,,,Pergola,Measured,4,0,Wood pergola near house. Current fields are limited and review-heavy.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,back-wood-pergola-02,Back wood pergola 2,back-yard,Back yard,,,,,Pergola,Measured,8,0,Wood pergola farther from house. Current fields are limited and review-heavy.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,back-climbing-plant-01,Back climbing plant on pergola 1,back-yard,Back yard,,,,,Vine / climbing plant,Measured,4,0,Climbing plant entered once as vine; support is pergola.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"pergola\"\",\"\"plant_touching_structure\"\":\"\"unknown\"\"}\",,\nobject,back-climbing-plant-02,Back climbing plant on pergola 2,back-yard,Back yard,,,,,Vine / climbing plant,Measured,7,0,Climbing plant on second pergola farther from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"plant_support_context\"\":\"\"pergola\"\",\"\"plant_touching_structure\"\":\"\"no\"\"}\",,\nobject,back-plant-far-01,Back plant farther 1,back-yard,Back yard,,,,,In-ground plant,Measured,6,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-02,Back plant farther 2,back-yard,Back yard,,,,,In-ground plant,Measured,7,0,More than 5 ft from house.,,,\nobject,back-plant-far-03,Back plant farther 3,back-yard,Back yard,,,,,In-ground plant,Measured,8,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-04,Back plant farther 4,back-yard,Back yard,,,,,In-ground plant,Measured,9,0,More than 5 ft from house.,,,\nobject,back-plant-far-05,Back plant farther 5,back-yard,Back yard,,,,,In-ground plant,Measured,10,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":10,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,back-plant-far-06,Back plant farther 6,back-yard,Back yard,,,,,In-ground plant,Measured,11,0,More than 5 ft from house.,,,\nobject,back-plant-far-07,Back plant farther 7,back-yard,Back yard,,,,,In-ground plant,Measured,12,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":12,\"\"in\"\":0},\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-08,Back plant farther 8,back-yard,Back yard,,,,,In-ground plant,Measured,13,0,More than 5 ft from house.,,,\nobject,back-plant-far-09,Back plant farther 9,back-yard,Back yard,,,,,In-ground plant,Measured,14,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":14,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-10,Back plant farther 10,back-yard,Back yard,,,,,In-ground plant,Measured,15,0,More than 5 ft from house.,,,\nobject,back-plant-near-01,Back plant close 1,back-yard,Back yard,,,,,In-ground plant,Measured,2,0,Less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,back-plant-near-02,Back plant close 2,back-yard,Back yard,,,,,In-ground plant,Needs review,3,6,Less than 5 ft from house; partial details.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,east-climbing-plant,East climbing plant near wall,east-side,East side,,,,,Vine / climbing plant,Measured,1,6,Climbing plant less than 5 ft from house/side wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"wall_or_structure\"\",\"\"plant_touching_structure\"\":\"\"yes\"\"}\",,\nobject,east-wood-wall,East wood wall or fence,east-side,East side,,,,,Wood fence,Measured,1,0,Wood wall/fence less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"parallel\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"yes\"\"}\",,\nobject,east-wood-gate,East side wood gate,east-side,East side,,,,,Wood gate,Measured,2,0,Wood gate less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"yes\"\"}\",,\n"
+  small: "record_type,id,name,area_id,area_name,side,access,icon,color,type,status,wall_ft,wall_in,notes,question_answers_json,feedback_label,feedback_action\narea,front-entry,Front entry,,,Front,Easy,Home,Sage,,,,\"\",\"Front door, walkway, small planter area.\",,,\narea,side-yard,Side yard,,,Left,Moderate,Path,Gray,,,,\"\",\"Narrow side path with bins and fence.\",,,\narea,back-patio,Back patio,,,Back,Easy,Patio,Clay,,,,\"\",\"Deck/patio area used often.\",,,\narea,slope-edge,Slope edge,,,Back,Hard,Slope,Gold,,,,\"\",\"Lower slope edge with trees and dry material.\",,,\nobject,front-pot-ceramic,Ceramic pot by stucco wall,front-entry,Front entry,,,,,Potted plant,Measured,1,6,Large ceramic pot with green plant; user is unsure whether wall is ordinary stucco or ignition resistant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-doormat,Coir doormat at front door,front-entry,Front entry,,,,,Doormat / rug,Needs details,0,2,Combustible-looking mat directly at door; some info intentionally missing for testing.,,,\nobject,front-shrub-window,Shrub under front window,front-entry,Front entry,,,,,Shrub,Measured,2,8,Green shrub below a window; mulch nearby.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":8},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"ordinary_existing\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":1,\"\"in\"\":3},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"around_plant_or_object\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,front-metal-chair,Metal chair near walkway,front-entry,Front entry,,,,,Furniture,Measured,6,0,Mostly metal chair outside Zone 0; includes complete furniture info.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"stored_within_5ft\"\":\"\"no\"\",\"\"material_combustible\"\":\"\"no\"\",\"\"furniture_material\"\":\"\"metal_or_noncombustible\"\",\"\"furniture_cushions_fabric\"\":\"\"no\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-trash-bins,Trash bins along side wall,side-yard,Side yard,,,,,Trash bin,Measured,1,0,Regular bin storage next to side wall; has Red Flag plan answered.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"trash_bin_timing\"\":\"\"regular_storage\"\",\"\"red_flag_bin_plan\"\":\"\"move_away_or_garage\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-wood-fence,Wood fence section near wall,side-yard,Side yard,,,,,Wood fence,Needs details,3,0,Wood fence perpendicular to house; vegetation question left unknown.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"unknown\"\"}\",,\nobject,side-storage-bin,Plastic storage bin,side-yard,Side yard,,,,,Outdoor storage,Measured,4,6,Plastic bin with garden supplies; contents partly unknown.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"storage_contents_combustible\"\":\"\"unknown\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-vine-fence,Jasmine vine on fence,side-yard,Side yard,,,,,Vine / climbing plant,Measured,2,0,Vine is entered once as a plant; support context says fence to avoid duplicate object confusion.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"fence\"\",\"\"plant_touching_structure\"\":\"\"unknown\"\"}\",,\nobject,back-wood-table,Wood patio table with cushions,back-patio,Back patio,,,,,Furniture,Measured,2,6,Wood table and fabric cushions on patio near wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"furniture_material\"\":\"\"mixed\"\",\"\"furniture_cushions_fabric\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,back-deck-pot,Potted herb on deck,back-patio,Back patio,,,,,Potted plant,Measured,0,10,Small herb pot on deck surface; deck-specific fields included.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"measured_from_structure_part\"\":\"\"attached_deck\"\",\"\"structure_construction_type\"\":\"\"ordinary_existing\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"deck_surface\"\",\"\"deck_stair_clearance\"\":\"\"less_than_1ft\"\",\"\"deck_balcony_wall_distance\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"deck_balcony_away_from_openings\"\":\"\"yes\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,back-bbq,Gas grill by patio edge,back-patio,Back patio,,,,,Grill / BBQ,Needs details,4,0,Special object currently inventory/review; not a final evaluator result.,,,\nobject,back-firewood-stack,Firewood stack under eave,back-patio,Back patio,,,,,Firewood / lumber,Measured,1,4,Stack of firewood under covered patio edge.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"yes\"\",\"\"deck_attached_location\"\":\"\"beneath_deck\"\",\"\"storage_contents_combustible\"\":\"\"yes\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,slope-mature-tree,Mature pine near roofline,slope-edge,Slope edge,,,,,Tree,Measured,4,0,\"One tree object: canopy, debris, and ladder fuel answered inside info.\",\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,slope-new-tree,Planned small tree location,slope-edge,Slope edge,,,,,Tree,Planned,8,0,Planned tree outside immediate wall line but mature drip-line unknown.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"tree_status\"\":\"\"planned_future\"\",\"\"tree_part\"\":\"\"new_or_planned\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"no\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,slope-mulch-strip,Bark mulch strip,slope-edge,Slope edge,,,,,Mulch / wood chips / bark,Measured,2,0,Combustible mulch area near structure and plants.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"standalone_mulch_area\"\",\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,slope-ac-unit,AC unit with dry leaves nearby,slope-edge,Slope edge,,,,,HVAC / AC unit,Needs details,1,6,Inventory-only/special review object; dry leaves noted but no official AC result yet.,,,\n",
+  requestedYard: "record_type,id,name,area_id,area_name,side,access,icon,color,type,status,wall_ft,wall_in,notes,question_answers_json,feedback_label,feedback_action\narea,front-grass,Front grass,,,Front,Easy,Front,Sage,,,,\"\",\"Front lawn/grass area.\",,,\narea,front-left-flower-area,Front left flower area,,,Front,Easy,Garden,Lavender,,,,\"\",\"Flower/pot area on front left. Some pots are near wall or windows.\",,,\narea,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,Front,Moderate,Side,Gold,,,,\"\",\"Narrow strip next to front wall/window line. Future idea: area-level wall/default distance context.\",,,\narea,front-bush,Front bush,,,Front,Easy,Garden,Clay,,,,\"\",\"Bush area near front.\",,,\narea,west-side,West side,,,West,Moderate,Side,Gray,,,,\"\",\"West side with trees near masonry/brick wall and a wood gate. House is behind wall; needs source-backed review.\",,,\narea,back-yard,Back yard,,,Back,Easy,Back,Blue,,,,\"\",\"Back of house with pergolas, climbing plants, and mixed plants.\",,,\narea,east-side,East side,,,East,Moderate,Side,Sage,,,,\"\",\"East side with climbing plant, wood wall/fence, and wood gate near structure.\",,,\nobject,front-palm-01,Front palm 1,front-grass,Front grass,,,,,Tree,Measured,4,6,Older than 2026 palm. Canopy near roofline but not touching.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-02,Front palm 2,front-grass,Front grass,,,,,Tree,Measured,7,0,Older than 2026 palm in lawn. Outside 5 ft but canopy may still be relevant.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"no\"\",\"\"ladder_fuels\"\":\"\"no\"\"}\",,\nobject,front-palm-03,Front palm 3,front-grass,Front grass,,,,,Tree,Measured,3,0,Older than 2026 palm; fronds need review.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"branches_canopy_fronds\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-04,Front palm 4,front-grass,Front grass,,,,,Tree,Measured,11,0,Older than 2026 palm farther from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":11,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"no\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"no\"\"}\",,\nobject,front-palm-05,Front palm 5,front-grass,Front grass,,,,,Tree,Needs review,5,0,Older than 2026 palm right at the 5 ft line; measure again.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"unknown\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-06,Front palm 6,front-grass,Front grass,,,,,Tree,Measured,2,6,Older than 2026 palm close to front wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,front-lawn-grass,Front lawn grass,front-grass,Front grass,,,,,In-ground plant,Measured,6,0,Lawn/grass area. App uses In-ground plant until a lawn-specific type exists.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":4},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,front-wall-pot-01,Front wall pot 1,front-grass,Front grass,,,,,Potted plant,Measured,1,0,Potted plant next to front wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-wall-pot-02,Front wall pot 2,front-grass,Front grass,,,,,Potted plant,Needs details,0,8,Potted plant next to front wall; details intentionally incomplete.,,,\nobject,front-wall-pot-03,Front wall pot 3,front-grass,Front grass,,,,,Potted plant,Measured,2,0,Potted plant near wall and near another pot.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-01,Narrow strip window pot 1,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,0,6,Near wall and under window; short plant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-02,Narrow strip window pot 2,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,1,2,Near wall and near window; taller plant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":3},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-03,Narrow strip window pot 3,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,2,4,Near wall but not directly under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":4},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,narrow-window-pot-04,Narrow strip window pot 4,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Needs review,0,10,Near wall/window; dead leaves observed.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":6},\"\"container_capacity_class\"\":\"\"unknown\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"no\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-05,Narrow strip window pot 5,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,3,6,Near wall but farther from nearest opening.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-main-bush,Front bush object,front-bush,Front bush,,,,,Shrub,Measured,2,0,Bush in front bush area.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"around_plant_or_object\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-01,Left flower pot 1,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,1,6,Near wall; not under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-02,Left flower pot 2,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,6,0,Not near wall; outside immediate 5 ft.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,left-flower-pot-03,Left flower pot 3,front-left-flower-area,Front left flower area,,,,,Potted plant,Needs details,2,2,Near wall; intentionally missing detailed info.,,,\nobject,left-flower-pot-04,Left flower pot 4,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,0,9,Near wall and under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-05,Left flower pot 5,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,4,6,Near 5 ft line but not under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":6},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":7},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,left-flower-pot-06,Left flower pot 6,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,8,0,Farther pot for comparison.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":3},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,left-flower-pot-07,Left flower pot 7,front-left-flower-area,Front left flower area,,,,,Potted plant,Needs review,3,0,Near wall and near another pot; uncertain material.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"unknown\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,west-tree-01,West side healthy tree near brick wall,west-side,West side,,,,,Tree,Needs review,3,0,Older than 2026. Healthy tree near brick/masonry wall with house less than 5 ft behind wall. Treat as review scenario; no assumption that wall removes concern.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,west-tree-02,West side healthy tree touching wall,west-side,West side,,,,,Tree,Needs review,2,0,Older than 2026. Appears to touch masonry/brick wall; house is behind wall. Needs official/source-backed interpretation.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,west-tree-03,West side struggling tree,west-side,West side,,,,,Tree,Needs review,4,0,Older than 2026. Tree is not doing well and has dry/dead material.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,west-wood-gate,West side wood gate,west-side,West side,,,,,Wood gate,Measured,2,0,Wood gate less than 5 ft from house/wall line.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"unknown\"\"}\",,\nobject,back-wood-pergola-01,Back wood pergola 1,back-yard,Back yard,,,,,Pergola,Measured,4,0,Wood pergola near house. Current fields are limited and review-heavy.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,back-wood-pergola-02,Back wood pergola 2,back-yard,Back yard,,,,,Pergola,Measured,8,0,Wood pergola farther from house. Current fields are limited and review-heavy.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,back-climbing-plant-01,Back climbing plant on pergola 1,back-yard,Back yard,,,,,Vine / climbing plant,Measured,4,0,Climbing plant entered once as vine; support is pergola.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"pergola\"\",\"\"plant_touching_structure\"\":\"\"unknown\"\"}\",,\nobject,back-climbing-plant-02,Back climbing plant on pergola 2,back-yard,Back yard,,,,,Vine / climbing plant,Measured,7,0,Climbing plant on second pergola farther from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"plant_support_context\"\":\"\"pergola\"\",\"\"plant_touching_structure\"\":\"\"no\"\"}\",,\nobject,back-plant-far-01,Back plant farther 1,back-yard,Back yard,,,,,In-ground plant,Measured,6,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-02,Back plant farther 2,back-yard,Back yard,,,,,In-ground plant,Measured,7,0,More than 5 ft from house.,,,\nobject,back-plant-far-03,Back plant farther 3,back-yard,Back yard,,,,,In-ground plant,Measured,8,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-04,Back plant farther 4,back-yard,Back yard,,,,,In-ground plant,Measured,9,0,More than 5 ft from house.,,,\nobject,back-plant-far-05,Back plant farther 5,back-yard,Back yard,,,,,In-ground plant,Measured,10,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":10,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,back-plant-far-06,Back plant farther 6,back-yard,Back yard,,,,,In-ground plant,Measured,11,0,More than 5 ft from house.,,,\nobject,back-plant-far-07,Back plant farther 7,back-yard,Back yard,,,,,In-ground plant,Measured,12,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":12,\"\"in\"\":0},\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-08,Back plant farther 8,back-yard,Back yard,,,,,In-ground plant,Measured,13,0,More than 5 ft from house.,,,\nobject,back-plant-far-09,Back plant farther 9,back-yard,Back yard,,,,,In-ground plant,Measured,14,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":14,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-10,Back plant farther 10,back-yard,Back yard,,,,,In-ground plant,Measured,15,0,More than 5 ft from house.,,,\nobject,back-plant-near-01,Back plant close 1,back-yard,Back yard,,,,,In-ground plant,Measured,2,0,Less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,back-plant-near-02,Back plant close 2,back-yard,Back yard,,,,,In-ground plant,Needs review,3,6,Less than 5 ft from house; partial details.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,east-climbing-plant,East climbing plant near wall,east-side,East side,,,,,Vine / climbing plant,Measured,1,6,Climbing plant less than 5 ft from house/side wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"wall_or_structure\"\",\"\"plant_touching_structure\"\":\"\"yes\"\"}\",,\nobject,east-wood-wall,East wood wall or fence,east-side,East side,,,,,Wood fence,Measured,1,0,Wood wall/fence less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"parallel\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"yes\"\"}\",,\nobject,east-wood-gate,East side wood gate,east-side,East side,,,,,Wood gate,Measured,2,0,Wood gate less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"yes\"\"}\",,\n"
 };
 
 
@@ -4936,10 +5019,10 @@ function bindEvents() {
 }
 
 async function refreshState() {
-  state.areas = (await getAll(state.db, stores.areas)).sort((a, b) => a.name.localeCompare(b.name));
+  state.areas = (await getAll(state.db, stores.areas)).sort((a, b) => safeText(a.name).localeCompare(safeText(b.name)));
   state.objects = (await getAll(state.db, stores.objects))
     .map((object) => ({ ...object, type: normalizeObjectType(object.type) }))
-    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    .sort((a, b) => safeText(b.updatedAt).localeCompare(safeText(a.updatedAt)));
   logDebug("state_refreshed", { areaCount: state.areas.length, objectCount: state.objects.length });
   render();
 }
@@ -5034,7 +5117,7 @@ function selectQuickType(type) {
   state.quickType = type;
   const group = OBJECT_TYPE_GROUPS.find((item) => item.types.includes(type));
   if (group) state.quickTypeGroup = group.label;
-  state.quickMessage = `${type} selected. Best next step: add info while it is fresh.`;
+  state.quickMessage = `${type} selected. Tap easiest next step if you know more now.`;
   renderQuickAdd();
 }
 
@@ -5517,13 +5600,13 @@ function getVisibleObjects() {
 }
 
 function compareObjects(a, b) {
-  const nameTie = a.name.localeCompare(b.name);
+  const nameTie = safeText(a.name).localeCompare(safeText(b.name));
   if (state.sortBy === "name") return nameTie;
   if (state.sortBy === "area") return areaName(a.areaId).localeCompare(areaName(b.areaId)) || nameTie;
-  if (state.sortBy === "type") return a.type.localeCompare(b.type) || nameTie;
-  if (state.sortBy === "status") return a.status.localeCompare(b.status) || nameTie;
+  if (state.sortBy === "type") return safeText(a.type).localeCompare(safeText(b.type)) || nameTie;
+  if (state.sortBy === "status") return safeText(a.status).localeCompare(safeText(b.status)) || nameTie;
   if (state.sortBy === "distance") return distanceSortValue(a) - distanceSortValue(b) || nameTie;
-  return b.updatedAt.localeCompare(a.updatedAt) || nameTie;
+  return safeText(b.updatedAt).localeCompare(safeText(a.updatedAt)) || nameTie;
 }
 
 function distanceSortValue(object) {
@@ -5603,22 +5686,25 @@ function renderTypeHint() {
   const type = document.querySelector("#object-type").value;
   document.querySelector("#object-type-hint").textContent = type
     ? typeHints[type] || "Later phases will ask only the fields relevant to this object type."
-    : "Choose one object type. Feedback appears after you save info.";
+    : "Choose a category + subtype first. Info questions appear only after that.";
 }
 
 function renderGuidedQuestions() {
   const type = document.querySelector("#object-type").value;
   const flow = getFlowForObjectType(type);
+  const panel = document.querySelector("#guided-panel");
   const flowLabel = document.querySelector("#guided-flow-label");
   const list = document.querySelector("#guided-question-list");
 
   if (!type || !flow) {
+    panel.hidden = true;
     flowLabel.textContent = "Choose an object type to see what matters here.";
-    list.innerHTML = `<div class="empty">Choose an object type first. The info questions appear here.</div>`;
+    list.innerHTML = "";
     renderGuidedReadiness();
     return;
   }
 
+  panel.hidden = false;
   state.guidedAnswers = pruneAnswersForType(state.guidedAnswers, type);
   const questions = getQuestionsForFlow(flow.id).filter((question) => questionAppliesToType(question, type));
   const visibleQuestions = questions.filter((question) => question.id !== "distance_wall");
@@ -5627,7 +5713,7 @@ function renderGuidedQuestions() {
     : "";
   flowLabel.textContent = flow.reviewOnly
     ? `${type}: review-only info set. Save location and material details; no result yet.`
-    : `${type}: answer what you can now. ${visibleQuestions.length} info items.`;
+    : `${type}: answer what you know. ${visibleQuestions.length} possible info items.`;
   list.innerHTML = `${linkedDistance}${visibleQuestions.map((question) => renderGuidedQuestion(question, state.guidedAnswers[question.id])).join("")}${sourceLegendHtml()}`;
   updateGuidedDistanceMetrics();
   renderGuidedReadiness();
@@ -5904,12 +5990,16 @@ function guidedCardSummaryHtml(object) {
   const readiness = SCREENING_READINESS.includes(object.screeningReadiness)
     ? object.screeningReadiness
     : readinessForObject(object);
+  const feedback = previewObjectFeedback(object);
+  if (["Mapped checks look okay", "Mapped checks need changes", "Outside this Zone 0 check", "Temporary only"].includes(feedback.label)) {
+    return "";
+  }
   const answers = answersWithObjectDistance(object);
   const progress = guidedProgress(object.type, answers);
   const next = readiness === "not_started"
-    ? "Add when ready."
+    ? "Add later"
     : progress.shortText;
-  return `<p class="guided-card-summary ${readinessClass(readiness)}"><span aria-hidden="true">🕵️</span><span><strong>Info: ${escapeHtml(readinessLabel(readiness))}</strong><small>${escapeHtml(next)}</small></span></p>`;
+  return `<p class="guided-card-summary ${readinessClass(readiness)}"><strong>${escapeHtml(readinessLabel(readiness))}</strong><small>Info ${escapeHtml(next)}</small></p>`;
 }
 
 function feedbackPreviewCardHtml(object) {
@@ -5954,6 +6044,8 @@ function renderYardReport() {
     </div>
   `).join("");
 
+  document.querySelector("#area-checklist").innerHTML = areaChecklistHtml(summary);
+
   document.querySelector("#report-groups").innerHTML = REPORT_GROUPS.map((group) => {
     const items = summary.groups[group.id] || [];
     const list = items.length
@@ -5975,6 +6067,45 @@ function renderYardReport() {
       </section>
     `;
   }).join("");
+}
+
+function areaChecklistHtml(summary) {
+  const items = areaChecklistItems(summary);
+  if (!items.length) {
+    return `
+      <section class="area-checklist-panel">
+        <h3>Area checklist</h3>
+        <p class="field-note">No action checklist items yet.</p>
+      </section>
+    `;
+  }
+  const grouped = items.reduce((groups, item) => {
+    const key = item.area;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+    return groups;
+  }, {});
+  return `
+    <section class="area-checklist-panel">
+      <h3>Area checklist</h3>
+      <p>Mark items as you handle them. This checklist is for this screen; export the report for a text copy.</p>
+      ${Object.entries(grouped).map(([area, areaItems]) => `
+        <details class="area-checklist-group" open>
+          <summary>${escapeHtml(area)} <span>${areaItems.length}</span></summary>
+          <ul>
+            ${areaItems.map((item) => `
+              <li>
+                <label>
+                  <input type="checkbox">
+                  <span><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.status)} - ${escapeHtml(item.next)}</small></span>
+                </label>
+              </li>
+            `).join("")}
+          </ul>
+        </details>
+      `).join("")}
+    </section>
+  `;
 }
 
 const REPORT_GROUPS = [
@@ -6039,6 +6170,17 @@ function reportSummary() {
   };
 }
 
+function areaChecklistItems(summary) {
+  return ["change", "missing", "review", "temporary"].flatMap((groupId) => (
+    (summary.groups[groupId] || []).map((item) => ({
+      area: areaName(item.object.areaId),
+      name: safeText(item.object.name) || "Unnamed object",
+      status: shortFeedbackLabel(item.feedback.label),
+      next: safeText(item.action) || "Review this item.",
+    }))
+  )).sort((a, b) => safeText(a.area).localeCompare(safeText(b.area)) || safeText(a.name).localeCompare(safeText(b.name)));
+}
+
 function reportGroupId(feedback) {
   if (feedback.tone === "change") return "change";
   if (feedback.tone === "missing") return "missing";
@@ -6068,6 +6210,7 @@ function exportYardReport() {
 
 function yardReportText(exportedAt = new Date()) {
   const summary = reportSummary();
+  const checklistItems = areaChecklistItems(summary);
   const lines = [
     "BloomBuffer yard report",
     `Exported: ${exportedAt.toLocaleString()}`,
@@ -6081,6 +6224,21 @@ function yardReportText(exportedAt = new Date()) {
   ];
   for (const group of REPORT_GROUPS) {
     lines.push(`- ${group.label}: ${summary.counts[group.id] || 0}`);
+  }
+  lines.push("", "Area checklist:");
+  if (!checklistItems.length) {
+    lines.push("- No action checklist items yet.");
+  } else {
+    let currentArea = "";
+    for (const item of checklistItems) {
+      if (item.area !== currentArea) {
+        currentArea = item.area;
+        lines.push("", currentArea);
+      }
+      lines.push(`[ ] ${item.name}`);
+      lines.push(`    Status: ${item.status}`);
+      lines.push(`    Next: ${item.next}`);
+    }
   }
   for (const group of REPORT_GROUPS) {
     lines.push("", group.label, group.description);
@@ -6591,7 +6749,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 info wording v69",
+    build: "Phase 5 storage hardening v72",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",
@@ -6606,6 +6764,10 @@ function collectPhoneDiagnostics() {
     areaCount: String(state.areas.length),
     debugEvents: String(state.debugEvents.length),
   };
+}
+
+function safeText(value) {
+  return String(value ?? "");
 }
 
 function localStorageStatus() {

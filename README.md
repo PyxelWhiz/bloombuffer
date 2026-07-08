@@ -6,7 +6,7 @@ Use it to list yard areas, plants, trees, fences, gates, bins, furniture, mulch,
 
 Current build:
 
-`Build: Phase 5 yard report v64`
+`Build: Phase 5 calmer cards v66`
 
 ## What It Does
 
@@ -14,6 +14,7 @@ Current build:
 - Lets you add measurements and risk clues.
 - Shows rule-of-thumb planning feedback.
 - Shows a grouped yard report for testing and planning.
+- Keeps object-card feedback short, with longer source/details collapsed.
 - Saves and imports BloomBuffer JSON backup files.
 - Exports and imports CSV tables for spreadsheet testing.
 - Includes built-in test samples.
@@ -96,7 +97,7 @@ If someone forks or copies the project, they should publish their own GitHub Pag
 ## Quick Test
 
 1. Open the app.
-2. Confirm the top says `Build: Phase 5 yard report v64`.
+2. Confirm the top says `Build: Phase 5 calmer cards v66`.
 3. Tap `Areas`, `Objects`, and `Rules` to make sure buttons respond.
 4. On Home, use `File tools for testing` to try JSON export/import or CSV export/import.
 5. Add one test object.
@@ -105,4 +106,4 @@ If someone forks or copies the project, they should publish their own GitHub Pag
 8. Open `Rules` > `Yard report` and confirm objects appear in grouped planning buckets.
 9. Use `Reset testing data` only when you want to clear this browser and start over.
 
-If buttons do not respond, you are probably opening an older broken build. Use v64 or newer.
+If buttons do not respond, you are probably opening an older broken build. Use v66 or newer.

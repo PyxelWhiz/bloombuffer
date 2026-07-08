@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 yard report v64</title>
+  <title>BloomBuffer - Phase 5 calmer cards v66</title>
   <style>
 :root {
   color-scheme: light;
@@ -1234,14 +1234,31 @@ button.active {
   font-weight: 700;
 }
 
+.feedback-details {
+  margin-top: 3px;
+}
+
+.feedback-details summary {
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.feedback-details p {
+  margin: 6px 0 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .feedback-ok {
   border-left-color: #2f7d4d;
   background: #e7f4e6;
 }
 
 .feedback-change {
-  border-left-color: #a63c31;
-  background: #fde5df;
+  border-left-color: #d4a937;
+  background: #fff2c7;
 }
 
 .feedback-missing,
@@ -1699,7 +1716,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p class="tagline">Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 yard report v64</p>
+        <p class="build-label">Build: Phase 5 calmer cards v66</p>
       </div>
       <span class="phase-badge">Local yard log</span>
     </header>
@@ -2501,7 +2518,7 @@ const QUESTION_DEFINITIONS = [
     inputType: "choice",
     options: ["exterior_wall", "attached_deck", "stairs", "pergola", "balcony", "other_or_unknown"],
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Mulch / wood chips / bark", "Trash bin"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant", "Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Mulch / wood chips / bark", "Trash bin"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2512,7 +2529,7 @@ const QUESTION_DEFINITIONS = [
     inputType: "choice",
     options: ["ordinary_existing", "ignition_resistant", "non_combustible_structure", "historic_structure", "unknown"],
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2522,7 +2539,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "Use the outside view of the window or opening.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2532,7 +2549,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "Opening means window, door, vent, or similar opening. City guidance uses 2 ft / 61 cm for plants and containers.",
     inputType: "distance",
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
     required: true,
   },
   {
@@ -2586,7 +2603,7 @@ const QUESTION_DEFINITIONS = [
     inputType: "choice",
     options: ["at_least_1ft", "less_than_1ft", "no_deck_stairs_nearby", "unknown"],
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2618,7 +2635,7 @@ const QUESTION_DEFINITIONS = [
     inputType: "choice",
     options: ["fire_smart", "herbaceous", "other_or_unknown"],
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2628,7 +2645,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "Use feet and inches, or the closest estimate.",
     inputType: "distance",
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
     required: true,
   },
   {
@@ -2637,7 +2654,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "Use unknown if this needs another look.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2647,7 +2664,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "This helps later screening consider the 1.5 x plant-height spacing clue and fuel continuity.",
     inputType: "distance",
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
     required: true,
   },
   {
@@ -2656,7 +2673,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "Includes wood chips, bark, and similar combustible ground material.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Mulch / wood chips / bark"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant", "Mulch / wood chips / bark"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2667,7 +2684,7 @@ const QUESTION_DEFINITIONS = [
     inputType: "choice",
     options: ["standalone_mulch_area", "in_or_around_pot", "around_plant_or_object", "other_or_unknown"],
     sourceBasis: "app_inference",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Mulch / wood chips / bark"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant", "Mulch / wood chips / bark"],
     required: false,
     reviewOnUnknown: true,
   },
@@ -4119,7 +4136,7 @@ function reviewForStatus(status, reasons, reviewNotes) {
 function suggestedChangesFor(status, reasons, missingFields, reviewNotes) {
   if (status === EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS) return [];
   if (status === EVALUATOR_RESULTS.NOT_APPLICABLE) return [];
-  if (status === EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE) return ["Keep the item in the inventory, but do not use this Zone 0 evaluator for it unless its location changes."];
+  if (status === EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE) return ["Keep it in the inventory. No Zone 0 action is suggested unless its location changes."];
 
   const suggestions = [];
   for (const reason of reasons) suggestions.push(suggestionForReason(reason));
@@ -5907,14 +5924,30 @@ function feedbackPreviewCardHtml(object) {
   const extraActions = feedback.primaryActions.slice(1);
   return `
     <div class="feedback-preview feedback-${escapeHtml(feedback.tone)}" aria-label="Feedback preview">
-      <strong>Feedback preview: ${escapeHtml(feedback.label)}</strong>
-      <span>${escapeHtml(feedback.summary)}</span>
+      <strong>${escapeHtml(shortFeedbackLabel(feedback.label))}</strong>
       <span>${escapeHtml(action)}</span>
-      ${extraActions.length ? `<ul>${extraActions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-      ${source}
-      <small>${escapeHtml(feedback.boundaryNote)}</small>
+      <details class="feedback-details">
+        <summary>Why / details</summary>
+        <p>${escapeHtml(feedback.summary)}</p>
+        ${extraActions.length ? `<ul>${extraActions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
+        ${source}
+        <small>${escapeHtml(feedback.boundaryNote)}</small>
+      </details>
     </div>
   `;
+}
+
+function shortFeedbackLabel(label) {
+  const labels = {
+    "Mapped checks look okay": "Looks okay",
+    "Mapped checks need changes": "Change / check",
+    "Need more information": "Needs info",
+    "Needs review": "Review",
+    "Temporary only": "Temporary only",
+    "Outside this Zone 0 check": "Outside 5 ft check",
+    "Not checked by this formula": "Not checked yet",
+  };
+  return labels[label] || label;
 }
 
 function renderYardReport() {
@@ -6087,7 +6120,7 @@ function guidedProgress(type, answers) {
     answeredRequired,
     required: requiredQuestions.length,
     answeredTotal,
-    text: `${answeredRequired}/${requiredQuestions.length} key clues answered; ${answeredTotal} total saved`,
+    text: `${answeredRequired}/${requiredQuestions.length} shown report clues answered; ${answeredTotal} total saved`,
   };
 }
 
@@ -6560,7 +6593,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 yard report v64",
+    build: "Phase 5 calmer cards v66",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

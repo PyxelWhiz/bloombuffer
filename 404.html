@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 compact dock v68</title>
+  <title>BloomBuffer - Phase 5 info wording v69</title>
   <style>
 :root {
   color-scheme: light;
@@ -1733,7 +1733,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p class="tagline">Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 compact dock v68</p>
+        <p class="build-label">Build: Phase 5 info wording v69</p>
       </div>
       <span class="phase-badge">Local yard log</span>
     </header>
@@ -1870,7 +1870,7 @@ button.card-danger-action {
 
         <div class="panel quick-add-panel" id="quick-add-panel">
           <h2>Quick add</h2>
-          <p>Fast yard-walk capture. Best path: add the details and clues while you still remember what you saw.</p>
+          <p>Fast yard-walk capture. Add details now if you can.</p>
           <form id="quick-add-form" class="form">
             <label for="quick-area">Area</label>
             <select id="quick-area"></select>
@@ -1898,12 +1898,12 @@ button.card-danger-action {
             <label for="quick-notes">📝 Notes - optional</label>
             <textarea id="quick-notes" placeholder="Short note; measurements can come later"></textarea>
 
-            <p id="quick-add-message" class="field-note">Save basic only if you are rushing. Details + clues make feedback preview more useful.</p>
+            <p id="quick-add-message" class="field-note">Save basic if rushing. Add info for better feedback.</p>
 
             <div class="actions">
               <button class="risk-clue-action continue-action" type="button" id="quick-continue-guided">
                 <span class="clue-agent-icon" aria-hidden="true">🕵️</span>
-                <span class="button-text"><strong>Best next step: details + clues</strong><small>Makes feedback preview more useful</small></span>
+                <span class="button-text"><strong>Best next step: add info</strong><small>Makes feedback more useful</small></span>
               </button>
               <button class="secondary quick-save-action" type="submit">Save basic only</button>
             </div>
@@ -1921,7 +1921,7 @@ button.card-danger-action {
             <select id="object-area"></select>
             <p class="field-note">No area yet is okay. You can move this object later from its saved card.</p>
 
-            <span class="field-label" id="object-type-label">⭐ Object category + subtype - required before saving and risk clues</span>
+            <span class="field-label" id="object-type-label">⭐ Object category + subtype - required</span>
             <div class="type-picker" aria-labelledby="object-type-label">
               <div class="selected-type-card selected-type-summary">
                 <div class="selected-type-main">
@@ -1949,15 +1949,15 @@ button.card-danger-action {
             <section class="guided-panel" aria-labelledby="guided-questions-title">
               <div class="guided-header">
                 <div>
-                  <h3 id="guided-questions-title"><span class="risk-clue-person" aria-hidden="true">🕵️</span> Risk clues: check what matters</h3>
+                  <h3 id="guided-questions-title"><span class="risk-clue-person" aria-hidden="true">🕵️</span> Info: check what matters</h3>
                   <p id="guided-flow-label">Choose an object type to see what matters here.</p>
                   <p class="risk-clue-nudge">Answer what you can now. These details feed feedback preview and reduce guessing later.</p>
-                  <p id="guided-progress" class="guided-progress">No risk clues answered yet.</p>
+                  <p id="guided-progress" class="guided-progress">No info answered yet.</p>
                 </div>
                 <span id="guided-readiness" class="readiness-badge">Not started</span>
               </div>
               <div id="guided-question-list" class="guided-question-list"></div>
-              <p class="field-note">Risk clues feed a rule-of-thumb preview. It is planning help, not City sign-off.</p>
+              <p class="field-note">Saved info feeds the rule-of-thumb preview.</p>
             </section>
 
             <div class="two-col">
@@ -2030,11 +2030,11 @@ button.card-danger-action {
       <section id="screen-rules" class="screen" aria-labelledby="rules-title">
         <div class="panel">
           <h2 id="rules-title">Rule status</h2>
-          <p>BloomBuffer stores inventory, risk-clue answers, rule-of-thumb feedback preview, CSV files, and a yard report for testing.</p>
+          <p>Inventory, saved info, rule-of-thumb feedback, CSV files, and yard report.</p>
         </div>
         <div class="panel report-panel" id="yard-report-panel">
           <h2>Yard report</h2>
-          <p>This is a rule-of-thumb planning report from saved objects and clues. It is not City sign-off.</p>
+          <p>Grouped next steps from saved objects. Not City sign-off.</p>
           <div id="report-summary-grid" class="report-summary-grid"></div>
           <div class="actions">
             <button class="secondary" type="button" id="export-report">Save report TXT</button>
@@ -2044,8 +2044,8 @@ button.card-danger-action {
         <div class="panel">
           <h2>What comes next</h2>
           <ol class="step-list">
-            <li>Risk clues collect object-specific answers.</li>
-            <li>Feedback preview shows mapped checks, missing info, review items, and suggested changes.</li>
+            <li>Object info answers drive the rule-of-thumb preview.</li>
+            <li>Status shows what needs action, more info, or review.</li>
             <li>Future priority buckets and reports will help plan what to do first.</li>
           </ol>
         </div>
@@ -2060,27 +2060,27 @@ button.card-danger-action {
             <button class="secondary" type="button" id="load-small-sample">Load small test sample</button>
             <button class="secondary" type="button" id="load-yard-sample">Load requested yard sample</button>
           </div>
-          <p class="field-note">Keep the header row. Use `record_type` = `area` or `object`. The `question_answers_json` column preserves risk-clue answers.</p>
+          <p class="field-note">Keep the header row. Use `record_type` = `area` or `object`. The `question_answers_json` column preserves saved info.</p>
           <input id="import-table" type="file" accept=".csv,text/csv,text/plain" hidden>
         </div>
         <div class="panel">
-          <h2>Risk clues and feedback checklist</h2>
-          <p>Use this before broader user testing. These checks verify collection, preview wording, and the official-compliance boundary.</p>
+          <h2>Info and feedback checklist</h2>
+          <p>Use this before broader user testing. These checks verify saved info, preview wording, and the official-compliance boundary.</p>
           <details class="checklist-details" open>
-            <summary>Show risk clue checklist</summary>
+            <summary>Show info checklist</summary>
             <ol class="checklist-list">
               <li><strong>Potted plant:</strong> questions appear after choosing Potted plant.</li>
               <li><strong>Potted plant:</strong> tree and fence questions do not appear.</li>
-              <li><strong>Tree:</strong> one Tree object appears; tree concern is asked once inside risk clues.</li>
+              <li><strong>Tree:</strong> one Tree object appears; tree concern is asked once inside saved info.</li>
               <li><strong>Tree:</strong> container-size questions do not appear.</li>
               <li><strong>Fence/gate:</strong> orientation and material questions appear.</li>
               <li><strong>Equipment:</strong> HVAC / AC, grill, and generator stay review/inventory prompts.</li>
               <li><strong>Saving:</strong> partial answers save and show again when editing.</li>
               <li><strong>Readiness:</strong> missing answers show Incomplete or Need more information, not a City decision.</li>
               <li><strong>Unknown:</strong> unknown answers show Needs review or Need more information.</li>
-              <li><strong>Backup:</strong> JSON export/import keeps risk-clue answers.</li>
+              <li><strong>Backup:</strong> JSON export/import keeps saved info.</li>
               <li><strong>Feedback:</strong> object cards show feedback preview with a boundary note.</li>
-              <li><strong>Table tools:</strong> CSV export includes areas, objects, clue JSON, and feedback columns.</li>
+              <li><strong>Table tools:</strong> CSV export includes areas, objects, saved-info JSON, and feedback columns.</li>
             </ol>
           </details>
         </div>
@@ -4667,17 +4667,17 @@ const state = {
 };
 
 const typeHints = {
-  "Potted plant": "Use details + clues for wall/opening distance, container capacity/material, plant height, spacing, and dead material feedback.",
-  "Shrub": "Use details + clues for height, wall/opening distance, health, dead material, spacing, and fuel continuity feedback.",
+  "Potted plant": "Add wall/opening distance, container capacity/material, plant height, spacing, and dead material info.",
+  "Shrub": "Add height, wall/opening distance, health, dead material, spacing, and fuel continuity info.",
   "Vine / climbing plant": "Use this for one real vine or climbing plant. Save what it grows on here so you do not add the same vine twice as a fence/pergola object.",
-  "Tree": "Use one Tree object for the real tree. Trunk, branches, debris, ladder fuels, and new/planned timing are saved as tree clues.",
+  "Tree": "Use one Tree object for the real tree. Trunk, branches, debris, ladder fuels, and timing are saved as tree info.",
   "Wood gate": "Feedback preview uses orientation, material, reinforcement, vegetation, and distance; official discretion may still apply.",
-  "Wood fence": "Feedback preview uses orientation, material, fuel pathway, and the limited existing-vinyl distance clue where relevant.",
-  "Pergola": "Feedback preview is review-heavy for pergolas. Add material, distance, and fuel-continuity clues; add the vine separately as a Vine / climbing plant if needed.",
+  "Wood fence": "Feedback preview uses orientation, material, fuel pathway, and the limited existing-vinyl distance info where relevant.",
+  "Pergola": "Pergolas are review-heavy. Add material, distance, and fuel-continuity info; add the vine separately if needed.",
   "Mulch / wood chips / bark": "Feedback preview checks combustible mulch in Zone 0.",
-  "Grill / BBQ": "Saved as review-only for now. Feedback preview can flag storage/material clues, but no automatic equipment-specific compliance result is mapped.",
+  "Grill / BBQ": "Saved as review-only for now. Feedback preview can flag storage/material info, but no automatic equipment-specific compliance result is mapped.",
   "HVAC / AC unit": "Saved as inventory for now. AC units are review-only in this build; later phases may ask about nearby vegetation, debris, and contact.",
-  "Generator": "Saved as review-only for now. Feedback preview can flag fuel/storage/material clues, but no automatic equipment-specific compliance result is mapped.",
+  "Generator": "Saved as review-only for now. Feedback preview can flag fuel/storage/material info, but no automatic equipment-specific compliance result is mapped.",
   "Firewood / lumber": "Feedback preview treats stored combustibles near the structure as a storage/combustible-material question.",
   "Doormat / rug": "Feedback preview treats mats/rugs near the structure as a combustible-item question.",
 };
@@ -4745,7 +4745,7 @@ const questionHelpers = {
   },
   tree_part: {
     title: "One tree",
-    text: "Use one Tree object for the real tree. Trunk, canopy, debris, ladder fuels, and timing are saved as tree clues.",
+    text: "Use one Tree object for the real tree. Trunk, canopy, debris, ladder fuels, and timing are saved as tree info.",
   },
   tree_contact: {
     title: "Canopy",
@@ -5034,7 +5034,7 @@ function selectQuickType(type) {
   state.quickType = type;
   const group = OBJECT_TYPE_GROUPS.find((item) => item.types.includes(type));
   if (group) state.quickTypeGroup = group.label;
-  state.quickMessage = `${type} selected. Best next step: add details + clues while it is fresh.`;
+  state.quickMessage = `${type} selected. Best next step: add info while it is fresh.`;
   renderQuickAdd();
 }
 
@@ -5060,7 +5060,7 @@ function copyQuickAddToFullForm({ scrollToQuestions = false } = {}) {
     renderTypeHint();
     renderTypePicker();
     renderGuidedQuestions();
-    state.quickMessage = "Choose an object type first, then continue to details + clues.";
+    state.quickMessage = "Choose an object type first, then continue to info.";
     renderQuickAdd();
   }
   renderMetricDistance();
@@ -5477,7 +5477,7 @@ function renderObjects() {
       ${guidedCardSummaryHtml(object)}
       ${feedbackPreviewCardHtml(object)}
       <div class="actions object-actions">
-        <button class="risk-clue-action card-clue-action" data-edit-object="${object.id}"><span aria-hidden="true">🕵️</span><span>Details + clues</span></button>
+        <button class="risk-clue-action card-clue-action" data-edit-object="${object.id}"><span aria-hidden="true">🕵️</span><span>Info</span></button>
         <button class="secondary card-secondary-action" data-edit-object="${object.id}">Edit / move</button>
         <button class="danger card-danger-action" data-delete-object="${object.id}">Delete</button>
       </div>
@@ -5603,7 +5603,7 @@ function renderTypeHint() {
   const type = document.querySelector("#object-type").value;
   document.querySelector("#object-type-hint").textContent = type
     ? typeHints[type] || "Later phases will ask only the fields relevant to this object type."
-    : "Choose one object type. Feedback preview appears after you save details and clues.";
+    : "Choose one object type. Feedback appears after you save info.";
 }
 
 function renderGuidedQuestions() {
@@ -5614,7 +5614,7 @@ function renderGuidedQuestions() {
 
   if (!type || !flow) {
     flowLabel.textContent = "Choose an object type to see what matters here.";
-    list.innerHTML = `<div class="empty">Choose an object type first. The clue questions appear here.</div>`;
+    list.innerHTML = `<div class="empty">Choose an object type first. The info questions appear here.</div>`;
     renderGuidedReadiness();
     return;
   }
@@ -5626,8 +5626,8 @@ function renderGuidedQuestions() {
     ? `<div class="guided-linked-field">${distanceDiagramSvg()}<span>Distance from wall uses the distance fields below. Feet/inches or cm both count.</span></div>`
     : "";
   flowLabel.textContent = flow.reviewOnly
-    ? `${type}: review-only clue set. Save location and material details; no result yet.`
-    : `${type}: answer what you can now. ${visibleQuestions.length} clues here.`;
+    ? `${type}: review-only info set. Save location and material details; no result yet.`
+    : `${type}: answer what you can now. ${visibleQuestions.length} info items.`;
   list.innerHTML = `${linkedDistance}${visibleQuestions.map((question) => renderGuidedQuestion(question, state.guidedAnswers[question.id])).join("")}${sourceLegendHtml()}`;
   updateGuidedDistanceMetrics();
   renderGuidedReadiness();
@@ -5707,7 +5707,7 @@ function renderGuidedInput(question, value) {
 
 function questionRequirementText(question) {
   if (question.id === "plant_type") return "Helpful if you know; choose Not sure if needed.";
-  if (question.requiredWhen) return "Needed when the related clue applies";
+  if (question.requiredWhen) return "Needed when the related info applies";
   return question.required ? "Needed before later rule check" : "Optional";
 }
 
@@ -5897,7 +5897,7 @@ function guidedReadinessBadgeHtml(object) {
   const readiness = SCREENING_READINESS.includes(object.screeningReadiness)
     ? object.screeningReadiness
     : readinessForObject(object);
-  return `<span class="mini-badge readiness-mini ${readinessClass(readiness)}">Clues: ${escapeHtml(readinessLabel(readiness))}</span>`;
+  return `<span class="mini-badge readiness-mini ${readinessClass(readiness)}">Info: ${escapeHtml(readinessLabel(readiness))}</span>`;
 }
 
 function guidedCardSummaryHtml(object) {
@@ -5909,7 +5909,7 @@ function guidedCardSummaryHtml(object) {
   const next = readiness === "not_started"
     ? "Add when ready."
     : progress.shortText;
-  return `<p class="guided-card-summary ${readinessClass(readiness)}"><span aria-hidden="true">🕵️</span><span><strong>Clues: ${escapeHtml(readinessLabel(readiness))}</strong><small>${escapeHtml(next)}</small></span></p>`;
+  return `<p class="guided-card-summary ${readinessClass(readiness)}"><span aria-hidden="true">🕵️</span><span><strong>Info: ${escapeHtml(readinessLabel(readiness))}</strong><small>${escapeHtml(next)}</small></span></p>`;
 }
 
 function feedbackPreviewCardHtml(object) {
@@ -5983,14 +5983,14 @@ const REPORT_GROUPS = [
     tone: "change",
     shortLabel: "Change/check",
     label: "Change or check next",
-    description: "Mapped clues suggest something to move, change, or confirm.",
+    description: "Saved info suggests something to move, change, or confirm.",
   },
   {
     id: "missing",
     tone: "missing",
-    shortLabel: "Need info",
-    label: "Need more information",
-    description: "A clearer preview needs more measurements or clue answers.",
+    shortLabel: "Needs info",
+    label: "Needs info",
+    description: "A clearer preview needs more measurements or saved info.",
   },
   {
     id: "review",
@@ -6004,7 +6004,7 @@ const REPORT_GROUPS = [
     tone: "temporary",
     shortLabel: "Temporary",
     label: "Temporary-only notes",
-    description: "These items match a limited temporary condition in the current mapped clues.",
+    description: "These items match a limited temporary condition in the current saved info.",
   },
   {
     id: "ok",
@@ -6090,7 +6090,9 @@ function yardReportText(exportedAt = new Date()) {
       continue;
     }
     for (const item of items) {
-      lines.push(`- ${item.object.name} (${areaName(item.object.areaId)} / ${item.object.type}): ${item.feedback.label}. ${item.action}`);
+      lines.push(`- ${item.object.name} (${areaName(item.object.areaId)} / ${item.object.type})`);
+      lines.push(`  Status: ${shortFeedbackLabel(item.feedback.label)}`);
+      lines.push(`  Next: ${item.action}`);
     }
   }
   return lines;
@@ -6106,7 +6108,7 @@ function answersWithObjectDistance(object) {
 
 function guidedProgress(type, answers) {
   const flow = getFlowForObjectType(type);
-  if (!flow) return { answeredRequired: 0, required: 0, answeredTotal: 0, text: "Choose an object type to start clues." };
+  if (!flow) return { answeredRequired: 0, required: 0, answeredTotal: 0, text: "Choose an object type to start info.", shortText: "Choose type" };
   const questions = getQuestionsForFlow(flow.id).filter((question) => questionAppliesToType(question, type));
   const requiredQuestions = questions.filter((question) => questionIsRequired(question, answers));
   const answeredRequired = requiredQuestions.filter((question) => !answerIsMissingForUi(answers[question.id])).length;
@@ -6115,7 +6117,7 @@ function guidedProgress(type, answers) {
     answeredRequired,
     required: requiredQuestions.length,
     answeredTotal,
-    text: `${answeredRequired}/${requiredQuestions.length} shown report clues answered`,
+    text: `${answeredRequired}/${requiredQuestions.length} info answered`,
     shortText: `${answeredRequired}/${requiredQuestions.length} shown`,
   };
 }
@@ -6134,7 +6136,7 @@ function readinessLabel(readiness) {
     not_started: "Not started",
     incomplete: "Incomplete",
     ready_for_rule_check: "Ready for feedback preview",
-    needs_review: "Needs review",
+    needs_review: "Review needed",
   };
   return labels[readiness] || labels.not_started;
 }
@@ -6589,7 +6591,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 compact dock v68",
+    build: "Phase 5 info wording v69",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

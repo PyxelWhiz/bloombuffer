@@ -6,7 +6,7 @@ Use it to list yard areas, plants, trees, fences, gates, bins, furniture, mulch,
 
 Current build:
 
-`Build: Phase 5 clearer tools v62`
+`Build: Phase 5 file tools v63`
 
 ## What It Does
 
@@ -15,16 +15,26 @@ Current build:
 - Shows rule-of-thumb planning feedback.
 - Saves and imports BloomBuffer JSON backup files.
 - Exports and imports CSV tables for spreadsheet testing.
-- Includes built-in test samples under `Rules` > `Table tools`.
+- Includes built-in test samples.
 
-## What The Bottom Buttons Mean
+## File Tools
 
-- `Save JSON` makes a BloomBuffer backup file.
-- `Import JSON` only imports a BloomBuffer JSON backup.
-- `CSV tools` opens the Rules table tools for CSV export, CSV import, and test samples.
-- `Log` opens the local debug log.
+BloomBuffer has two file formats:
 
-If you choose a CSV file with `Import JSON`, the app will reject it and keep your current data unchanged. Use `CSV tools` for CSV files.
+| Format | Export | Import | Use it for |
+|---|---|---|---|
+| JSON backup | `Save JSON` or `Save JSON backup` | `Import JSON` or `Import JSON backup` | A normal BloomBuffer backup. |
+| CSV table | `Export CSV table` | `Import CSV table` | Spreadsheet-style testing, comparison, or careful table editing. |
+
+CSV import/export is visible on the Home screen under `File tools for testing`. It is also in `Rules` under `CSV files`.
+
+If you choose a CSV file with `Import JSON`, the app will reject it and keep your current data unchanged. Use `Import CSV table` for CSV files.
+
+## Reset For Testing
+
+`Rules` includes `Reset testing data`.
+
+That button clears the local areas and objects in the current browser only. It asks you to type `RESET` before anything is deleted. Save a JSON backup first if you want to keep the current test data.
 
 ## Privacy
 
@@ -70,11 +80,12 @@ If someone forks or copies the project, they should publish their own GitHub Pag
 ## Quick Test
 
 1. Open the app.
-2. Confirm the top says `Build: Phase 5 clearer tools v62`.
+2. Confirm the top says `Build: Phase 5 file tools v63`.
 3. Tap `Areas`, `Objects`, and `Rules` to make sure buttons respond.
-4. Add one test object.
-5. Close and reopen the same browser.
-6. Confirm the object is still there.
-7. Tap `CSV tools` if you want table export/import or built-in sample data.
+4. On Home, use `File tools for testing` to try JSON export/import or CSV export/import.
+5. Add one test object.
+6. Close and reopen the same browser.
+7. Confirm the object is still there.
+8. Use `Reset testing data` only when you want to clear this browser and start over.
 
-If buttons do not respond, you are probably opening an older broken build. Use v62 or newer.
+If buttons do not respond, you are probably opening an older broken build. Use v63 or newer.

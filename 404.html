@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 clearer tools v62</title>
+  <title>BloomBuffer - Phase 5 file tools v63</title>
   <style>
 :root {
   color-scheme: light;
@@ -830,6 +830,22 @@ textarea {
   margin-top: 14px;
 }
 
+.file-tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.file-tool-grid button {
+  width: 100%;
+}
+
+.danger-zone-panel {
+  border-color: #f1b9b0;
+  background: #fffafa;
+}
+
 button.primary,
 button.secondary,
 button.danger,
@@ -1543,6 +1559,10 @@ button.card-danger-action {
     font-size: 10px;
   }
 
+  .file-tool-grid {
+    grid-template-columns: 1fr;
+  }
+
   .backup-bar {
     gap: 4px;
   }
@@ -1566,10 +1586,10 @@ button.card-danger-action {
     <header class="topbar">
       <div>
         <h1>BloomBuffer</h1>
-        <p class="tagline">Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 clearer tools v62</p>
+        <p class="tagline">Not My Fern. Yard inventory before rule panic.</p>
+        <p class="build-label">Build: Phase 5 file tools v63</p>
       </div>
-      <span class="phase-badge">Preview + tools</span>
+      <span class="phase-badge">Local yard log</span>
     </header>
 
     <nav class="tabs" aria-label="Main navigation">
@@ -1603,6 +1623,22 @@ button.card-danger-action {
             <button class="secondary" data-route-button="objects">Add object details</button>
           </div>
         </div>
+
+        <div class="panel file-tools-panel">
+          <h2>File tools for testing</h2>
+          <p>Use JSON for BloomBuffer backups. Use CSV for spreadsheet-style table testing.</p>
+          <div class="file-tool-grid">
+            <button class="secondary" type="button" id="home-export-json">Save JSON backup</button>
+            <button class="secondary" type="button" id="home-import-json-button">Import JSON backup</button>
+            <button class="secondary" type="button" id="home-export-table">Export CSV table</button>
+            <button class="secondary" type="button" id="home-import-table-button">Import CSV table</button>
+          </div>
+          <div class="actions sample-actions">
+            <button class="secondary" type="button" id="home-load-small-sample">Load small test sample</button>
+            <button class="secondary" type="button" id="home-load-yard-sample">Load requested yard sample</button>
+          </div>
+          <p class="field-note">Imports replace local data only after confirmation. Other people opening the app link do not see your browser data.</p>
+        </div>
       </section>
 
       <section id="screen-areas" class="screen" aria-labelledby="areas-title">
@@ -1634,6 +1670,7 @@ button.card-danger-action {
                   <option>East</option>
                   <option>West</option>
                   <option>Other</option>
+                </select>
               </div>
               <div>
                 <label for="area-access">🚪 Access - optional</label>
@@ -1874,11 +1911,11 @@ button.card-danger-action {
           </ol>
         </div>
         <div class="panel table-tools-panel" id="table-tools-panel">
-          <h2>Table tools</h2>
-          <p>Export a CSV table for testing, comparison, or advanced editing. Importing a table or loading a sample replaces local areas and objects in this browser after confirmation.</p>
+          <h2>CSV files</h2>
+          <p>CSV is the spreadsheet-style test table. You can export CSV and import CSV here. Importing a CSV table or loading a sample replaces local areas and objects in this browser after confirmation.</p>
           <div class="actions">
-            <button class="secondary" type="button" id="export-table">Export table CSV</button>
-            <button class="secondary" type="button" id="import-table-button">Import table CSV</button>
+            <button class="secondary" type="button" id="export-table">Export CSV table</button>
+            <button class="secondary" type="button" id="import-table-button">Import CSV table</button>
           </div>
           <div class="actions sample-actions">
             <button class="secondary" type="button" id="load-small-sample">Load small test sample</button>
@@ -1975,6 +2012,13 @@ button.card-danger-action {
           </div>
           <p id="phone-diagnostics-copy-status" class="field-note" hidden></p>
         </div>
+        <div class="panel danger-zone-panel">
+          <h2>Reset testing data</h2>
+          <p>Use this only when you want to clear this browser and start testing from an empty app. Save a JSON backup first if you want to keep anything.</p>
+          <div class="actions">
+            <button class="danger" type="button" id="reset-local-data">Reset all local data</button>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -1983,7 +2027,7 @@ button.card-danger-action {
       <div class="backup-actions">
         <button class="utility-button utility-button-strong utility-button-save" id="export-json" type="button">Save JSON</button>
         <button class="utility-button" id="import-json-button" type="button">Import JSON</button>
-        <button class="utility-button" id="export-table-shortcut" type="button">CSV tools</button>
+        <button class="utility-button" id="export-table-shortcut" type="button">CSV files</button>
         <button class="utility-button" id="open-debug-log" type="button">Log</button>
       </div>
       <input id="import-json" type="file" accept="application/json" hidden>
@@ -4734,6 +4778,12 @@ function bindEvents() {
     renderObjects();
   });
   document.querySelector("#clear-object-filters").addEventListener("click", clearObjectFilters);
+  document.querySelector("#home-export-json").addEventListener("click", exportJson);
+  document.querySelector("#home-import-json-button").addEventListener("click", () => document.querySelector("#import-json").click());
+  document.querySelector("#home-export-table").addEventListener("click", exportTableCsv);
+  document.querySelector("#home-import-table-button").addEventListener("click", () => document.querySelector("#import-table").click());
+  document.querySelector("#home-load-small-sample").addEventListener("click", () => loadSampleTable("small", "small test sample"));
+  document.querySelector("#home-load-yard-sample").addEventListener("click", () => loadSampleTable("requestedYard", "requested yard sample"));
   document.querySelector("#export-json").addEventListener("click", exportJson);
   document.querySelector("#import-json-button").addEventListener("click", () => document.querySelector("#import-json").click());
   document.querySelector("#import-json").addEventListener("change", importJson);
@@ -4748,6 +4798,7 @@ function bindEvents() {
   document.querySelector("#copy-debug-log").addEventListener("click", copyDebugLog);
   document.querySelector("#clear-debug-log").addEventListener("click", clearDebugLog);
   document.querySelector("#copy-phone-diagnostics").addEventListener("click", copyPhoneDiagnostics);
+  document.querySelector("#reset-local-data").addEventListener("click", resetLocalData);
 }
 
 async function refreshState() {
@@ -5941,7 +5992,7 @@ function exportTableCsv() {
 function openTableTools() {
   setRoute("rules");
   document.querySelector("#table-tools-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  state.backupMessage = "CSV tools: export CSV, import CSV, or load a test sample.";
+  state.backupMessage = "CSV files: export CSV, import CSV, or load a test sample.";
   logDebug("table_tools_opened_from_bar");
   renderBackupStatus();
 }
@@ -6039,14 +6090,34 @@ async function importJson(event) {
     logDebug("backup_import_completed", { filename: file.name, areaCount: data.areas.length, objectCount: data.objects.length });
     renderBackupStatus();
   } catch (error) {
-    state.backupMessage = "JSON import failed. For CSV, use Rules > Table tools.";
+    state.backupMessage = "JSON import failed. For CSV, use CSV files.";
     logDebug("backup_import_failed", { filename: file.name, ...errorToDebugDetail(error) }, "error");
     renderBackupStatus();
     console.error("BloomBuffer import failed:", error);
-    alert(`This button imports BloomBuffer JSON backups only.\n\nYour current areas and objects were not changed.\n\nFor a CSV table, use Rules > Table tools > Import table CSV.`);
+    alert(`This button imports BloomBuffer JSON backups only.\n\nYour current areas and objects were not changed.\n\nFor a CSV table, use CSV files > Import CSV table.`);
   } finally {
     event.target.value = "";
   }
+}
+
+async function resetLocalData() {
+  const itemCount = state.areas.length + state.objects.length;
+  const typed = prompt(
+    `Reset this browser's BloomBuffer data?\n\nThis will delete ${state.areas.length} areas and ${state.objects.length} objects from this browser only.\n\nSave a JSON backup first if you want to keep anything.\n\nType RESET to clear local data.`,
+  );
+  if (typed !== "RESET") {
+    state.backupMessage = "Reset canceled. Local browser data was not changed.";
+    logDebug("local_reset_canceled", { itemCount });
+    renderBackupStatus();
+    return;
+  }
+  await replaceAllData(state.db, { areas: [], objects: [] });
+  await refreshState();
+  state.lastImportFileName = "";
+  state.lastImportAt = "";
+  state.backupMessage = "Local data reset. This browser now has 0 areas and 0 objects.";
+  logDebug("local_data_reset", { itemCount });
+  renderBackupStatus();
 }
 
 function formatFileModified(file) {
@@ -6215,7 +6286,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 clearer tools v62",
+    build: "Phase 5 file tools v63",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

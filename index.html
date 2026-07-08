@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 calmer cards v66</title>
+  <title>BloomBuffer - Phase 5 compact dock v68</title>
   <style>
 :root {
   color-scheme: light;
@@ -1150,6 +1150,23 @@ button.active {
   color: var(--muted);
 }
 
+.object-note-details {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.object-note-details summary {
+  color: var(--green-dark);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.object-note-details p {
+  margin: 5px 0 0;
+  line-height: 1.35;
+}
+
 .guided-card-summary {
   display: inline-flex;
   align-items: center;
@@ -1716,7 +1733,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p class="tagline">Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 calmer cards v66</p>
+        <p class="build-label">Build: Phase 5 compact dock v68</p>
       </div>
       <span class="phase-badge">Local yard log</span>
     </header>
@@ -1731,9 +1748,7 @@ button.card-danger-action {
     <main>
       <section id="screen-home" class="screen active" aria-labelledby="home-title">
         <div class="panel hero">
-          <h2 id="home-title">Save the yard first. Judge it later.</h2>
-          <p>Risk clues and rule-of-thumb feedback preview are connected. This is planning help, not City sign-off.</p>
-          <p class="field-note">If your screen says Phase 1 or shows Export JSON / Import JSON, you opened an older BloomBuffer file.</p>
+          <h2 id="home-title">Save the yard. See what needs attention.</h2>
         </div>
 
         <div class="metric-grid">
@@ -1745,7 +1760,7 @@ button.card-danger-action {
 
         <div class="panel">
           <h2>Plant Plan Panic Button</h2>
-          <p>When something feels confusing, save it as an object with notes and measurements. Feedback preview will show mapped checks, missing info, and review items.</p>
+          <p>Confused? Save it now. Sort it later.</p>
           <div class="actions">
             <button class="secondary" data-route-button="areas">Add area</button>
             <button class="primary" data-quick-add-start type="button">Quick add</button>
@@ -1753,21 +1768,6 @@ button.card-danger-action {
           </div>
         </div>
 
-        <div class="panel file-tools-panel">
-          <h2>File tools for testing</h2>
-          <p>Use JSON for BloomBuffer backups. Use CSV for spreadsheet-style table testing.</p>
-          <div class="file-tool-grid">
-            <button class="secondary" type="button" id="home-export-json">Save JSON backup</button>
-            <button class="secondary" type="button" id="home-import-json-button">Import JSON backup</button>
-            <button class="secondary" type="button" id="home-export-table">Export CSV table</button>
-            <button class="secondary" type="button" id="home-import-table-button">Import CSV table</button>
-          </div>
-          <div class="actions sample-actions">
-            <button class="secondary" type="button" id="home-load-small-sample">Load small test sample</button>
-            <button class="secondary" type="button" id="home-load-yard-sample">Load requested yard sample</button>
-          </div>
-          <p class="field-note">Imports replace local data only after confirmation. Other people opening the app link do not see your browser data.</p>
-        </div>
       </section>
 
       <section id="screen-areas" class="screen" aria-labelledby="areas-title">
@@ -1859,12 +1859,13 @@ button.card-danger-action {
       <section id="screen-objects" class="screen" aria-labelledby="objects-title">
         <div class="panel compact-panel">
           <h2 id="objects-title">Objects</h2>
-          <p>Save each plant, tree part, gate, pergola, mulch area, bin, or furniture item. Duplicate names in the same area will warn before saving.</p>
+          <p>Add yard things. Then check the report.</p>
           <div class="mode-actions">
             <button class="primary" type="button" data-object-jump="quick-add-panel">Quick add</button>
             <button class="primary" type="button" data-object-jump="object-editor-panel">Add / edit object</button>
             <button class="secondary" type="button" data-object-jump="object-browser-panel">View saved objects</button>
           </div>
+          <p class="field-note">Duplicate names in one area will warn.</p>
         </div>
 
         <div class="panel quick-add-panel" id="quick-add-panel">
@@ -2165,8 +2166,8 @@ button.card-danger-action {
       <div class="backup-actions">
         <button class="utility-button utility-button-strong utility-button-save" id="export-json" type="button">Save JSON</button>
         <button class="utility-button" id="import-json-button" type="button">Import JSON</button>
-        <button class="utility-button" id="export-table-shortcut" type="button">CSV files</button>
-        <button class="utility-button" id="open-debug-log" type="button">Log</button>
+        <button class="utility-button" id="export-table-shortcut" type="button">Export CSV</button>
+        <button class="utility-button" id="import-table-shortcut" type="button">Import CSV</button>
       </div>
       <input id="import-json" type="file" accept="application/json" hidden>
     </footer>
@@ -4916,23 +4917,17 @@ function bindEvents() {
     renderObjects();
   });
   document.querySelector("#clear-object-filters").addEventListener("click", clearObjectFilters);
-  document.querySelector("#home-export-json").addEventListener("click", exportJson);
-  document.querySelector("#home-import-json-button").addEventListener("click", () => document.querySelector("#import-json").click());
-  document.querySelector("#home-export-table").addEventListener("click", exportTableCsv);
-  document.querySelector("#home-import-table-button").addEventListener("click", () => document.querySelector("#import-table").click());
-  document.querySelector("#home-load-small-sample").addEventListener("click", () => loadSampleTable("small", "small test sample"));
-  document.querySelector("#home-load-yard-sample").addEventListener("click", () => loadSampleTable("requestedYard", "requested yard sample"));
   document.querySelector("#export-json").addEventListener("click", exportJson);
   document.querySelector("#import-json-button").addEventListener("click", () => document.querySelector("#import-json").click());
   document.querySelector("#import-json").addEventListener("change", importJson);
   document.querySelector("#export-table").addEventListener("click", exportTableCsv);
-  document.querySelector("#export-table-shortcut").addEventListener("click", openTableTools);
+  document.querySelector("#export-table-shortcut").addEventListener("click", exportTableCsv);
+  document.querySelector("#import-table-shortcut").addEventListener("click", () => document.querySelector("#import-table").click());
   document.querySelector("#import-table-button").addEventListener("click", () => document.querySelector("#import-table").click());
   document.querySelector("#import-table").addEventListener("change", importTableCsv);
   document.querySelector("#load-small-sample").addEventListener("click", () => loadSampleTable("small", "small test sample"));
   document.querySelector("#load-yard-sample").addEventListener("click", () => loadSampleTable("requestedYard", "requested yard sample"));
   document.querySelector("#export-report").addEventListener("click", exportYardReport);
-  document.querySelector("#open-debug-log").addEventListener("click", openDebugLog);
   document.querySelector("#export-debug-log").addEventListener("click", exportDebugLog);
   document.querySelector("#copy-debug-log").addEventListener("click", copyDebugLog);
   document.querySelector("#clear-debug-log").addEventListener("click", clearDebugLog);
@@ -5477,8 +5472,8 @@ function renderObjects() {
         <span class="mini-badge">${escapeHtml(object.type)}</span>
         <span class="mini-badge ${object.areaId === UNASSIGNED_AREA_ID ? "needs-area" : ""}">${escapeHtml(areaName(object.areaId))}</span>
       </div>
-      <p class="distance-line">Distance from wall: ${escapeHtml(formatDistance(object.wallFt, object.wallIn))}</p>
-      <p class="object-note-line">${escapeHtml(object.notes || "No notes")}</p>
+      <p class="distance-line">↔ ${escapeHtml(formatDistance(object.wallFt, object.wallIn))}</p>
+      ${object.notes ? `<details class="object-note-details"><summary>Note</summary><p>${escapeHtml(object.notes)}</p></details>` : ""}
       ${guidedCardSummaryHtml(object)}
       ${feedbackPreviewCardHtml(object)}
       <div class="actions object-actions">
@@ -5913,7 +5908,7 @@ function guidedCardSummaryHtml(object) {
   const progress = guidedProgress(object.type, answers);
   const next = readiness === "not_started"
     ? "Add when ready."
-    : progress.text;
+    : progress.shortText;
   return `<p class="guided-card-summary ${readinessClass(readiness)}"><span aria-hidden="true">🕵️</span><span><strong>Clues: ${escapeHtml(readinessLabel(readiness))}</strong><small>${escapeHtml(next)}</small></span></p>`;
 }
 
@@ -6120,7 +6115,8 @@ function guidedProgress(type, answers) {
     answeredRequired,
     required: requiredQuestions.length,
     answeredTotal,
-    text: `${answeredRequired}/${requiredQuestions.length} shown report clues answered; ${answeredTotal} total saved`,
+    text: `${answeredRequired}/${requiredQuestions.length} shown report clues answered`,
+    shortText: `${answeredRequired}/${requiredQuestions.length} shown`,
   };
 }
 
@@ -6593,7 +6589,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 calmer cards v66",
+    build: "Phase 5 compact dock v68",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

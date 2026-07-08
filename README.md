@@ -6,13 +6,14 @@ Use it to list yard areas, plants, trees, fences, gates, bins, furniture, mulch,
 
 Current build:
 
-`Build: Phase 5 file tools v63`
+`Build: Phase 5 yard report v64`
 
 ## What It Does
 
 - Saves your areas and objects in your own browser.
 - Lets you add measurements and risk clues.
 - Shows rule-of-thumb planning feedback.
+- Shows a grouped yard report for testing and planning.
 - Saves and imports BloomBuffer JSON backup files.
 - Exports and imports CSV tables for spreadsheet testing.
 - Includes built-in test samples.
@@ -29,6 +30,21 @@ BloomBuffer has two file formats:
 CSV import/export is visible on the Home screen under `File tools for testing`. It is also in `Rules` under `CSV files`.
 
 If you choose a CSV file with `Import JSON`, the app will reject it and keep your current data unchanged. Use `Import CSV table` for CSV files.
+
+## Yard Report
+
+`Rules` includes `Yard report`.
+
+The report groups saved objects into practical planning buckets:
+
+- Change or check next
+- Need more information
+- Needs person review
+- Temporary-only notes
+- Mapped checks look okay
+- Outside scope or not checked
+
+You can also save the report as a `.txt` file. The report is rule-of-thumb planning help, not City sign-off.
 
 ## Reset For Testing
 
@@ -80,12 +96,13 @@ If someone forks or copies the project, they should publish their own GitHub Pag
 ## Quick Test
 
 1. Open the app.
-2. Confirm the top says `Build: Phase 5 file tools v63`.
+2. Confirm the top says `Build: Phase 5 yard report v64`.
 3. Tap `Areas`, `Objects`, and `Rules` to make sure buttons respond.
 4. On Home, use `File tools for testing` to try JSON export/import or CSV export/import.
 5. Add one test object.
 6. Close and reopen the same browser.
 7. Confirm the object is still there.
-8. Use `Reset testing data` only when you want to clear this browser and start over.
+8. Open `Rules` > `Yard report` and confirm objects appear in grouped planning buckets.
+9. Use `Reset testing data` only when you want to clear this browser and start over.
 
-If buttons do not respond, you are probably opening an older broken build. Use v63 or newer.
+If buttons do not respond, you are probably opening an older broken build. Use v64 or newer.

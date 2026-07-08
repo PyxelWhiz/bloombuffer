@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 5 file tools v63</title>
+  <title>BloomBuffer - Phase 5 yard report v64</title>
   <style>
 :root {
   color-scheme: light;
@@ -1256,6 +1256,118 @@ button.active {
   background: #edf6fb;
 }
 
+.report-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.report-count {
+  border: 1px solid var(--line);
+  border-left: 4px solid #315d82;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f8fbf5;
+}
+
+.report-count strong {
+  display: block;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.report-count span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.report-groups {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.report-group {
+  border: 1px solid var(--line);
+  border-left: 4px solid #315d82;
+  border-radius: 12px;
+  padding: 11px;
+  background: #fff;
+}
+
+.report-group h3 {
+  margin: 0 0 5px;
+  font-size: 15px;
+}
+
+.report-group p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.report-group ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.report-group li {
+  display: grid;
+  gap: 2px;
+  border-top: 1px solid #edf2ea;
+  padding-top: 8px;
+}
+
+.report-group li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.report-group li span,
+.report-group li small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.report-change {
+  border-left-color: #a63c31;
+  background: #fff7f4;
+}
+
+.report-missing {
+  border-left-color: #315d82;
+  background: #f5fbff;
+}
+
+.report-review {
+  border-left-color: #d4a937;
+  background: #fff8e5;
+}
+
+.report-temporary {
+  border-left-color: #557255;
+  background: #f5faf1;
+}
+
+.report-ok {
+  border-left-color: #2f7d4d;
+  background: #f3fbf1;
+}
+
+.report-neutral {
+  border-left-color: #8a9588;
+  background: #fafbf9;
+}
+
 .object-actions {
   align-items: stretch;
   gap: 8px;
@@ -1587,7 +1699,7 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p class="tagline">Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 5 file tools v63</p>
+        <p class="build-label">Build: Phase 5 yard report v64</p>
       </div>
       <span class="phase-badge">Local yard log</span>
     </header>
@@ -1900,7 +2012,16 @@ button.card-danger-action {
       <section id="screen-rules" class="screen" aria-labelledby="rules-title">
         <div class="panel">
           <h2 id="rules-title">Rule status</h2>
-          <p>BloomBuffer stores inventory, risk-clue answers, rule-of-thumb feedback preview, and CSV table tools.</p>
+          <p>BloomBuffer stores inventory, risk-clue answers, rule-of-thumb feedback preview, CSV files, and a yard report for testing.</p>
+        </div>
+        <div class="panel report-panel" id="yard-report-panel">
+          <h2>Yard report</h2>
+          <p>This is a rule-of-thumb planning report from saved objects and clues. It is not City sign-off.</p>
+          <div id="report-summary-grid" class="report-summary-grid"></div>
+          <div class="actions">
+            <button class="secondary" type="button" id="export-report">Save report TXT</button>
+          </div>
+          <div id="report-groups" class="report-groups"></div>
         </div>
         <div class="panel">
           <h2>What comes next</h2>
@@ -4793,6 +4914,7 @@ function bindEvents() {
   document.querySelector("#import-table").addEventListener("change", importTableCsv);
   document.querySelector("#load-small-sample").addEventListener("click", () => loadSampleTable("small", "small test sample"));
   document.querySelector("#load-yard-sample").addEventListener("click", () => loadSampleTable("requestedYard", "requested yard sample"));
+  document.querySelector("#export-report").addEventListener("click", exportYardReport);
   document.querySelector("#open-debug-log").addEventListener("click", openDebugLog);
   document.querySelector("#export-debug-log").addEventListener("click", exportDebugLog);
   document.querySelector("#copy-debug-log").addEventListener("click", copyDebugLog);
@@ -5168,6 +5290,7 @@ function render() {
   renderGuidedQuestions();
   renderMetricDistance();
   renderBackupStatus();
+  renderYardReport();
   renderDebugLog();
   renderPhoneDiagnostics();
 }
@@ -5794,6 +5917,157 @@ function feedbackPreviewCardHtml(object) {
   `;
 }
 
+function renderYardReport() {
+  const summary = reportSummary();
+  document.querySelector("#report-summary-grid").innerHTML = REPORT_GROUPS.map((group) => `
+    <div class="report-count report-${escapeHtml(group.tone)}">
+      <strong>${summary.counts[group.id] || 0}</strong>
+      <span>${escapeHtml(group.shortLabel)}</span>
+    </div>
+  `).join("");
+
+  document.querySelector("#report-groups").innerHTML = REPORT_GROUPS.map((group) => {
+    const items = summary.groups[group.id] || [];
+    const list = items.length
+      ? `<ul>${items.slice(0, 8).map((item) => `
+          <li>
+            <strong>${escapeHtml(item.object.name)}</strong>
+            <span>${escapeHtml(areaName(item.object.areaId))} · ${escapeHtml(item.object.type)}</span>
+            <small>${escapeHtml(item.action)}</small>
+          </li>
+        `).join("")}</ul>`
+      : `<p class="field-note">No saved objects in this group yet.</p>`;
+    const more = items.length > 8 ? `<p class="field-note">${items.length - 8} more in this group. Export the report for the full list.</p>` : "";
+    return `
+      <section class="report-group report-${escapeHtml(group.tone)}">
+        <h3>${escapeHtml(group.label)}</h3>
+        <p>${escapeHtml(group.description)}</p>
+        ${list}
+        ${more}
+      </section>
+    `;
+  }).join("");
+}
+
+const REPORT_GROUPS = [
+  {
+    id: "change",
+    tone: "change",
+    shortLabel: "Change/check",
+    label: "Change or check next",
+    description: "Mapped clues suggest something to move, change, or confirm.",
+  },
+  {
+    id: "missing",
+    tone: "missing",
+    shortLabel: "Need info",
+    label: "Need more information",
+    description: "A clearer preview needs more measurements or clue answers.",
+  },
+  {
+    id: "review",
+    tone: "review",
+    shortLabel: "Review",
+    label: "Needs person review",
+    description: "These items need site-specific, source, official, contractor, arborist, or careful human review.",
+  },
+  {
+    id: "temporary",
+    tone: "temporary",
+    shortLabel: "Temporary",
+    label: "Temporary-only notes",
+    description: "These items match a limited temporary condition in the current mapped clues.",
+  },
+  {
+    id: "ok",
+    tone: "ok",
+    shortLabel: "Looks okay",
+    label: "Mapped checks look okay",
+    description: "Current answers do not show a mapped problem in this preview.",
+  },
+  {
+    id: "neutral",
+    tone: "neutral",
+    shortLabel: "Outside/not checked",
+    label: "Outside scope or not checked",
+    description: "These are outside this Zone 0 check or do not have a mapped evaluator yet.",
+  },
+];
+
+function reportSummary() {
+  const groups = Object.fromEntries(REPORT_GROUPS.map((group) => [group.id, []]));
+  for (const object of state.objects) {
+    const feedback = previewObjectFeedback(object);
+    const groupId = reportGroupId(feedback);
+    groups[groupId].push({
+      object,
+      feedback,
+      action: feedback.primaryActions[0] || feedback.summary || feedback.boundaryNote,
+    });
+  }
+  return {
+    counts: Object.fromEntries(REPORT_GROUPS.map((group) => [group.id, groups[group.id].length])),
+    groups,
+  };
+}
+
+function reportGroupId(feedback) {
+  if (feedback.tone === "change") return "change";
+  if (feedback.tone === "missing") return "missing";
+  if (feedback.tone === "review") return "review";
+  if (feedback.tone === "temporary") return "temporary";
+  if (feedback.tone === "ok") return "ok";
+  return "neutral";
+}
+
+function exportYardReport() {
+  const exportedAt = new Date();
+  const lines = yardReportText(exportedAt);
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const filename = `bloombuffer-yard-report-${exportedAt.toISOString().slice(0, 10)}.txt`;
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+  state.lastBackupFileName = filename;
+  state.lastBackupAt = exportedAt.toISOString();
+  state.backupMessage = `Report export started: ${filename}.`;
+  logDebug("yard_report_export_started", { filename, objectCount: state.objects.length });
+  renderBackupStatus();
+}
+
+function yardReportText(exportedAt = new Date()) {
+  const summary = reportSummary();
+  const lines = [
+    "BloomBuffer yard report",
+    `Exported: ${exportedAt.toLocaleString()}`,
+    "",
+    "Rule-of-thumb planning help only. Not City sign-off or legal advice.",
+    "",
+    `Areas: ${state.areas.length}`,
+    `Objects: ${state.objects.length}`,
+    "",
+    "Status summary:",
+  ];
+  for (const group of REPORT_GROUPS) {
+    lines.push(`- ${group.label}: ${summary.counts[group.id] || 0}`);
+  }
+  for (const group of REPORT_GROUPS) {
+    lines.push("", group.label, group.description);
+    const items = summary.groups[group.id] || [];
+    if (!items.length) {
+      lines.push("- None");
+      continue;
+    }
+    for (const item of items) {
+      lines.push(`- ${item.object.name} (${areaName(item.object.areaId)} / ${item.object.type}): ${item.feedback.label}. ${item.action}`);
+    }
+  }
+  return lines;
+}
+
 function answersWithObjectDistance(object) {
   const answers = object.questionAnswers && typeof object.questionAnswers === "object" ? { ...object.questionAnswers } : {};
   if (object.wallFt !== null || object.wallIn !== null) {
@@ -6286,7 +6560,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 5 file tools v63",
+    build: "Phase 5 yard report v64",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BloomBuffer - Phase 2 picker title UI v52</title>
+  <title>BloomBuffer - Phase 5 sample import UI v59</title>
   <style>
 :root {
   color-scheme: light;
@@ -1114,6 +1114,63 @@ button.active {
   font-weight: 700;
 }
 
+.feedback-preview {
+  display: grid;
+  gap: 3px;
+  margin: 8px 0 0;
+  padding: 9px 10px;
+  border-left: 4px solid #315d82;
+  border-radius: 10px;
+  background: #f2f6f8;
+  color: #223023;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.feedback-preview strong {
+  font-size: 13px;
+}
+
+.feedback-preview span {
+  color: #304030;
+}
+
+.feedback-preview ul {
+  margin: 2px 0 0;
+  padding-left: 18px;
+}
+
+.feedback-preview li {
+  margin: 2px 0;
+}
+
+.feedback-preview small {
+  color: #5d6e5b;
+  font-weight: 700;
+}
+
+.feedback-ok {
+  border-left-color: #2f7d4d;
+  background: #e7f4e6;
+}
+
+.feedback-change {
+  border-left-color: #a63c31;
+  background: #fde5df;
+}
+
+.feedback-missing,
+.feedback-review {
+  border-left-color: #d4a937;
+  background: #fff2c7;
+}
+
+.feedback-temporary,
+.feedback-neutral {
+  border-left-color: #315d82;
+  background: #edf6fb;
+}
+
 .object-actions {
   align-items: stretch;
   gap: 8px;
@@ -1352,36 +1409,37 @@ button.card-danger-action {
   position: fixed;
   left: 50%;
   bottom: 0;
-  z-index: 10;
+  z-index: 20;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 3px 8px;
+  gap: 4px 8px;
   align-items: center;
   width: min(560px, 100vw);
-  min-height: 58px;
-  padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
-  border-top: 2px solid #b7c8ae;
-  background: #e7efe2;
-  box-shadow: 0 -6px 18px rgba(23, 32, 24, 0.08);
+  min-height: 60px;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  border-top: 3px solid #d4a937;
+  background: #223023;
+  box-shadow: 0 -8px 24px rgba(20, 28, 21, 0.28);
   transform: translateX(-50%);
 }
 
 .backup-kicker {
   margin: 0;
   border-radius: 999px;
-  padding: 5px 8px;
-  background: #f8fbf6;
-  color: var(--green-dark);
+  padding: 5px 9px;
+  background: #d4a937;
+  color: #1f271f;
   font-size: 12px;
   font-weight: 900;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .backup-status {
   margin: 0;
   min-width: 0;
   overflow: hidden;
-  color: #40523f;
+  color: #f3f7ee;
   font-size: 10px;
   font-weight: 800;
   line-height: 1.2;
@@ -1398,19 +1456,19 @@ button.card-danger-action {
 
 .utility-button {
   min-height: 32px;
-  border: 1px solid #b7c8ae;
+  border: 1px solid #dbe6d5;
   border-radius: 9px;
   padding: 6px;
-  background: #f8fbf6;
-  color: var(--green-dark);
+  background: #f7faf3;
+  color: #223023;
   font-size: 11px;
   font-weight: 900;
 }
 
 .utility-button-strong {
-  border-color: var(--green);
-  background: var(--green);
-  color: #fff;
+  border-color: #f0cf68;
+  background: #f0cf68;
+  color: #1f271f;
 }
 
 .utility-button-save {
@@ -1430,9 +1488,9 @@ button.card-danger-action {
       <div>
         <h1>BloomBuffer</h1>
         <p>Not My Fern. Yard inventory before rule panic.</p>
-        <p class="build-label">Build: Phase 2 picker title UI v52</p>
+        <p class="build-label">Build: Phase 5 sample import UI v59</p>
       </div>
-      <span class="phase-badge">Phase 2</span>
+      <span class="phase-badge">Preview + tools</span>
     </header>
 
     <nav class="tabs" aria-label="Main navigation">
@@ -1446,7 +1504,7 @@ button.card-danger-action {
       <section id="screen-home" class="screen active" aria-labelledby="home-title">
         <div class="panel hero">
           <h2 id="home-title">Save the yard first. Judge it later.</h2>
-          <p>Phase 2 adds risk clues to the local inventory. It still does not make PASS/FAIL rule decisions yet.</p>
+          <p>Risk clues and guarded feedback preview are connected. It still does not make official PASS/FAIL compliance decisions.</p>
           <p class="field-note">If your screen says Phase 1 or shows Export JSON / Import JSON, you opened an older BloomBuffer file.</p>
         </div>
 
@@ -1459,7 +1517,7 @@ button.card-danger-action {
 
         <div class="panel">
           <h2>Plant Plan Panic Button</h2>
-          <p>When something feels confusing, save it as an object with notes and measurements. Rule screening comes after risk clues are connected.</p>
+          <p>When something feels confusing, save it as an object with notes and measurements. Feedback preview will show mapped checks, missing info, and review items.</p>
           <div class="actions">
             <button class="secondary" data-route-button="areas">Add area</button>
             <button class="primary" data-quick-add-start type="button">Quick add</button>
@@ -1595,12 +1653,12 @@ button.card-danger-action {
             <label for="quick-notes">📝 Notes - optional</label>
             <textarea id="quick-notes" placeholder="Short note; measurements can come later"></textarea>
 
-            <p id="quick-add-message" class="field-note">Save basic only if you are rushing. Details + clues make this object useful for later screening.</p>
+            <p id="quick-add-message" class="field-note">Save basic only if you are rushing. Details + clues make feedback preview more useful.</p>
 
             <div class="actions">
               <button class="risk-clue-action continue-action" type="button" id="quick-continue-guided">
                 <span class="clue-agent-icon" aria-hidden="true">🕵️</span>
-                <span class="button-text"><strong>Best next step: details + clues</strong><small>Makes this ready for later screening</small></span>
+                <span class="button-text"><strong>Best next step: details + clues</strong><small>Makes feedback preview more useful</small></span>
               </button>
               <button class="secondary quick-save-action" type="submit">Save basic only</button>
             </div>
@@ -1648,13 +1706,13 @@ button.card-danger-action {
                 <div>
                   <h3 id="guided-questions-title"><span class="risk-clue-person" aria-hidden="true">🕵️</span> Risk clues: check what matters</h3>
                   <p id="guided-flow-label">Choose an object type to see what matters here.</p>
-                  <p class="risk-clue-nudge">Answer what you can now. These details prevent guessing later when rule screening is connected.</p>
+                  <p class="risk-clue-nudge">Answer what you can now. These details feed feedback preview and reduce guessing later.</p>
                   <p id="guided-progress" class="guided-progress">No risk clues answered yet.</p>
                 </div>
                 <span id="guided-readiness" class="readiness-badge">Not started</span>
               </div>
               <div id="guided-question-list" class="guided-question-list"></div>
-              <p class="field-note">Phase 2 saves clue answers only. No PASS/FAIL result yet.</p>
+              <p class="field-note">Risk clues feed feedback preview. The preview is not an official PASS/FAIL compliance decision.</p>
             </section>
 
             <div class="two-col">
@@ -1727,32 +1785,48 @@ button.card-danger-action {
       <section id="screen-rules" class="screen" aria-labelledby="rules-title">
         <div class="panel">
           <h2 id="rules-title">Rule status</h2>
-          <p>This Phase 2 app stores inventory plus risk-clue answers. It does not claim official compliance.</p>
+          <p>BloomBuffer stores inventory, risk-clue answers, guarded feedback preview, and table tools. It does not claim official compliance.</p>
         </div>
         <div class="panel">
           <h2>What comes next</h2>
           <ol class="step-list">
-            <li>Phase 2 asks object-specific questions only.</li>
-            <li>Phase 3 connects the tested rule engine.</li>
-            <li>Results then show PASS / FAIL / REVIEW / TEMP ONLY / N/A.</li>
+            <li>Risk clues collect object-specific answers.</li>
+            <li>Feedback preview shows mapped checks, missing info, review items, and suggested changes.</li>
+            <li>Future priority buckets and reports will help plan what to do first.</li>
           </ol>
         </div>
+        <div class="panel table-tools-panel">
+          <h2>Table tools</h2>
+          <p>Export a CSV table for testing, comparison, or advanced editing. Importing a table or loading a sample replaces local areas and objects in this browser after confirmation.</p>
+          <div class="actions">
+            <button class="secondary" type="button" id="export-table">Export table CSV</button>
+            <button class="secondary" type="button" id="import-table-button">Import table CSV</button>
+          </div>
+          <div class="actions sample-actions">
+            <button class="secondary" type="button" id="load-small-sample">Load small test sample</button>
+            <button class="secondary" type="button" id="load-yard-sample">Load requested yard sample</button>
+          </div>
+          <p class="field-note">Keep the header row. Use `record_type` = `area` or `object`. The `question_answers_json` column preserves risk-clue answers.</p>
+          <input id="import-table" type="file" accept=".csv,text/csv,text/plain" hidden>
+        </div>
         <div class="panel">
-          <h2>Phase 2 manual checklist</h2>
-          <p>Use this for the risk-clue shell only. These checks do not test rule screening.</p>
+          <h2>Risk clues and feedback checklist</h2>
+          <p>Use this before broader user testing. These checks verify collection, preview wording, and the official-compliance boundary.</p>
           <details class="checklist-details" open>
-            <summary>Show Phase 2 checklist</summary>
+            <summary>Show risk clue checklist</summary>
             <ol class="checklist-list">
               <li><strong>Potted plant:</strong> questions appear after choosing Potted plant.</li>
               <li><strong>Potted plant:</strong> tree and fence questions do not appear.</li>
-              <li><strong>Tree:</strong> tree status questions appear; tree part comes from the object type.</li>
+              <li><strong>Tree:</strong> one Tree object appears; tree concern is asked once inside risk clues.</li>
               <li><strong>Tree:</strong> container-size questions do not appear.</li>
               <li><strong>Fence/gate:</strong> orientation and material questions appear.</li>
               <li><strong>Equipment:</strong> HVAC / AC, grill, and generator stay review/inventory prompts.</li>
               <li><strong>Saving:</strong> partial answers save and show again when editing.</li>
-              <li><strong>Readiness:</strong> missing answers show Incomplete, not PASS/FAIL.</li>
-              <li><strong>Unknown:</strong> unknown answers show Needs review, not a rule result.</li>
+              <li><strong>Readiness:</strong> missing answers show Incomplete or Need more information, not official PASS/FAIL.</li>
+              <li><strong>Unknown:</strong> unknown answers show Needs review or Need more information.</li>
               <li><strong>Backup:</strong> JSON export/import keeps risk-clue answers.</li>
+              <li><strong>Feedback:</strong> object cards show feedback preview with a boundary note.</li>
+              <li><strong>Table tools:</strong> CSV export includes areas, objects, clue JSON, and feedback columns.</li>
             </ol>
           </details>
         </div>
@@ -1795,7 +1869,7 @@ button.card-danger-action {
               <li><strong>Mobile:</strong> controls do not overlap; search/filter are not buried.</li>
               <li><strong>Type picker:</strong> selected type is clear; Change type opens categories; no long native dropdown opens.</li>
               <li><strong>Tree labels:</strong> tree choices are understandable and inventory-only.</li>
-              <li><strong>Rule boundary:</strong> app says inventory-only; no PASS/FAIL rule result appears.</li>
+              <li><strong>Rule boundary:</strong> app says preview only; no official PASS/FAIL compliance result appears.</li>
             </ol>
           </details>
         </div>
@@ -1826,12 +1900,13 @@ button.card-danger-action {
       </section>
     </main>
 
-    <footer class="backup-bar" aria-label="Save and support tools">
-      <p class="backup-kicker">Save</p>
+    <footer class="backup-bar" aria-label="Save tools dock">
+      <p class="backup-kicker">Save tools</p>
       <p id="backup-status" class="backup-status">Autosave is on. Save backup JSON to make a file copy.</p>
       <div class="backup-actions">
-        <button class="utility-button utility-button-strong utility-button-save" id="export-json">Save</button>
+        <button class="utility-button utility-button-strong utility-button-save" id="export-json">Save file</button>
         <button class="utility-button" id="import-json-button">Import</button>
+        <button class="utility-button" id="export-table-shortcut" type="button">Table</button>
         <button class="utility-button" id="open-debug-log" type="button">Debug log</button>
       </div>
       <input id="import-json" type="file" accept="application/json" hidden>
@@ -1846,17 +1921,12 @@ const OBJECT_TYPES = [
   "Potted plant",
   "In-ground plant",
   "Shrub",
-  "Whole tree / unsure part",
-  "Tree trunk",
-  "Branches / canopy / fronds",
-  "Tree debris / leaves / needles",
-  "New or planned tree",
+  "Vine / climbing plant",
+  "Tree",
   "Wood gate",
   "Wood fence",
   "Wood exterior door",
   "Pergola",
-  "Climbing plant on pergola",
-  "Climbing plant on fence",
   "Mulch / wood chips / bark",
   "Furniture",
   "Grill / BBQ",
@@ -1872,17 +1942,11 @@ const OBJECT_TYPES = [
 const OBJECT_TYPE_GROUPS = [
   {
     label: "Plants",
-    types: ["Potted plant", "In-ground plant", "Shrub", "Climbing plant on pergola", "Climbing plant on fence"],
+    types: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
   },
   {
     label: "Trees",
-    types: [
-      "Whole tree / unsure part",
-      "Tree trunk",
-      "Branches / canopy / fronds",
-      "Tree debris / leaves / needles",
-      "New or planned tree",
-    ],
+    types: ["Tree"],
   },
   {
     label: "Structures",
@@ -1924,8 +1988,15 @@ const AREA_ICONS = ["Home", "Front", "Back", "Side", "Gate", "Deck", "Garden", "
 const AREA_COLORS = ["Sage", "Blue", "Gold", "Clay", "Lavender", "Gray"];
 
 const LEGACY_OBJECT_TYPE_ALIASES = {
-  "Existing tree": "Whole tree / unsure part",
-  "Tree branches/canopy/fronds": "Branches / canopy / fronds",
+  "Existing tree": "Tree",
+  "Whole tree / unsure part": "Tree",
+  "Tree trunk": "Tree",
+  "Tree branches/canopy/fronds": "Tree",
+  "Branches / canopy / fronds": "Tree",
+  "Tree debris / leaves / needles": "Tree",
+  "New or planned tree": "Tree",
+  "Climbing plant on pergola": "Vine / climbing plant",
+  "Climbing plant on fence": "Vine / climbing plant",
 };
 
 function createAreaDraft({ id = crypto.randomUUID(), name, side, access, notes, icon = "Home", color = "Sage" }) {
@@ -1995,17 +2066,6 @@ function normalizeObjectType(type) {
   const text = String(type ?? "").trim();
   const mapped = LEGACY_OBJECT_TYPE_ALIASES[text] || text;
   return OBJECT_TYPES.includes(mapped) ? mapped : "Other";
-}
-
-function treePartFromObjectType(type) {
-  const normalizedType = normalizeObjectType(type);
-  return {
-    "Whole tree / unsure part": "whole_or_unsure",
-    "Tree trunk": "trunk",
-    "Branches / canopy / fronds": "branches_canopy_fronds",
-    "Tree debris / leaves / needles": "debris",
-    "New or planned tree": "whole_or_unsure",
-  }[normalizedType] || "";
 }
 
 function reassignObjectsFromDeletedArea(objects, areaId, updatedAt = new Date().toISOString()) {
@@ -2206,7 +2266,7 @@ const QUESTION_DEFINITIONS = [
   {
     id: "structure_construction_type",
     label: "Nearby structure type",
-    helpText: "This affects later wall-distance screening. Most people should choose unknown unless they have reliable building information.",
+    helpText: "This affects wall-distance feedback. Choose unknown unless you have reliable building information; stucco appearance alone is not proof.",
     inputType: "choice",
     options: ["ordinary_existing", "ignition_resistant", "non_combustible_structure", "historic_structure", "unknown"],
     sourceBasis: "official",
@@ -2235,10 +2295,21 @@ const QUESTION_DEFINITIONS = [
   },
   {
     id: "container_size",
-    label: "Container size",
-    helpText: "Choose the closest size range.",
+    label: "Legacy container size",
+    helpText: "Older saved clue. New potted plant entries should use the 5 gal / 18.9 L capacity question instead.",
     inputType: "choice",
     options: ["small", "medium", "large", "unknown"],
+    sourceBasis: "official",
+    appliesToTypes: ["Potted plant"],
+    required: false,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "container_capacity_class",
+    label: "Pot/container capacity",
+    helpText: "Use the label on the pot if you know it. If not, choose Not sure rather than guessing.",
+    inputType: "choice",
+    options: ["five_gal_or_less", "over_five_gal", "unknown"],
     sourceBasis: "official",
     appliesToTypes: ["Potted plant"],
     required: true,
@@ -2301,7 +2372,7 @@ const QUESTION_DEFINITIONS = [
   {
     id: "plant_type",
     label: "Plant type",
-    helpText: "Choose the closest type. Later screening may need official plant-list review.",
+    helpText: "Choose the closest type only if you know. If not, choose Other / unknown and use notes or an official plant resource later.",
     inputType: "choice",
     options: ["fire_smart", "herbaceous", "other_or_unknown"],
     sourceBasis: "official",
@@ -2361,20 +2432,41 @@ const QUESTION_DEFINITIONS = [
   {
     id: "plant_fuel_continuity",
     label: "Do plants/containers create fuel continuity?",
-    helpText: "Look for connected fuels horizontally or vertically to nearby plants or the structure.",
+    helpText: "Look for connected fuels horizontally or vertically, such as a plant touching another plant, mulch, fence, deck, or the structure.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
-    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub"],
+    appliesToTypes: ["Potted plant", "In-ground plant", "Shrub", "Vine / climbing plant"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "plant_support_context",
+    label: "What is this vine/climbing plant growing on or touching?",
+    helpText: "Use this instead of adding the same vine twice as both a plant and a fence/pergola object.",
+    inputType: "choice",
+    options: ["fence", "pergola", "wall_or_structure", "trellis_or_support", "deck_or_railing", "nothing_or_ground", "other_or_unknown"],
+    sourceBasis: "app_inference",
+    appliesToTypes: ["Vine / climbing plant"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "plant_touching_structure",
+    label: "Does the vine touch the building, opening, deck, or attached structure?",
+    helpText: "This keeps the vine as one plant object while still collecting contact context for later review.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "app_inference",
+    appliesToTypes: ["Vine / climbing plant"],
     required: true,
     reviewOnUnknown: true,
   },
   {
     id: "fuel_continuity",
     label: "Does it create horizontal or vertical fuel continuity?",
-    helpText: "This is an app observation prompt, not a rule result.",
+    helpText: "This means it may help fire move across or upward through connected fuels. This is an app observation prompt, not a rule result.",
     inputType: "yes_no_unknown",
     sourceBasis: "app_inference",
-    appliesToTypes: ["In-ground plant", "Shrub", "Climbing plant on pergola", "Climbing plant on fence"],
+    appliesToTypes: ["In-ground plant", "Shrub"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2385,18 +2477,18 @@ const QUESTION_DEFINITIONS = [
     inputType: "choice",
     options: ["existing_before_2026", "new_or_recent", "planned_future", "unknown"],
     sourceBasis: "official",
-    appliesToTypes: ["Whole tree / unsure part", "Tree trunk", "Branches / canopy / fronds", "Tree debris / leaves / needles", "New or planned tree"],
+    appliesToTypes: ["Tree"],
     required: true,
     reviewOnUnknown: true,
   },
   {
     id: "tree_part",
-    label: "Tree part being recorded",
-    helpText: "This is inventory structure so later questions stay relevant.",
+    label: "Which tree concern are you recording?",
+    helpText: "Use one Tree object and mark the concern here instead of creating separate trunk, branch, debris, and new-tree objects.",
     inputType: "choice",
-    options: ["whole_or_unsure", "trunk", "branches_canopy_fronds", "debris", "ladder_fuels"],
+    options: ["whole_or_unsure", "trunk", "branches_canopy_fronds", "debris", "ladder_fuels", "new_or_planned"],
     sourceBasis: "inventory_only",
-    appliesToTypes: ["Whole tree / unsure part", "Tree trunk", "Branches / canopy / fronds", "Tree debris / leaves / needles", "New or planned tree"],
+    appliesToTypes: ["Tree"],
     required: true,
   },
   {
@@ -2405,7 +2497,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "Includes walls, windows, eaves, vents, decks, balconies, and similar projections.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
-    appliesToTypes: ["Whole tree / unsure part", "Branches / canopy / fronds", "New or planned tree"],
+    appliesToTypes: ["Tree"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2415,7 +2507,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "Collect the observation now; later rule logic evaluates it.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
-    appliesToTypes: ["Whole tree / unsure part", "Branches / canopy / fronds", "New or planned tree"],
+    appliesToTypes: ["Tree"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2425,9 +2517,29 @@ const QUESTION_DEFINITIONS = [
     helpText: "Includes dead branches, fronds, leaf litter, needles, or fruit/debris where relevant.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
-    appliesToTypes: ["Whole tree / unsure part", "Tree trunk", "Branches / canopy / fronds", "Tree debris / leaves / needles", "New or planned tree"],
+    appliesToTypes: ["Tree"],
     required: true,
     reviewOnUnknown: true,
+  },
+  {
+    id: "tree_debris_under",
+    label: "Leaf litter, needles, fruit, bark, or debris under/around this tree?",
+    helpText: "Use one Tree object and record debris here if the debris belongs to this tree.",
+    inputType: "yes_no_unknown",
+    sourceBasis: "official",
+    appliesToTypes: ["Tree"],
+    required: true,
+    reviewOnUnknown: true,
+  },
+  {
+    id: "mature_dripline_distance",
+    label: "New/planned tree: mature drip-line distance from structure",
+    helpText: "Only needed for new/recent or planned trees. If you do not know the mature size, choose Not sure by leaving this blank for now.",
+    inputType: "distance",
+    sourceBasis: "official",
+    appliesToTypes: ["Tree"],
+    required: false,
+    requiredWhen: { questionId: "tree_status", values: ["new_or_recent", "planned_future"] },
   },
   {
     id: "ladder_fuels",
@@ -2435,7 +2547,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "This supports later review of fuel continuity.",
     inputType: "yes_no_unknown",
     sourceBasis: "app_inference",
-    appliesToTypes: ["Whole tree / unsure part", "Tree trunk", "New or planned tree"],
+    appliesToTypes: ["Tree"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2452,10 +2564,10 @@ const QUESTION_DEFINITIONS = [
   {
     id: "material_combustible",
     label: "Is the item combustible or flammable?",
-    helpText: "Examples: wood, plastic/resin, fabric cushions, cardboard, bark, lumber, fuel containers. Use unknown if unsure.",
+    helpText: "Examples: wood, plastic/resin, fabric cushions, cardboard, bark, lumber, and fuel containers. Metal, stone, concrete, and some ceramics may be non-combustible; use unknown if unsure.",
     inputType: "yes_no_unknown",
     sourceBasis: "official",
-    appliesToTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Mulch / wood chips / bark", "Pergola", "Climbing plant on pergola", "Climbing plant on fence", "Grill / BBQ", "Generator"],
+    appliesToTypes: ["Furniture", "Firewood / lumber", "Doormat / rug", "Outdoor storage", "Mulch / wood chips / bark", "Pergola", "Grill / BBQ", "Generator"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2592,7 +2704,7 @@ const QUESTION_DEFINITIONS = [
     helpText: "This is an app observation prompt for possible fuel pathway review.",
     inputType: "yes_no_unknown",
     sourceBasis: "app_inference",
-    appliesToTypes: ["Wood gate", "Wood fence", "Climbing plant on fence"],
+    appliesToTypes: ["Wood gate", "Wood fence"],
     required: true,
     reviewOnUnknown: true,
   },
@@ -2643,7 +2755,7 @@ const FLOW_DEFINITIONS = [
       "deck_balcony_away_from_openings",
       "under_window",
       "distance_opening",
-      "container_size",
+      "container_capacity_class",
       "container_material",
       "plant_height",
       "deck_stair_clearance",
@@ -2658,8 +2770,8 @@ const FLOW_DEFINITIONS = [
   {
     id: "inground_plant_shrub_v1",
     version: "1",
-    label: "In-ground plant and shrub questions",
-    objectTypes: ["In-ground plant", "Shrub"],
+    label: "In-ground plant, shrub, and vine questions",
+    objectTypes: ["In-ground plant", "Shrub", "Vine / climbing plant"],
     questionIds: [
       "zone0_location",
       "distance_wall",
@@ -2670,6 +2782,8 @@ const FLOW_DEFINITIONS = [
       "deck_stair_clearance",
       "combustible_mulch",
       "plant_fuel_continuity",
+      "plant_support_context",
+      "plant_touching_structure",
       "plant_type",
       "plant_height",
       "healthy_maintained",
@@ -2681,18 +2795,15 @@ const FLOW_DEFINITIONS = [
     id: "tree_v1",
     version: "1",
     label: "Tree questions",
-    objectTypes: [
-      "Whole tree / unsure part",
-      "Tree trunk",
-      "Branches / canopy / fronds",
-      "Tree debris / leaves / needles",
-      "New or planned tree",
-    ],
+    objectTypes: ["Tree"],
     questionIds: [
       "tree_status",
+      "tree_part",
       "dead_tree_material",
+      "tree_debris_under",
       "tree_contact",
       "canopy_clearance_10ft",
+      "mature_dripline_distance",
       "ladder_fuels",
     ],
   },
@@ -2750,8 +2861,8 @@ const FLOW_DEFINITIONS = [
   {
     id: "pergola_climbing_v1",
     version: "1",
-    label: "Pergola and climbing plant questions",
-    objectTypes: ["Pergola", "Climbing plant on pergola", "Climbing plant on fence"],
+    label: "Pergola questions",
+    objectTypes: ["Pergola"],
     questionIds: [
       "zone0_location",
       "distance_wall",
@@ -2975,6 +3086,1298 @@ const stores = {
 };
 
 
+const RULE_FACTS_VERSION = "phase3_rule_facts_v1";
+
+function toRuleFacts(object = {}) {
+  const answers = object.questionAnswers && typeof object.questionAnswers === "object" ? object.questionAnswers : {};
+  const wallDistance = answers.distance_wall || { ft: object.wallFt, in: object.wallIn };
+
+  return {
+    version: RULE_FACTS_VERSION,
+    objectId: object.id || "",
+    objectType: object.type || "",
+    zone: {
+      location: answers.zone0_location,
+      measuredFrom: answers.measured_from_structure_part,
+      wallDistanceInches: distanceInches(wallDistance),
+    },
+    structure: {
+      constructionType: answers.structure_construction_type,
+    },
+    plant: {
+      type: answers.plant_type,
+      healthyMaintained: answers.healthy_maintained,
+      heightInches: distanceInches(answers.plant_height),
+      spacingInches: distanceInches(answers.plant_spacing),
+      underWindow: answers.under_window,
+      openingDistanceInches: distanceInches(answers.distance_opening),
+      deckStairClearance: answers.deck_stair_clearance,
+      combustibleMulch: answers.combustible_mulch,
+      fuelContinuity: answers.plant_fuel_continuity,
+      mulchContext: answers.mulch_context,
+      supportContext: answers.plant_support_context,
+      touchingStructure: answers.plant_touching_structure,
+    },
+    container: {
+      size: answers.container_size,
+      capacityClass: answers.container_capacity_class,
+      material: answers.container_material,
+      placement: answers.container_placement,
+      deckBalconyWallDistanceInches: distanceInches(answers.deck_balcony_wall_distance),
+      deckBalconyAwayFromOpenings: answers.deck_balcony_away_from_openings,
+    },
+    storage: {
+      storedWithin5ft: answers.stored_within_5ft,
+      materialCombustible: answers.material_combustible,
+      furnitureMaterial: answers.furniture_material,
+      furnitureCushionsFabric: answers.furniture_cushions_fabric,
+      onOrUnderDeck: answers.on_or_under_deck,
+      deckAttachedLocation: answers.deck_attached_location,
+      deckWallDistanceInches: distanceInches(answers.deck_wall_distance),
+      contentsCombustible: answers.storage_contents_combustible,
+      trashBinTiming: answers.trash_bin_timing,
+      redFlagBinPlan: answers.red_flag_bin_plan,
+      temporaryOrRegular: answers.temporary_or_regular,
+    },
+    tree: {
+      status: answers.tree_status,
+      part: answers.tree_part,
+      contactStructure: answers.tree_contact,
+      rooflineClearance10ft: answers.canopy_clearance_10ft,
+      deadDryMaterial: answers.dead_tree_material,
+      debrisUnder: answers.tree_debris_under,
+      matureDriplineDistanceInches: distanceInches(answers.mature_dripline_distance),
+      ladderFuels: answers.ladder_fuels,
+    },
+    fence: {
+      orientation: answers.fence_orientation,
+      material: answers.fence_material,
+      combustibleReinforcement: answers.combustible_reinforcement,
+      vegetationBetweenStructure: answers.vegetation_between_fence_structure,
+    },
+    pergola: {
+      materialCombustible: answers.material_combustible,
+      fuelContinuity: answers.fuel_continuity,
+      vegetationBetweenFenceStructure: answers.vegetation_between_fence_structure,
+    },
+  };
+}
+
+function isRuleFacts(value) {
+  return value?.version === RULE_FACTS_VERSION;
+}
+
+function distanceInches(value) {
+  if (!value || typeof value !== "object") return null;
+  if (value.cm !== undefined && value.cm !== "") {
+    const cm = Number(value.cm);
+    return Number.isFinite(cm) ? cm / 2.54 : null;
+  }
+  const ft = value.ft === "" || value.ft === undefined || value.ft === null ? 0 : Number(value.ft);
+  const inch = value.in === "" || value.in === undefined || value.in === null ? 0 : Number(value.in);
+  if (!Number.isFinite(ft) || !Number.isFinite(inch)) return null;
+  if (ft === 0 && inch === 0 && value.ft !== 0 && value.in !== 0) return null;
+  return ft * 12 + inch;
+}
+
+
+
+const EVALUATOR_RESULTS = {
+  NOT_APPLICABLE: "not_applicable",
+  OUTSIDE_ZONE0_SCOPE: "outside_zone0_scope",
+  NOT_ENOUGH_INFORMATION: "not_enough_information",
+  REVIEW_NEEDED: "review_needed",
+  MEETS_MAPPED_CONDITIONS: "meets_mapped_conditions",
+  DOES_NOT_MEET_MAPPED_CONDITIONS: "does_not_meet_mapped_conditions",
+  TEMPORARY_ONLY_CONDITION: "temporary_only_condition",
+};
+
+const POTTED_PLANT_SOURCE = {
+  title: "City of San Diego Zone 0 Guidelines for Existing Structures",
+  revision: "Rev. 4/22/2026",
+  sections: ["4", "4.1", "4.2", "4.7"],
+};
+
+const IN_GROUND_PLANT_SOURCE = {
+  title: "City of San Diego Zone 0 Guidelines for Existing Structures",
+  revision: "Rev. 4/22/2026",
+  sections: ["4", "4.1", "4.2"],
+};
+
+const STORAGE_SOURCE = {
+  title: "City of San Diego Zone 0 Guidelines for Existing Structures",
+  revision: "Rev. 4/22/2026",
+  sections: ["4", "4.1", "4.7", "4.8", "5.1"],
+};
+
+const EQUIPMENT_REVIEW_SOURCE = {
+  title: "City of San Diego Zone 0 Guidelines for Existing Structures",
+  revision: "Rev. 4/22/2026",
+  sections: ["4", "4.7", "4.8"],
+};
+
+const TREE_SOURCE = {
+  title: "City of San Diego Zone 0 Guidelines for Existing Structures",
+  revision: "Rev. 4/22/2026",
+  sections: ["3", "4.5", "5.1", "9"],
+};
+
+const FENCE_GATE_SOURCE = {
+  title: "City of San Diego Zone 0 Guidelines for Existing Structures",
+  revision: "Rev. 4/22/2026",
+  sections: ["4", "4.6", "5.1"],
+};
+
+const PERGOLA_CLIMBING_SOURCE = {
+  title: "City of San Diego Zone 0 Guidelines for Existing Structures",
+  revision: "Rev. 4/22/2026",
+  sections: ["4", "4.1", "4.6", "5.1"],
+};
+
+const STORAGE_EVALUATOR_TYPES = new Set([
+  "Mulch / wood chips / bark",
+  "Furniture",
+  "Firewood / lumber",
+  "Doormat / rug",
+  "Outdoor storage",
+  "Trash bin",
+]);
+
+const IN_GROUND_PLANT_TYPES = new Set(["In-ground plant", "Shrub", "Vine / climbing plant"]);
+
+const EQUIPMENT_REVIEW_TYPES = new Set([
+  "HVAC / AC unit",
+  "Generator",
+  "Grill / BBQ",
+  "Wood exterior door",
+  "Other",
+]);
+
+const EQUIPMENT_STORAGE_QUESTION_TYPES = new Set(["Generator", "Grill / BBQ"]);
+
+const TREE_EVALUATOR_TYPES = new Set([
+  "Tree",
+]);
+
+const FENCE_GATE_TYPES = new Set(["Wood gate", "Wood fence"]);
+
+const PERGOLA_CLIMBING_TYPES = new Set(["Pergola"]);
+
+function evaluatePottedPlantInternal(object) {
+  if (!isRuleFacts(object) || object.objectType !== "Potted plant") {
+    return result("potted_plant_internal_v1", POTTED_PLANT_SOURCE, EVALUATOR_RESULTS.NOT_APPLICABLE, ["Evaluator only applies to Potted plant objects."]);
+  }
+
+  const facts = object;
+  const failures = [];
+  const missing = [];
+  const review = [];
+  const notes = [
+    "Internal Phase 3 trial only. Do not show as official compliance.",
+    "Container size uses the current small/medium/large field and must be rechecked in Phase 4A.",
+  ];
+
+  if (facts.zone.location === "no") {
+    return result("potted_plant_internal_v1", POTTED_PLANT_SOURCE, EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE, ["Object is marked outside the 5 ft / 152 cm Zone 0 scope."], { notes });
+  }
+  requireKnown(facts.zone.location, "zone0_location", missing);
+  requireKnown(facts.zone.measuredFrom, "measured_from_structure_part", missing);
+
+  if (facts.zone.measuredFrom && facts.zone.measuredFrom !== "exterior_wall") {
+    review.push("Trial evaluator only handles exterior-wall measurement confidently so far.");
+  }
+
+  const wallDistance = facts.zone.wallDistanceInches;
+  if (wallDistance === null) missing.push("distance_wall");
+
+  requireKnown(facts.structure.constructionType, "structure_construction_type", missing);
+  if (["unknown", "historic_structure"].includes(facts.structure.constructionType)) {
+    review.push("Structure construction type changes wall-distance logic or needs official review.");
+  }
+
+  if (facts.plant.combustibleMulch === "yes") failures.push("Combustible mulch is present.");
+  requireKnown(facts.plant.combustibleMulch, "combustible_mulch", missing);
+
+  if (facts.plant.type === "other_or_unknown") missing.push("plant_type");
+  requireKnown(facts.plant.type, "plant_type", missing);
+
+  if (facts.plant.healthyMaintained === "no") failures.push("Plant is not marked healthy/maintained/free of dead material.");
+  requireKnown(facts.plant.healthyMaintained, "healthy_maintained", missing);
+
+  evaluateContainerCapacity(facts, failures, missing, review);
+
+  if (facts.container.material === "combustible") failures.push("Container material is marked combustible.");
+  requireKnown(facts.container.material, "container_material", missing);
+
+  if (["raised_stand_table", "hanging", "other_or_unknown"].includes(facts.container.placement)) {
+    review.push("Container placement is not clearly ground, balcony floor, or deck surface.");
+  }
+  requireKnown(facts.container.placement, "container_placement", missing);
+
+  const plantHeight = facts.plant.heightInches;
+  if (plantHeight === null) missing.push("plant_height");
+  if (plantHeight !== null && plantHeight > 18) failures.push("Plant height is over 18 in / 46 cm.");
+
+  if (facts.plant.underWindow === "yes") failures.push("Plant/container is beneath or in front of a window.");
+  requireKnown(facts.plant.underWindow, "under_window", missing);
+
+  const openingDistance = facts.plant.openingDistanceInches;
+  if (openingDistance === null) missing.push("distance_opening");
+  if (openingDistance !== null && openingDistance < 24) failures.push("Distance from nearest opening is under 2 ft / 61 cm.");
+
+  const spacing = facts.plant.spacingInches;
+  if (spacing === null) missing.push("plant_spacing");
+  if (spacing !== null && plantHeight !== null && spacing < plantHeight * 1.5) {
+    failures.push("Plant/container spacing is less than 1.5 times plant height.");
+  }
+
+  if (facts.plant.deckStairClearance === "less_than_1ft") failures.push("Deck/stair clearance is under 1 ft / 30 cm.");
+  requireKnown(facts.plant.deckStairClearance, "deck_stair_clearance", missing);
+
+  if (facts.plant.fuelContinuity === "yes") review.push("Fuel continuity is marked yes and needs site-specific review.");
+  requireKnown(facts.plant.fuelContinuity, "plant_fuel_continuity", missing);
+
+  if (facts.structure.constructionType === "ordinary_existing" && wallDistance !== null && wallDistance < 12) {
+    failures.push("Ordinary existing structure wall distance is under 1 ft / 30 cm.");
+  }
+
+  if (["balcony_floor", "deck_surface"].includes(facts.container.placement)) {
+    const deckWallDistance = facts.container.deckBalconyWallDistanceInches;
+    if (deckWallDistance === null) missing.push("deck_balcony_wall_distance");
+    if (deckWallDistance !== null && deckWallDistance < 60) failures.push("Deck/balcony pot is under 5 ft / 152 cm from adjacent exterior wall.");
+    if (facts.container.deckBalconyAwayFromOpenings === "no") failures.push("Deck/balcony pot is not marked away from building openings.");
+    requireKnown(facts.container.deckBalconyAwayFromOpenings, "deck_balcony_away_from_openings", missing);
+  }
+
+  if (failures.length) return result("potted_plant_internal_v1", POTTED_PLANT_SOURCE, EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS, failures, { missing, review, notes });
+  if (missing.length) return result("potted_plant_internal_v1", POTTED_PLANT_SOURCE, EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION, ["Required potted plant answers are missing or unknown."], { missing, review, notes });
+  if (review.length) return result("potted_plant_internal_v1", POTTED_PLANT_SOURCE, EVALUATOR_RESULTS.REVIEW_NEEDED, unique(review), { notes });
+  return result("potted_plant_internal_v1", POTTED_PLANT_SOURCE, EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS, ["All currently mapped potted-plant trial checks are satisfied."], { notes });
+}
+
+function evaluateInGroundPlantShrubInternal(object) {
+  if (!isRuleFacts(object) || !IN_GROUND_PLANT_TYPES.has(object.objectType)) {
+    return result("in_ground_plant_shrub_internal_v1", IN_GROUND_PLANT_SOURCE, EVALUATOR_RESULTS.NOT_APPLICABLE, ["Evaluator only applies to In-ground plant, Shrub, and Vine / climbing plant objects."]);
+  }
+
+  const facts = object;
+  const failures = [];
+  const missing = [];
+  const review = [];
+  const notes = [
+    "Internal Phase 3 trial only. Do not show as official compliance.",
+    "This evaluator uses shared plant/vegetation checks and intentionally skips potted-only container checks.",
+    "Plant type and fuel-continuity confidence need Phase 4A/helper review before any user-facing result.",
+    "Vine/climbing plant support context is collected to avoid duplicate plant plus fence/pergola objects.",
+  ];
+
+  if (facts.zone.location === "no") {
+    return result("in_ground_plant_shrub_internal_v1", IN_GROUND_PLANT_SOURCE, EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE, ["Object is marked outside the 5 ft / 152 cm Zone 0 scope."], { notes });
+  }
+  requireKnown(facts.zone.location, "zone0_location", missing);
+  requireKnown(facts.zone.measuredFrom, "measured_from_structure_part", missing);
+
+  if (facts.zone.measuredFrom && facts.zone.measuredFrom !== "exterior_wall") {
+    review.push("Trial evaluator only handles exterior-wall measurement confidently so far.");
+  }
+
+  const wallDistance = facts.zone.wallDistanceInches;
+  if (wallDistance === null) missing.push("distance_wall");
+
+  requireKnown(facts.structure.constructionType, "structure_construction_type", missing);
+  if (["unknown", "historic_structure"].includes(facts.structure.constructionType)) {
+    review.push("Structure construction type changes wall-distance logic or needs official review.");
+  }
+
+  if (facts.plant.combustibleMulch === "yes") failures.push("Combustible mulch is present.");
+  requireKnown(facts.plant.combustibleMulch, "combustible_mulch", missing);
+
+  if (facts.plant.type === "other_or_unknown") missing.push("plant_type");
+  requireKnown(facts.plant.type, "plant_type", missing);
+
+  if (facts.plant.healthyMaintained === "no") failures.push("Plant is not marked healthy/maintained/free of dead material.");
+  requireKnown(facts.plant.healthyMaintained, "healthy_maintained", missing);
+
+  const plantHeight = facts.plant.heightInches;
+  if (plantHeight === null) missing.push("plant_height");
+  if (plantHeight !== null && plantHeight > 18) failures.push("Plant height is over 18 in / 46 cm.");
+
+  if (facts.plant.underWindow === "yes") failures.push("Plant is beneath or in front of a window.");
+  requireKnown(facts.plant.underWindow, "under_window", missing);
+
+  const openingDistance = facts.plant.openingDistanceInches;
+  if (openingDistance === null) missing.push("distance_opening");
+  if (openingDistance !== null && openingDistance < 24) failures.push("Distance from nearest opening is under 2 ft / 61 cm.");
+
+  const spacing = facts.plant.spacingInches;
+  if (spacing === null) missing.push("plant_spacing");
+  if (spacing !== null && plantHeight !== null && spacing < plantHeight * 1.5) {
+    failures.push("Plant spacing is less than 1.5 times plant height.");
+  }
+
+  if (facts.plant.deckStairClearance === "less_than_1ft") failures.push("Deck/stair clearance is under 1 ft / 30 cm.");
+  requireKnown(facts.plant.deckStairClearance, "deck_stair_clearance", missing);
+
+  if (facts.plant.fuelContinuity === "yes") review.push("Fuel continuity is marked yes and needs site-specific review.");
+  requireKnown(facts.plant.fuelContinuity, "plant_fuel_continuity", missing);
+
+  if (facts.objectType === "Vine / climbing plant") {
+    requireKnown(facts.plant.supportContext, "plant_support_context", missing);
+    requireKnown(facts.plant.touchingStructure, "plant_touching_structure", missing);
+    if (facts.plant.supportContext && !["nothing_or_ground", "other_or_unknown"].includes(facts.plant.supportContext)) {
+      review.push("Vine support context is marked as fence, pergola, wall, deck, railing, trellis, or other support; keep as one plant object and review support/contact details.");
+    }
+    if (facts.plant.touchingStructure === "yes") {
+      review.push("Vine is marked as touching a building, opening, deck, or attached structure.");
+    }
+  }
+
+  if (facts.structure.constructionType === "ordinary_existing" && wallDistance !== null && wallDistance < 12) {
+    failures.push("Ordinary existing structure wall distance is under 1 ft / 30 cm.");
+  }
+
+  if (failures.length) return result("in_ground_plant_shrub_internal_v1", IN_GROUND_PLANT_SOURCE, EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS, failures, { missing, review, notes });
+  if (missing.length) return result("in_ground_plant_shrub_internal_v1", IN_GROUND_PLANT_SOURCE, EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION, ["Required in-ground plant/shrub answers are missing or unknown."], { missing, review, notes });
+  if (review.length) return result("in_ground_plant_shrub_internal_v1", IN_GROUND_PLANT_SOURCE, EVALUATOR_RESULTS.REVIEW_NEEDED, unique(review), { notes });
+  return result("in_ground_plant_shrub_internal_v1", IN_GROUND_PLANT_SOURCE, EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS, ["All currently mapped in-ground plant/shrub trial checks are satisfied."], { notes });
+}
+
+function evaluateStorageBinFurnitureInternal(object) {
+  if (!isRuleFacts(object) || !STORAGE_EVALUATOR_TYPES.has(object.objectType)) {
+    return result("storage_bin_furniture_internal_v1", STORAGE_SOURCE, EVALUATOR_RESULTS.NOT_APPLICABLE, ["Evaluator only applies to storage, mulch, bin, furniture, and mat/rug objects."]);
+  }
+
+  const facts = object;
+  const failures = [];
+  const missing = [];
+  const review = [];
+  const notes = [
+    "Internal Phase 3 trial only. Do not show as official compliance.",
+    "Material categories remain user-entered clues and need Phase 4A taxonomy review before any user-facing result.",
+  ];
+
+  if (facts.zone.location === "no") {
+    return result("storage_bin_furniture_internal_v1", STORAGE_SOURCE, EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE, ["Object is marked outside the 5 ft / 152 cm Zone 0 scope."], { notes });
+  }
+  requireKnown(facts.zone.location, "zone0_location", missing);
+  requireKnown(facts.zone.measuredFrom, "measured_from_structure_part", missing);
+
+  const wallDistance = facts.zone.wallDistanceInches;
+  if (wallDistance === null) missing.push("distance_wall");
+
+  if (facts.objectType === "Mulch / wood chips / bark") {
+    evaluateMulch(facts, failures, missing, review);
+  } else if (facts.objectType === "Trash bin") {
+    evaluateTrashBin(facts, failures, missing, review);
+  } else {
+    evaluateStorageOrFurniture(facts.objectType, facts, failures, missing, review);
+  }
+
+  evaluateDeckPlacement(facts.objectType, facts, failures, missing, review);
+
+  if (failures.length) return result("storage_bin_furniture_internal_v1", STORAGE_SOURCE, EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS, failures, { missing, review, notes });
+  if (missing.length) return result("storage_bin_furniture_internal_v1", STORAGE_SOURCE, EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION, ["Required storage/bin/furniture answers are missing or unknown."], { missing, review, notes });
+  if (facts.objectType === "Trash bin" && facts.storage.trashBinTiming === "collection_day_only") {
+    return result("storage_bin_furniture_internal_v1", STORAGE_SOURCE, EVALUATOR_RESULTS.TEMPORARY_ONLY_CONDITION, ["Trash/recycling bin is marked within 5 ft / 152 cm on collection day only."], { review, notes });
+  }
+  if (review.length) return result("storage_bin_furniture_internal_v1", STORAGE_SOURCE, EVALUATOR_RESULTS.REVIEW_NEEDED, unique(review), { notes });
+  return result("storage_bin_furniture_internal_v1", STORAGE_SOURCE, EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS, ["All currently mapped storage/bin/furniture trial checks are satisfied."], { notes });
+}
+
+function evaluateEquipmentReviewInternal(object) {
+  if (!isRuleFacts(object) || !EQUIPMENT_REVIEW_TYPES.has(object.objectType)) {
+    return result("equipment_review_internal_v1", EQUIPMENT_REVIEW_SOURCE, EVALUATOR_RESULTS.NOT_APPLICABLE, ["Evaluator only applies to equipment and special review-only objects."]);
+  }
+
+  const facts = object;
+  const missing = [];
+  const review = [
+    `${facts.objectType} remains review-only because no automatic object-specific Zone 0 evaluator is mapped yet.`,
+  ];
+  const notes = [
+    "Internal Phase 3 trial only. Do not show as official compliance.",
+    "This evaluator is review-only by design and must not produce automatic mapped-okay or mapped-change results.",
+  ];
+
+  if (facts.zone.location === "no") {
+    return result("equipment_review_internal_v1", EQUIPMENT_REVIEW_SOURCE, EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE, ["Object is marked outside the 5 ft / 152 cm Zone 0 scope."], { notes });
+  }
+
+  requireKnown(facts.zone.location, "zone0_location", missing);
+  if (facts.zone.wallDistanceInches === null) missing.push("distance_wall");
+
+  if (EQUIPMENT_STORAGE_QUESTION_TYPES.has(facts.objectType)) {
+    if (facts.storage.storedWithin5ft === "yes") review.push("Object is marked as normally stored within 5 ft / 152 cm.");
+    if (facts.storage.storedWithin5ft === "unknown") review.push("Usual storage distance is unknown.");
+    if (facts.storage.materialCombustible === "yes") review.push("Object is marked combustible or flammable.");
+    if (facts.storage.materialCombustible === "unknown") review.push("Combustible/flammable material status is unknown.");
+    if (facts.storage.temporaryOrRegular === "regular_storage") review.push("Object is marked as regularly stored there.");
+    if (facts.storage.temporaryOrRegular === "temporary") review.push("Object is marked temporary; no equipment-specific temporary exception is mapped.");
+    if (facts.storage.onOrUnderDeck === "yes") review.push("Object is marked on top of or beneath a deck, balcony, porch, or stairway.");
+    if (facts.storage.onOrUnderDeck === "unknown") review.push("Deck/balcony/stair location is unknown.");
+  }
+
+  if (missing.length) {
+    return result("equipment_review_internal_v1", EQUIPMENT_REVIEW_SOURCE, EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION, ["Basic Zone 0 scope answers are missing for this review-only object."], { missing, review, notes });
+  }
+
+  return result("equipment_review_internal_v1", EQUIPMENT_REVIEW_SOURCE, EVALUATOR_RESULTS.REVIEW_NEEDED, unique(review), { notes });
+}
+
+function evaluateTreeInternal(object) {
+  if (!isRuleFacts(object) || !TREE_EVALUATOR_TYPES.has(object.objectType)) {
+    return result("tree_internal_v1", TREE_SOURCE, EVALUATOR_RESULTS.NOT_APPLICABLE, ["Evaluator only applies to current tree object types."]);
+  }
+
+  const facts = object;
+  const failures = [];
+  const missing = [];
+  const review = [];
+  const notes = [
+    "Internal Phase 3 trial only. Do not show as official compliance.",
+    "Tree UI now uses one Tree object with tree-part/debris/timing clues inside it.",
+    "This evaluator does not recommend tree removal. Removal/species/condition risk remains official/arborist review.",
+  ];
+
+  const wallDistance = facts.zone.wallDistanceInches;
+  if (facts.zone.location === "no" || (facts.zone.location !== "yes" && wallDistance !== null && wallDistance > 60)) {
+    return result("tree_internal_v1", TREE_SOURCE, EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE, ["Tree is marked or measured outside the 5 ft / 152 cm Zone 0 scope."], { notes });
+  }
+  if (facts.zone.location !== "yes" && wallDistance === null) missing.push("zone0_location_or_distance_wall");
+
+  if (facts.tree.status === "new_or_recent" || facts.tree.status === "planned_future") {
+    const matureDriplineDistance = facts.tree.matureDriplineDistanceInches;
+    if (matureDriplineDistance === null) {
+      missing.push("mature_dripline_distance");
+      review.push("New or planned tree placement needs mature drip-line distance from combustible structures.");
+    } else if (matureDriplineDistance < 120) {
+      failures.push("New or planned tree mature drip line is marked under 10 ft / 305 cm from the structure.");
+    }
+  } else if (facts.tree.status === "unknown" || isMissingOrUnknown(facts.tree.status)) {
+    review.push("Tree timing/status is unknown; timing-dependent tree logic cannot be fully determined.");
+  }
+
+  requireKnown(facts.tree.part, "tree_part", missing);
+
+  if (facts.tree.deadDryMaterial === "yes") failures.push("Dead, dying, diseased, dry tree material, or debris is marked present.");
+  requireKnown(facts.tree.deadDryMaterial, "dead_tree_material", missing);
+
+  if (facts.tree.debrisUnder === "yes") failures.push("Leaf litter, needles, fruit, bark, or vegetative debris are marked under or around the tree.");
+  requireKnown(facts.tree.debrisUnder, "tree_debris_under", missing);
+
+  if (facts.tree.contactStructure === "yes") failures.push("Branches, foliage, fronds, or tree parts are marked as touching the structure or projections.");
+  requireKnown(facts.tree.contactStructure, "tree_contact", missing);
+
+  if (facts.tree.rooflineClearance10ft === "yes") failures.push("Branches/canopy/fronds are marked within 10 ft / 305 cm of roofline, eaves, chimney, or stovepipe.");
+  requireKnown(facts.tree.rooflineClearance10ft, "canopy_clearance_10ft", missing);
+
+  if (facts.tree.ladderFuels === "yes") review.push("Ladder fuels are marked present and need cleanup or site-specific review.");
+  requireKnown(facts.tree.ladderFuels, "ladder_fuels", missing);
+
+  if (failures.length) return result("tree_internal_v1", TREE_SOURCE, EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS, failures, { missing, review, notes });
+  if (missing.length) return result("tree_internal_v1", TREE_SOURCE, EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION, ["Required tree answers are missing or unknown."], { missing, review, notes });
+  if (review.length) return result("tree_internal_v1", TREE_SOURCE, EVALUATOR_RESULTS.REVIEW_NEEDED, unique(review), { notes });
+  return result("tree_internal_v1", TREE_SOURCE, EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS, ["All currently mapped existing-tree trial checks are satisfied."], { notes });
+}
+
+function evaluateFenceGateInternal(object) {
+  if (!isRuleFacts(object) || !FENCE_GATE_TYPES.has(object.objectType)) {
+    return result("fence_gate_internal_v1", FENCE_GATE_SOURCE, EVALUATOR_RESULTS.NOT_APPLICABLE, ["Evaluator only applies to Wood gate and Wood fence objects."]);
+  }
+
+  const facts = object;
+  const failures = [];
+  const missing = [];
+  const review = [];
+  const notes = [
+    "Internal Phase 3 trial only. Do not show as official compliance.",
+    "Fence/gate logic includes Fire Code Official discretion and condition/fuel-accumulation details not fully modeled in current fields.",
+  ];
+  const distance = facts.zone.wallDistanceInches;
+
+  if (facts.zone.location === "no" || (facts.zone.location !== "yes" && distance !== null && distance > 60)) {
+    return result("fence_gate_internal_v1", FENCE_GATE_SOURCE, EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE, ["Fence/gate is marked or measured outside the 5 ft / 152 cm Zone 0 scope."], { notes });
+  }
+  if (facts.zone.location !== "yes" && distance === null) missing.push("zone0_location_or_distance_wall");
+  requireKnown(facts.fence.orientation, "fence_orientation", missing);
+  requireKnown(facts.fence.material, "fence_material", missing);
+  requireKnown(facts.fence.combustibleReinforcement, "combustible_reinforcement", missing);
+  requireKnown(facts.fence.vegetationBetweenStructure, "vegetation_between_fence_structure", missing);
+
+  if (facts.fence.orientation === "attached_or_perpendicular") {
+    if (facts.fence.material !== "metal_or_noncombustible") {
+      failures.push("Attached/perpendicular fence or gate in Zone 0 is not marked as non-combustible for the 5 ft / 152 cm transition span.");
+    }
+  }
+
+  if (facts.fence.orientation === "parallel") {
+    if (facts.fence.material === "vinyl") {
+      if (distance !== null && distance < 48) failures.push("Existing vinyl fence exception needs at least 4 ft / 122 cm from the structure.");
+      if (facts.fence.combustibleReinforcement === "yes") failures.push("Existing vinyl fence is marked with combustible reinforcement.");
+      if (facts.fence.vegetationBetweenStructure === "yes") failures.push("Vegetation is marked between the fence/gate and the structure.");
+      review.push("Vinyl fence exception also depends on condition, height, fuel accumulation, debris-free maintenance, and official judgment not fully modeled.");
+    } else if (facts.fence.material === "wood") {
+      review.push("Existing wood fencing in Zone 0 depends on whether it creates a continuous fuel pathway or increases ember ignition/fire spread, as determined by the Fire Code Official.");
+      if (facts.fence.vegetationBetweenStructure === "yes") {
+        failures.push("Vegetation is marked between a combustible fence/gate and the structure, creating a possible fuel pathway.");
+      }
+    } else if (facts.fence.material === "metal_or_noncombustible") {
+      if (facts.fence.vegetationBetweenStructure === "yes") review.push("Fence/gate material is non-combustible, but vegetation between fence and structure still needs review.");
+    }
+  }
+
+  if (facts.fence.orientation === "detached_or_unknown") {
+    review.push("Fence/gate orientation is unknown or detached; current evaluator cannot apply the attached/perpendicular or parallel branch confidently.");
+  }
+
+  if (facts.fence.material === "unknown") {
+    review.push("Fence/gate material is unknown.");
+  }
+
+  if (failures.length) return result("fence_gate_internal_v1", FENCE_GATE_SOURCE, EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS, failures, { missing, review, notes });
+  if (missing.length) return result("fence_gate_internal_v1", FENCE_GATE_SOURCE, EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION, ["Required fence/gate answers are missing or unknown."], { missing, review, notes });
+  if (review.length) return result("fence_gate_internal_v1", FENCE_GATE_SOURCE, EVALUATOR_RESULTS.REVIEW_NEEDED, unique(review), { notes });
+  return result("fence_gate_internal_v1", FENCE_GATE_SOURCE, EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS, ["All currently mapped fence/gate trial checks are satisfied."], { notes });
+}
+
+function evaluatePergolaClimbingInternal(object) {
+  if (!isRuleFacts(object) || !PERGOLA_CLIMBING_TYPES.has(object.objectType)) {
+    return result("pergola_climbing_internal_v1", PERGOLA_CLIMBING_SOURCE, EVALUATOR_RESULTS.NOT_APPLICABLE, ["Evaluator only applies to Pergola objects."]);
+  }
+
+  const facts = object;
+  const failures = [];
+  const missing = [];
+  const review = [];
+  const notes = [
+    "Internal Phase 3 trial only. Do not show as official compliance.",
+    "Pergola and climbing-plant logic is review-heavy because current fields do not fully capture structure attachment, material assembly, condition, or official discretion.",
+    "Climbing-plant conclusions are conservative app inferences from vegetation/fuel-continuity principles and need source-wording review before user-facing results.",
+  ];
+  const distance = facts.zone.wallDistanceInches;
+
+  if (facts.zone.location === "no" || (facts.zone.location !== "yes" && distance !== null && distance > 60)) {
+    return result("pergola_climbing_internal_v1", PERGOLA_CLIMBING_SOURCE, EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE, ["Object is marked or measured outside the 5 ft / 152 cm Zone 0 scope."], { notes });
+  }
+  if (facts.zone.location !== "yes" && distance === null) missing.push("zone0_location_or_distance_wall");
+
+  requireKnown(facts.pergola.materialCombustible, "material_combustible", missing);
+
+  evaluatePergola(facts, failures, missing, review);
+
+  if (failures.length) return result("pergola_climbing_internal_v1", PERGOLA_CLIMBING_SOURCE, EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS, failures, { missing, review, notes });
+  if (missing.length) return result("pergola_climbing_internal_v1", PERGOLA_CLIMBING_SOURCE, EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION, ["Required pergola/climbing-plant answers are missing or unknown."], { missing, review, notes });
+  if (review.length) return result("pergola_climbing_internal_v1", PERGOLA_CLIMBING_SOURCE, EVALUATOR_RESULTS.REVIEW_NEEDED, unique(review), { notes });
+  return result("pergola_climbing_internal_v1", PERGOLA_CLIMBING_SOURCE, EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS, ["All currently mapped pergola trial checks are satisfied."], { notes });
+}
+
+function evaluateContainerCapacity(facts, failures, missing, review) {
+  if (facts.container.capacityClass === "five_gal_or_less") return;
+  if (facts.container.capacityClass === "over_five_gal") {
+    failures.push("Container capacity is over 5 gallons / 18.9 L.");
+    return;
+  }
+  if (facts.container.capacityClass === "unknown") {
+    missing.push("container_capacity_class");
+    return;
+  }
+  if (facts.container.size) {
+    review.push("Legacy container size is saved, but small/medium/large is too coarse for the 5 gallon / 18.9 L threshold.");
+    return;
+  }
+  missing.push("container_capacity_class");
+}
+
+function evaluatePergola(facts, failures, missing, review) {
+  requireKnown(facts.pergola.fuelContinuity, "fuel_continuity", missing);
+
+  if (facts.pergola.materialCombustible === "yes") {
+    failures.push("Pergola is marked combustible within Zone 0; non-habitable structure materials need non-combustible/compliance-plan review.");
+  }
+  if (facts.pergola.fuelContinuity === "yes") {
+    review.push("Pergola is marked as creating fuel continuity; current fields do not identify the exact fuel path.");
+  }
+}
+
+function evaluateMulch(facts, failures, missing, review) {
+  requireKnown(facts.plant.combustibleMulch, "combustible_mulch", missing);
+  requireKnown(facts.storage.materialCombustible, "material_combustible", missing);
+
+  if (facts.plant.combustibleMulch === "yes" || facts.storage.materialCombustible === "yes") {
+    failures.push("Combustible mulch, bark, or wood chips are marked within Zone 0.");
+  }
+  if (facts.plant.mulchContext && facts.plant.mulchContext !== "standalone_mulch_area") {
+    review.push("Mulch context is not a standalone mulch area and may need object-specific review.");
+  }
+}
+
+function evaluateTrashBin(facts, failures, missing, review) {
+  requireKnown(facts.storage.storedWithin5ft, "stored_within_5ft", missing);
+  requireKnown(facts.storage.trashBinTiming, "trash_bin_timing", missing);
+
+  if (facts.storage.storedWithin5ft === "no") review.push("Bin is marked not normally stored within 5 ft / 152 cm; confirm Zone 0 scope before using this evaluator.");
+  if (facts.storage.trashBinTiming === "regular_storage") failures.push("Trash/recycling bin is marked as regularly stored within 5 ft / 152 cm.");
+  if (facts.storage.trashBinTiming === "temporary_non_collection") review.push("Temporary non-collection placement has no source-backed exception in this trial.");
+  if (isMissingOrUnknown(facts.storage.redFlagBinPlan)) review.push("Red Flag Warning day bin plan is unknown and remains informational/review-only.");
+  if (facts.storage.redFlagBinPlan === "no_plan") review.push("Red Flag Warning day bin plan is marked as no plan.");
+}
+
+function evaluateStorageOrFurniture(type, facts, failures, missing, review) {
+  requireKnown(facts.storage.storedWithin5ft, "stored_within_5ft", missing);
+  requireKnown(facts.storage.materialCombustible, "material_combustible", missing);
+  requireKnown(facts.storage.temporaryOrRegular, "temporary_or_regular", missing);
+
+  if (facts.storage.storedWithin5ft === "no") review.push("Object is marked not normally stored within 5 ft / 152 cm; confirm Zone 0 scope before using this evaluator.");
+  if (facts.storage.temporaryOrRegular === "temporary") review.push("Temporary placement needs source-backed wording before any user-facing result.");
+
+  if (["Firewood / lumber", "Outdoor storage"].includes(type)) {
+    requireKnown(facts.storage.contentsCombustible, "storage_contents_combustible", missing);
+    if (facts.storage.contentsCombustible === "yes" && facts.storage.temporaryOrRegular === "regular_storage") {
+      failures.push("Combustible or flammable stored contents are marked as regularly stored within Zone 0.");
+    }
+  }
+
+  if (type === "Furniture") {
+    requireKnown(facts.storage.furnitureCushionsFabric, "furniture_cushions_fabric", missing);
+    if (facts.storage.furnitureMaterial === "unknown") review.push("Furniture material category is unknown and needs review.");
+    if (facts.storage.furnitureMaterial === "metal_or_noncombustible" && facts.storage.furnitureCushionsFabric === "no" && facts.storage.materialCombustible === "no") return;
+  }
+
+  if (facts.storage.materialCombustible === "yes" && facts.storage.temporaryOrRegular === "regular_storage") {
+    failures.push(`${type} is marked combustible or flammable and regularly kept within Zone 0.`);
+  }
+}
+
+function evaluateDeckPlacement(type, facts, failures, missing, review) {
+  if (type === "Mulch / wood chips / bark") return;
+
+  requireKnown(facts.storage.deckAttachedLocation, "deck_attached_location", missing);
+
+  if (facts.storage.deckAttachedLocation === "beneath_deck") {
+    if (facts.storage.materialCombustible === "yes" || facts.storage.contentsCombustible === "yes") {
+      failures.push("Combustible storage or debris is marked beneath an attached deck, balcony, porch, or stairway.");
+    } else {
+      review.push("Beneath-deck location needs review for debris, storage, deck height, and mesh details not fully modeled.");
+    }
+  }
+
+  if (facts.storage.deckAttachedLocation === "on_deck_surface") {
+    const deckWallDistance = facts.storage.deckWallDistanceInches;
+    if (deckWallDistance === null) missing.push("deck_wall_distance");
+    if (deckWallDistance !== null && deckWallDistance < 60 && (facts.storage.materialCombustible === "yes" || facts.storage.contentsCombustible === "yes")) {
+      failures.push("Combustible item or storage is marked on a deck/balcony/stair surface within 5 ft / 152 cm of an exterior wall.");
+    }
+  }
+}
+
+function result(evaluator, source, status, reasons, { missing = [], review = [], notes = [] } = {}) {
+  return {
+    status,
+    evaluator,
+    source,
+    reasons: unique(reasons),
+    missingFields: unique(missing),
+    reviewNotes: unique(review),
+    notes: unique(notes),
+  };
+}
+
+function requireKnown(value, field, missing) {
+  if (isMissingOrUnknown(value)) missing.push(field);
+}
+
+function isMissingOrUnknown(value) {
+  return value === null || value === undefined || value === "" || value === "unknown" || value === "other_or_unknown";
+}
+
+function unique(values) {
+  return [...new Set(values.filter(Boolean))];
+}
+
+
+
+const ITEM_FORMULA_VERSION = "phase3c_internal_v1";
+
+const STATUS_COPY = {
+  [EVALUATOR_RESULTS.NOT_APPLICABLE]: {
+    label: "Not checked by this formula",
+    summary: "This evaluator does not apply to this item.",
+    tone: "neutral",
+  },
+  [EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE]: {
+    label: "Outside this Zone 0 check",
+    summary: "This item is marked outside the 5 ft / 152 cm Zone 0 area for this evaluator.",
+    tone: "neutral",
+  },
+  [EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION]: {
+    label: "Need more information",
+    summary: "The current answers are not enough for this internal draft formula.",
+    tone: "missing",
+  },
+  [EVALUATOR_RESULTS.REVIEW_NEEDED]: {
+    label: "Needs review",
+    summary: "The answers include something that needs a person, source, or site-specific review.",
+    tone: "review",
+  },
+  [EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS]: {
+    label: "Mapped checks look okay",
+    summary: "The current answers appear to satisfy the mapped internal checks.",
+    tone: "ok",
+  },
+  [EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS]: {
+    label: "Mapped checks need changes",
+    summary: "One or more mapped internal checks is not satisfied by the current answers.",
+    tone: "change",
+  },
+  [EVALUATOR_RESULTS.TEMPORARY_ONLY_CONDITION]: {
+    label: "Temporary only",
+    summary: "The current answers match a limited temporary condition in the internal draft.",
+    tone: "temporary",
+  },
+};
+
+function draftItemFormula(evaluation) {
+  const safeEvaluation = evaluation && typeof evaluation === "object" ? evaluation : {};
+  const status = safeEvaluation.status || EVALUATOR_RESULTS.NOT_APPLICABLE;
+  const statusCopy = STATUS_COPY[status] || STATUS_COPY[EVALUATOR_RESULTS.NOT_APPLICABLE];
+  const reasons = unique(safeEvaluation.reasons || []);
+  const missingFields = unique(safeEvaluation.missingFields || []);
+  const reviewNotes = unique(safeEvaluation.reviewNotes || []);
+  const source = safeEvaluation.source || null;
+
+  return {
+    version: ITEM_FORMULA_VERSION,
+    visibility: "internal_draft_not_ui",
+    status,
+    label: statusCopy.label,
+    summary: statusCopy.summary,
+    tone: statusCopy.tone,
+    works: worksForStatus(status, reasons),
+    doesNotWork: status === EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS ? reasons : [],
+    unknown: missingFields.map(formatMissingField),
+    review: reviewForStatus(status, reasons, reviewNotes),
+    suggestedChanges: suggestedChangesFor(status, reasons, missingFields, reviewNotes),
+    sourceNote: source ? `${source.title}, ${source.revision}, sections ${source.sections.join(", ")}` : "",
+    boundaryNote: "Internal Phase 3C draft only. Do not show as official compliance or legal advice.",
+  };
+}
+
+function worksForStatus(status, reasons) {
+  if (status === EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS) return reasons;
+  if (status === EVALUATOR_RESULTS.TEMPORARY_ONLY_CONDITION) return reasons;
+  if (status === EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE) return reasons;
+  return [];
+}
+
+function reviewForStatus(status, reasons, reviewNotes) {
+  if (status === EVALUATOR_RESULTS.REVIEW_NEEDED) return unique([...reasons, ...reviewNotes]);
+  return reviewNotes;
+}
+
+function suggestedChangesFor(status, reasons, missingFields, reviewNotes) {
+  if (status === EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS) return [];
+  if (status === EVALUATOR_RESULTS.NOT_APPLICABLE) return [];
+  if (status === EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE) return ["Keep the item in the inventory, but do not use this Zone 0 evaluator for it unless its location changes."];
+
+  const suggestions = [];
+  for (const reason of reasons) suggestions.push(suggestionForReason(reason));
+  for (const field of missingFields) suggestions.push(`Answer or confirm: ${formatMissingField(field)}.`);
+  for (const note of reviewNotes) suggestions.push(reviewSuggestionFor(note));
+  return unique(suggestions);
+}
+
+function suggestionForReason(reason) {
+  const text = String(reason);
+  const lower = text.toLowerCase();
+
+  if (lower.includes("combustible mulch")) return "Remove or replace combustible mulch in Zone 0, or confirm the material if it is not combustible.";
+  if (lower.includes("structure construction type")) return "Confirm the structure type from reliable building information or official review; stucco alone should not be used as proof.";
+  if (lower.includes("under 1 ft")) return "Move the plant/container at least 1 ft / 30 cm from ordinary existing structure walls, or confirm if Section 4.2 structure-type logic applies.";
+  if (lower.includes("under 2 ft") || lower.includes("beneath or in front of a window")) return "Move the plant/container away from windows and at least 2 ft / 61 cm from openings.";
+  if (lower.includes("5 gallons") || lower.includes("container capacity") || lower.includes("container is marked large")) return "Use or confirm a non-combustible container that is 5 gallons / 18.9 L or smaller.";
+  if (lower.includes("container material")) return "Use or confirm a non-combustible container material.";
+  if (lower.includes("plant height")) return "Trim, replace, or confirm the plant so the mapped height is 18 in / 46 cm or less.";
+  if (lower.includes("spacing")) return "Increase spacing from nearby plants or containers based on the mapped plant-height rule.";
+  if (lower.includes("deck/stair clearance")) return "Move the plant/container at least 1 ft / 30 cm from decks or stairs.";
+  if (lower.includes("deck/balcony pot")) return "Move deck/balcony pots at least 5 ft / 152 cm from adjacent exterior walls and away from openings.";
+  if (lower.includes("trash") || lower.includes("recycling bin")) return "Store the bin outside the 5 ft / 152 cm Zone 0 area except for collection-day placement.";
+  if (lower.includes("beneath an attached deck")) return "Remove or relocate combustible storage or debris from beneath attached decks, balconies, porches, or stairways.";
+  if (lower.includes("deck/balcony/stair surface")) return "Move combustible items on deck/balcony/stair surfaces at least 5 ft / 152 cm from exterior walls.";
+  if (lower.includes("combustible or flammable") || lower.includes("marked combustible")) return "Move or replace combustible/flammable items in Zone 0, or confirm the material classification.";
+
+  return `Review or change this item: ${text}`;
+}
+
+function reviewSuggestionFor(note) {
+  const text = String(note);
+  const lower = text.toLowerCase();
+  if (lower.includes("structure construction type")) return "Confirm the structure type from reliable building information or official review; stucco alone should not be used as proof.";
+  if (lower.includes("red flag")) return "Keep a Red Flag Warning day plan for moving bins or loose materials away from the home or into the garage.";
+  if (lower.includes("temporary")) return "Confirm whether the item is truly temporary and whether the source allows that temporary condition.";
+  if (lower.includes("material")) return "Confirm material classification before relying on the formula.";
+  if (lower.includes("fuel continuity")) return "Review whether this item connects fuels horizontally or vertically to nearby plants or the structure.";
+  return `Review: ${text}`;
+}
+
+function formatMissingField(field) {
+  const labels = {
+    zone0_location: "whether this is within 5 ft / 152 cm of the structure",
+    measured_from_structure_part: "what the distance was measured from",
+    distance_wall: "distance from wall or structure reference",
+    structure_construction_type: "nearby structure type",
+    combustible_mulch: "whether combustible mulch is present",
+    plant_type: "plant type",
+    healthy_maintained: "whether the plant is healthy, irrigated, maintained, and free of dead material",
+    container_size: "container size",
+    container_capacity_class: "whether the pot/container is 5 gallons / 18.9 L or less",
+    container_material: "container material",
+    container_placement: "container placement",
+    plant_height: "plant height",
+    under_window: "whether it is beneath or in front of a window",
+    distance_opening: "distance from nearest opening",
+    plant_spacing: "distance to nearest plant or container",
+    deck_stair_clearance: "distance from decks or stairs",
+    plant_fuel_continuity: "fuel continuity",
+    deck_balcony_wall_distance: "deck/balcony pot distance from adjacent exterior wall",
+    deck_balcony_away_from_openings: "whether the deck/balcony pot is away from openings",
+    material_combustible: "whether the item is combustible or flammable",
+    stored_within_5ft: "whether the item is normally stored within 5 ft / 152 cm",
+    deck_attached_location: "exact deck/balcony/stair location",
+    deck_wall_distance: "deck/balcony/stair surface distance from exterior wall",
+    storage_contents_combustible: "whether stored contents are combustible or flammable",
+    trash_bin_timing: "trash/recycling bin timing",
+    temporary_or_regular: "whether placement is temporary or regular",
+    furniture_cushions_fabric: "whether fabric cushions or soft parts are present",
+  };
+  return labels[field] || String(field).replaceAll("_", " ");
+}
+
+function unique(values) {
+  return [...new Set(values.filter(Boolean))];
+}
+
+
+
+const INTERNAL_RULE_ENGINE_VERSION = "phase3_internal_engine_v1";
+
+const POTTED_TYPES = new Set(["Potted plant"]);
+const IN_GROUND_PLANT_TYPES = new Set(["In-ground plant", "Shrub", "Vine / climbing plant"]);
+const EQUIPMENT_REVIEW_TYPES = new Set([
+  "HVAC / AC unit",
+  "Generator",
+  "Grill / BBQ",
+  "Wood exterior door",
+  "Other",
+]);
+const STORAGE_TYPES = new Set([
+  "Mulch / wood chips / bark",
+  "Furniture",
+  "Firewood / lumber",
+  "Doormat / rug",
+  "Outdoor storage",
+  "Trash bin",
+]);
+const TREE_TYPES = new Set([
+  "Tree",
+]);
+const FENCE_GATE_TYPES = new Set(["Wood gate", "Wood fence"]);
+const PERGOLA_CLIMBING_TYPES = new Set(["Pergola"]);
+
+function evaluateObjectInternal(object) {
+  const facts = toRuleFacts(object);
+  const evaluation = evaluatorFor(facts)(facts);
+  return {
+    version: INTERNAL_RULE_ENGINE_VERSION,
+    objectId: facts.objectId,
+    objectType: facts.objectType,
+    facts,
+    evaluation,
+    formula: draftItemFormula(evaluation),
+    boundaryNote: "Internal Phase 3 engine only. Not connected to the app UI.",
+  };
+}
+
+function evaluateObjectsInternal(objects = []) {
+  return objects.map((object) => evaluateObjectInternal(object));
+}
+
+function summarizeInternalEvaluations(results = []) {
+  const counts = {
+    total: 0,
+    mappedChecksLookOkay: 0,
+    mappedChecksNeedChanges: 0,
+    needMoreInformation: 0,
+    needsReview: 0,
+    temporaryOnly: 0,
+    outsideZone0Scope: 0,
+    notApplicable: 0,
+  };
+
+  for (const result of results) {
+    counts.total += 1;
+    switch (result?.evaluation?.status) {
+      case EVALUATOR_RESULTS.MEETS_MAPPED_CONDITIONS:
+        counts.mappedChecksLookOkay += 1;
+        break;
+      case EVALUATOR_RESULTS.DOES_NOT_MEET_MAPPED_CONDITIONS:
+        counts.mappedChecksNeedChanges += 1;
+        break;
+      case EVALUATOR_RESULTS.NOT_ENOUGH_INFORMATION:
+        counts.needMoreInformation += 1;
+        break;
+      case EVALUATOR_RESULTS.REVIEW_NEEDED:
+        counts.needsReview += 1;
+        break;
+      case EVALUATOR_RESULTS.TEMPORARY_ONLY_CONDITION:
+        counts.temporaryOnly += 1;
+        break;
+      case EVALUATOR_RESULTS.OUTSIDE_ZONE0_SCOPE:
+        counts.outsideZone0Scope += 1;
+        break;
+      default:
+        counts.notApplicable += 1;
+        break;
+    }
+  }
+
+  return {
+    version: INTERNAL_RULE_ENGINE_VERSION,
+    counts,
+    boundaryNote: "Internal summary only. Do not use as a user-facing compliance report.",
+  };
+}
+
+function evaluatorFor(object) {
+  if (POTTED_TYPES.has(object?.objectType)) return evaluatePottedPlantInternal;
+  if (IN_GROUND_PLANT_TYPES.has(object?.objectType)) return evaluateInGroundPlantShrubInternal;
+  if (STORAGE_TYPES.has(object?.objectType)) return evaluateStorageBinFurnitureInternal;
+  if (EQUIPMENT_REVIEW_TYPES.has(object?.objectType)) return evaluateEquipmentReviewInternal;
+  if (TREE_TYPES.has(object?.objectType)) return evaluateTreeInternal;
+  if (FENCE_GATE_TYPES.has(object?.objectType)) return evaluateFenceGateInternal;
+  if (PERGOLA_CLIMBING_TYPES.has(object?.objectType)) return evaluatePergolaClimbingInternal;
+  return notApplicableEvaluation;
+}
+
+function notApplicableEvaluation(object) {
+  return {
+    status: EVALUATOR_RESULTS.NOT_APPLICABLE,
+    evaluator: "internal_rule_engine_router_v1",
+    source: null,
+    reasons: [`No internal evaluator is mapped for ${object?.objectType || "this object type"}.`],
+    missingFields: [],
+    reviewNotes: [],
+    notes: ["Internal Phase 3 trial only. Do not show as official compliance."],
+  };
+}
+
+
+
+const FEEDBACK_PREVIEW_VERSION = "phase3d_feedback_preview_v1";
+
+const TONE_CLASS = {
+  ok: "ok",
+  change: "change",
+  missing: "missing",
+  review: "review",
+  temporary: "temporary",
+  neutral: "neutral",
+};
+
+function previewObjectFeedback(object) {
+  const internal = evaluateObjectInternal(object);
+  const formula = internal.formula || {};
+  const tone = TONE_CLASS[formula.tone] || "neutral";
+  const primaryActions = firstNonEmptyList([
+    formula.doesNotWork,
+    formula.unknown,
+    formula.review,
+    formula.suggestedChanges,
+    formula.works,
+  ]);
+
+  return {
+    version: FEEDBACK_PREVIEW_VERSION,
+    objectId: internal.objectId,
+    objectType: internal.objectType,
+    label: formula.label || "Not checked yet",
+    summary: formula.summary || "No feedback preview is available for this object yet.",
+    tone,
+    sourceNote: formula.sourceNote || "",
+    boundaryNote: "BloomBuffer feedback preview. It is not an official City determination or legal advice.",
+    primaryActions: primaryActions.slice(0, 3),
+  };
+}
+
+function previewObjectsFeedback(objects = []) {
+  const previews = objects.map((object) => previewObjectFeedback(object));
+  return {
+    version: FEEDBACK_PREVIEW_VERSION,
+    previews,
+    summary: summarizeInternalEvaluations(objects.map((object) => evaluateObjectInternal(object))).counts,
+    boundaryNote: "BloomBuffer feedback preview. It is not an official City determination or legal advice.",
+  };
+}
+
+function firstNonEmptyList(lists) {
+  for (const list of lists) {
+    if (Array.isArray(list) && list.length) return list;
+  }
+  return [];
+}
+
+
+
+const TABLE_COLUMNS = [
+  "record_type",
+  "id",
+  "name",
+  "area_id",
+  "area_name",
+  "side",
+  "access",
+  "icon",
+  "color",
+  "type",
+  "status",
+  "wall_ft",
+  "wall_in",
+  "notes",
+  "question_answers_json",
+  "feedback_label",
+  "feedback_action",
+];
+
+function buildTableCsv({ areas = [], objects = [] } = {}) {
+  const rows = [
+    TABLE_COLUMNS,
+    ...areas.map(areaToTableRow),
+    ...objects.map((object) => objectToTableRow(object, areas)),
+  ];
+  return rows.map((row) => row.map(csvCell).join(",")).join("\n");
+}
+
+function tableCsvToBackup(text) {
+  const parsedRows = parseCsv(text).filter((row) => row.some((cell) => String(cell).trim()));
+  if (parsedRows.length < 2) throw new Error("Table must include a header row and at least one data row.");
+  const headers = parsedRows[0].map((header) => String(header).trim());
+  for (const required of ["record_type", "name"]) {
+    if (!headers.includes(required)) throw new Error(`Table is missing required column: ${required}.`);
+  }
+
+  const rawAreas = [];
+  const rawObjects = [];
+  const areaIdsByName = new Map();
+
+  parsedRows.slice(1).forEach((row, index) => {
+    const record = Object.fromEntries(headers.map((header, cellIndex) => [header, row[cellIndex] ?? ""]));
+    const recordType = String(record.record_type || "").trim().toLowerCase();
+    if (!recordType) return;
+    if (recordType === "area") {
+      const area = tableRecordToArea(record, index);
+      rawAreas.push(area);
+      areaIdsByName.set(area.name.toLocaleLowerCase(), area.id);
+      return;
+    }
+    if (recordType === "object") {
+      rawObjects.push(record);
+      return;
+    }
+    throw new Error(`Row ${index + 2} has unsupported record_type "${record.record_type}". Use area or object.`);
+  });
+
+  for (const record of rawObjects) {
+    const areaNameText = String(record.area_name || "").trim();
+    const areaIdText = String(record.area_id || "").trim();
+    if (!areaIdText && areaNameText && areaNameText !== UNASSIGNED_AREA_NAME && !areaIdsByName.has(areaNameText.toLocaleLowerCase())) {
+      const area = createAreaDraft({ name: areaNameText, side: "Other", access: "Moderate", notes: "Created from table import.", icon: "Other", color: "Gray" });
+      rawAreas.push(area);
+      areaIdsByName.set(area.name.toLocaleLowerCase(), area.id);
+    }
+  }
+
+  const validAreaIds = new Set(rawAreas.map((area) => area.id));
+  const rawObjectDrafts = rawObjects.map((record, index) => tableRecordToObject(record, index, validAreaIds, areaIdsByName));
+  return normalizeImportedBackup({ areas: rawAreas, objects: rawObjectDrafts });
+}
+
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let quoted = false;
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const next = text[index + 1];
+    if (quoted) {
+      if (char === '"' && next === '"') {
+        cell += '"';
+        index += 1;
+      } else if (char === '"') {
+        quoted = false;
+      } else {
+        cell += char;
+      }
+      continue;
+    }
+    if (char === '"') quoted = true;
+    else if (char === ",") {
+      row.push(cell);
+      cell = "";
+    } else if (char === "\n") {
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
+    } else if (char !== "\r") {
+      cell += char;
+    }
+  }
+  row.push(cell);
+  rows.push(row);
+  return rows;
+}
+
+function areaToTableRow(area) {
+  return TABLE_COLUMNS.map((column) => ({
+    record_type: "area",
+    id: area.id,
+    name: area.name,
+    area_id: "",
+    area_name: "",
+    side: area.side,
+    access: area.access,
+    icon: area.icon,
+    color: area.color,
+    type: "",
+    status: "",
+    wall_ft: "",
+    wall_in: "",
+    notes: area.notes,
+    question_answers_json: "",
+    feedback_label: "",
+    feedback_action: "",
+  })[column] ?? "");
+}
+
+function objectToTableRow(object, areas) {
+  const feedback = previewObjectFeedback(object);
+  return TABLE_COLUMNS.map((column) => ({
+    record_type: "object",
+    id: object.id,
+    name: object.name,
+    area_id: object.areaId,
+    area_name: areaName(object.areaId, areas),
+    side: "",
+    access: "",
+    icon: "",
+    color: "",
+    type: object.type,
+    status: object.status,
+    wall_ft: object.wallFt ?? "",
+    wall_in: object.wallIn ?? "",
+    notes: object.notes,
+    question_answers_json: JSON.stringify(object.questionAnswers || {}),
+    feedback_label: feedback.label,
+    feedback_action: feedback.primaryActions[0] || feedback.summary || "",
+  })[column] ?? "");
+}
+
+function tableRecordToArea(record, index) {
+  return createAreaDraft({
+    id: sanitizedTableId(record.id) || crypto.randomUUID(),
+    name: requiredTableText(record.name, `Area row ${index + 2} is missing a name.`),
+    side: record.side || "Other",
+    access: record.access || "Moderate",
+    notes: record.notes || "",
+    icon: record.icon || "Home",
+    color: record.color || "Sage",
+  });
+}
+
+function tableRecordToObject(record, index, validAreaIds, areaIdsByName) {
+  const questionAnswers = parseQuestionAnswersJson(record.question_answers_json, index);
+  const type = normalizeObjectType(record.type);
+  const flow = getFlowForObjectType(type);
+  const areaId = tableAreaId(record, validAreaIds, areaIdsByName);
+  const wallFt = record.wall_ft ?? questionAnswers.distance_wall?.ft ?? "";
+  const wallIn = record.wall_in ?? questionAnswers.distance_wall?.in ?? "";
+  const answers = { ...questionAnswers };
+  if ((wallFt !== "" || wallIn !== "") && !answers.distance_wall) {
+    answers.distance_wall = { ft: wallFt, in: wallIn };
+  }
+  const screeningReadiness = readinessForObject({ type, questionAnswers: answers });
+
+  return createObjectDraft({
+    id: sanitizedTableId(record.id) || crypto.randomUUID(),
+    name: requiredTableText(record.name, `Object row ${index + 2} is missing a name.`),
+    areaId,
+    type,
+    status: record.status,
+    wallFt,
+    wallIn,
+    notes: record.notes || "",
+    questionAnswers: answers,
+    flowId: flow?.id || "",
+    flowVersion: flow?.version || "",
+    screeningReadiness,
+    treeStatus: String(answers.tree_status || ""),
+    treePart: String(answers.tree_part || ""),
+    sourceBasis: blankSourceBasisForFlow(flow),
+  });
+}
+
+function tableAreaId(record, validAreaIds, areaIdsByName) {
+  const areaId = String(record.area_id || "").trim();
+  if (areaId && (areaId === UNASSIGNED_AREA_ID || validAreaIds.has(areaId))) return areaId;
+  const areaNameText = String(record.area_name || "").trim().toLocaleLowerCase();
+  if (areaNameText && areaIdsByName.has(areaNameText)) return areaIdsByName.get(areaNameText);
+  return UNASSIGNED_AREA_ID;
+}
+
+function parseQuestionAnswersJson(value, rowIndex) {
+  const text = String(value || "").trim();
+  if (!text) return {};
+  try {
+    const parsed = JSON.parse(text);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch (error) {
+    throw new Error(`Object row ${rowIndex + 2} has invalid question_answers_json.`);
+  }
+}
+
+function blankSourceBasisForFlow(flow) {
+  if (!flow) return {};
+  return Object.fromEntries(flow.questionIds.map((id) => [id, ""]));
+}
+
+function requiredTableText(value, message) {
+  const text = String(value || "").trim();
+  if (!text) throw new Error(message);
+  return text;
+}
+
+function sanitizedTableId(value) {
+  const text = String(value || "").trim();
+  return /^[A-Za-z0-9_.:-]{1,120}$/.test(text) ? text : "";
+}
+
+function areaName(areaId, areas) {
+  if (!areaId || areaId === UNASSIGNED_AREA_ID) return UNASSIGNED_AREA_NAME;
+  return areas.find((area) => area.id === areaId)?.name || "";
+}
+
+function csvCell(value) {
+  const text = String(value ?? "");
+  return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
+}
+
+
+const SAMPLE_TABLES = {
+  small: "record_type,id,name,area_id,area_name,side,access,icon,color,type,status,wall_ft,wall_in,notes,question_answers_json,feedback_label,feedback_action\narea,front-entry,Front entry,,,Front,Easy,Home,Sage,,,,\"\",\"Front door, walkway, small planter area.\",,,\narea,side-yard,Side yard,,,Left,Moderate,Path,Gray,,,,\"\",\"Narrow side path with bins and fence.\",,,\narea,back-patio,Back patio,,,Back,Easy,Patio,Clay,,,,\"\",\"Deck/patio area used often.\",,,\narea,slope-edge,Slope edge,,,Back,Hard,Slope,Gold,,,,\"\",\"Lower slope edge with trees and dry material.\",,,\nobject,front-pot-ceramic,Ceramic pot by stucco wall,front-entry,Front entry,,,,,Potted plant,Measured,1,6,Large ceramic pot with green plant; user is unsure whether wall is ordinary stucco or ignition resistant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-doormat,Coir doormat at front door,front-entry,Front entry,,,,,Doormat / rug,Needs details,0,2,Combustible-looking mat directly at door; some clues intentionally missing for testing.,,,\nobject,front-shrub-window,Shrub under front window,front-entry,Front entry,,,,,Shrub,Measured,2,8,Green shrub below a window; mulch nearby.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":8},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"ordinary_existing\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":1,\"\"in\"\":3},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"around_plant_or_object\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,front-metal-chair,Metal chair near walkway,front-entry,Front entry,,,,,Furniture,Measured,6,0,Mostly metal chair outside Zone 0; includes complete furniture clues.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"stored_within_5ft\"\":\"\"no\"\",\"\"material_combustible\"\":\"\"no\"\",\"\"furniture_material\"\":\"\"metal_or_noncombustible\"\",\"\"furniture_cushions_fabric\"\":\"\"no\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-trash-bins,Trash bins along side wall,side-yard,Side yard,,,,,Trash bin,Measured,1,0,Regular bin storage next to side wall; has Red Flag plan answered.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"trash_bin_timing\"\":\"\"regular_storage\"\",\"\"red_flag_bin_plan\"\":\"\"move_away_or_garage\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-wood-fence,Wood fence section near wall,side-yard,Side yard,,,,,Wood fence,Needs details,3,0,Wood fence perpendicular to house; vegetation question left unknown.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"unknown\"\"}\",,\nobject,side-storage-bin,Plastic storage bin,side-yard,Side yard,,,,,Outdoor storage,Measured,4,6,Plastic bin with garden supplies; contents partly unknown.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"storage_contents_combustible\"\":\"\"unknown\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,side-vine-fence,Jasmine vine on fence,side-yard,Side yard,,,,,Vine / climbing plant,Measured,2,0,Vine is entered once as a plant; support context says fence to avoid duplicate object confusion.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"fence\"\",\"\"plant_touching_structure\"\":\"\"unknown\"\"}\",,\nobject,back-wood-table,Wood patio table with cushions,back-patio,Back patio,,,,,Furniture,Measured,2,6,Wood table and fabric cushions on patio near wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"furniture_material\"\":\"\"mixed\"\",\"\"furniture_cushions_fabric\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"no\"\",\"\"deck_attached_location\"\":\"\"neither\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,back-deck-pot,Potted herb on deck,back-patio,Back patio,,,,,Potted plant,Measured,0,10,Small herb pot on deck surface; deck-specific fields included.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"measured_from_structure_part\"\":\"\"attached_deck\"\",\"\"structure_construction_type\"\":\"\"ordinary_existing\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"deck_surface\"\",\"\"deck_stair_clearance\"\":\"\"less_than_1ft\"\",\"\"deck_balcony_wall_distance\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"deck_balcony_away_from_openings\"\":\"\"yes\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,back-bbq,Gas grill by patio edge,back-patio,Back patio,,,,,Grill / BBQ,Needs details,4,0,Special object currently inventory/review; not a final evaluator result.,,,\nobject,back-firewood-stack,Firewood stack under eave,back-patio,Back patio,,,,,Firewood / lumber,Measured,1,4,Stack of firewood under covered patio edge.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"stored_within_5ft\"\":\"\"yes\"\",\"\"material_combustible\"\":\"\"yes\"\",\"\"on_or_under_deck\"\":\"\"yes\"\",\"\"deck_attached_location\"\":\"\"beneath_deck\"\",\"\"storage_contents_combustible\"\":\"\"yes\"\",\"\"temporary_or_regular\"\":\"\"regular_storage\"\"}\",,\nobject,slope-mature-tree,Mature pine near roofline,slope-edge,Slope edge,,,,,Tree,Measured,4,0,\"One tree object: canopy, debris, and ladder fuel answered inside clues.\",\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,slope-new-tree,Planned small tree location,slope-edge,Slope edge,,,,,Tree,Planned,8,0,Planned tree outside immediate wall line but mature drip-line unknown.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"tree_status\"\":\"\"planned_future\"\",\"\"tree_part\"\":\"\"new_or_planned\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"no\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,slope-mulch-strip,Bark mulch strip,slope-edge,Slope edge,,,,,Mulch / wood chips / bark,Measured,2,0,Combustible mulch area near structure and plants.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"standalone_mulch_area\"\",\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,slope-ac-unit,AC unit with dry leaves nearby,slope-edge,Slope edge,,,,,HVAC / AC unit,Needs details,1,6,Inventory-only/special review object; dry leaves noted but no official AC result yet.,,,\n",
+  requestedYard: "record_type,id,name,area_id,area_name,side,access,icon,color,type,status,wall_ft,wall_in,notes,question_answers_json,feedback_label,feedback_action\narea,front-grass,Front grass,,,Front,Easy,Front,Sage,,,,\"\",\"Front lawn/grass area.\",,,\narea,front-left-flower-area,Front left flower area,,,Front,Easy,Garden,Lavender,,,,\"\",\"Flower/pot area on front left. Some pots are near wall or windows.\",,,\narea,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,Front,Moderate,Side,Gold,,,,\"\",\"Narrow strip next to front wall/window line. Future idea: area-level wall/default distance context.\",,,\narea,front-bush,Front bush,,,Front,Easy,Garden,Clay,,,,\"\",\"Bush area near front.\",,,\narea,west-side,West side,,,West,Moderate,Side,Gray,,,,\"\",\"West side with trees near masonry/brick wall and a wood gate. House is behind wall; needs source-backed review.\",,,\narea,back-yard,Back yard,,,Back,Easy,Back,Blue,,,,\"\",\"Back of house with pergolas, climbing plants, and mixed plants.\",,,\narea,east-side,East side,,,East,Moderate,Side,Sage,,,,\"\",\"East side with climbing plant, wood wall/fence, and wood gate near structure.\",,,\nobject,front-palm-01,Front palm 1,front-grass,Front grass,,,,,Tree,Measured,4,6,Older than 2026 palm. Canopy near roofline but not touching.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-02,Front palm 2,front-grass,Front grass,,,,,Tree,Measured,7,0,Older than 2026 palm in lawn. Outside 5 ft but canopy may still be relevant.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"no\"\",\"\"ladder_fuels\"\":\"\"no\"\"}\",,\nobject,front-palm-03,Front palm 3,front-grass,Front grass,,,,,Tree,Measured,3,0,Older than 2026 palm; fronds need review.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"branches_canopy_fronds\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-04,Front palm 4,front-grass,Front grass,,,,,Tree,Measured,11,0,Older than 2026 palm farther from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":11,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"no\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"no\"\"}\",,\nobject,front-palm-05,Front palm 5,front-grass,Front grass,,,,,Tree,Needs review,5,0,Older than 2026 palm right at the 5 ft line; measure again.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"unknown\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,front-palm-06,Front palm 6,front-grass,Front grass,,,,,Tree,Measured,2,6,Older than 2026 palm close to front wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"no\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,front-lawn-grass,Front lawn grass,front-grass,Front grass,,,,,In-ground plant,Measured,6,0,Lawn/grass area. App uses In-ground plant until a lawn-specific type exists.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":4},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,front-wall-pot-01,Front wall pot 1,front-grass,Front grass,,,,,Potted plant,Measured,1,0,Potted plant next to front wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-wall-pot-02,Front wall pot 2,front-grass,Front grass,,,,,Potted plant,Needs details,0,8,Potted plant next to front wall; details intentionally incomplete.,,,\nobject,front-wall-pot-03,Front wall pot 3,front-grass,Front grass,,,,,Potted plant,Measured,2,0,Potted plant near wall and near another pot.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-01,Narrow strip window pot 1,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,0,6,Near wall and under window; short plant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-02,Narrow strip window pot 2,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,1,2,Near wall and near window; taller plant.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":3},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-03,Narrow strip window pot 3,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,2,4,Near wall but not directly under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":4},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,narrow-window-pot-04,Narrow strip window pot 4,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Needs review,0,10,Near wall/window; dead leaves observed.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":6},\"\"container_capacity_class\"\":\"\"unknown\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"no\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,narrow-window-pot-05,Narrow strip window pot 5,front-right-narrow-wall-strip,Front right narrow strip next to wall,,,,,Potted plant,Measured,3,6,Near wall but farther from nearest opening.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,front-main-bush,Front bush object,front-bush,Front bush,,,,,Shrub,Measured,2,0,Bush in front bush area.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"mulch_context\"\":\"\"around_plant_or_object\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-01,Left flower pot 1,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,1,6,Near wall; not under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-02,Left flower pot 2,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,6,0,Not near wall; outside immediate 5 ft.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,left-flower-pot-03,Left flower pot 3,front-left-flower-area,Front left flower area,,,,,Potted plant,Needs details,2,2,Near wall; intentionally missing detailed clues.,,,\nobject,left-flower-pot-04,Left flower pot 4,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,0,9,Near wall and under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"yes\"\",\"\"distance_opening\"\":{\"\"ft\"\":0,\"\"in\"\":9},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":10},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,left-flower-pot-05,Left flower pot 5,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,4,6,Near 5 ft line but not under window.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":5,\"\"in\"\":6},\"\"container_capacity_class\"\":\"\"five_gal_or_less\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":7},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":4},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,left-flower-pot-06,Left flower pot 6,front-left-flower-area,Front left flower area,,,,,Potted plant,Measured,8,0,Farther pot for comparison.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"over_five_gal\"\",\"\"container_material\"\":\"\"non_combustible\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"no_deck_stairs_nearby\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":3},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\"}\",,\nobject,left-flower-pot-07,Left flower pot 7,front-left-flower-area,Front left flower area,,,,,Potted plant,Needs review,3,0,Near wall and near another pot; uncertain material.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"distance_opening\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"container_capacity_class\"\":\"\"unknown\"\",\"\"container_material\"\":\"\"unknown\"\",\"\"container_placement\"\":\"\"ground\"\",\"\"deck_stair_clearance\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":10},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"plant_spacing\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,west-tree-01,West side healthy tree near brick wall,west-side,West side,,,,,Tree,Needs review,3,0,Older than 2026. Healthy tree near brick/masonry wall with house less than 5 ft behind wall. Treat as review scenario; no assumption that wall removes concern.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"unknown\"\"}\",,\nobject,west-tree-02,West side healthy tree touching wall,west-side,West side,,,,,Tree,Needs review,2,0,Older than 2026. Appears to touch masonry/brick wall; house is behind wall. Needs official/source-backed interpretation.,\"{\"\"zone0_location\"\":\"\"unknown\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"yes\"\",\"\"dead_tree_material\"\":\"\"no\"\",\"\"tree_debris_under\"\":\"\"unknown\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,west-tree-03,West side struggling tree,west-side,West side,,,,,Tree,Needs review,4,0,Older than 2026. Tree is not doing well and has dry/dead material.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"tree_status\"\":\"\"existing_before_2026\"\",\"\"tree_part\"\":\"\"whole_or_unsure\"\",\"\"tree_contact\"\":\"\"unknown\"\",\"\"canopy_clearance_10ft\"\":\"\"unknown\"\",\"\"dead_tree_material\"\":\"\"yes\"\",\"\"tree_debris_under\"\":\"\"yes\"\",\"\"ladder_fuels\"\":\"\"yes\"\"}\",,\nobject,west-wood-gate,West side wood gate,west-side,West side,,,,,Wood gate,Measured,2,0,Wood gate less than 5 ft from house/wall line.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"unknown\"\"}\",,\nobject,back-wood-pergola-01,Back wood pergola 1,back-yard,Back yard,,,,,Pergola,Measured,4,0,Wood pergola near house. Current fields are limited and review-heavy.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,back-wood-pergola-02,Back wood pergola 2,back-yard,Back yard,,,,,Pergola,Measured,8,0,Wood pergola farther from house. Current fields are limited and review-heavy.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"material_combustible\"\":\"\"yes\"\"}\",,\nobject,back-climbing-plant-01,Back climbing plant on pergola 1,back-yard,Back yard,,,,,Vine / climbing plant,Measured,4,0,Climbing plant entered once as vine; support is pergola.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"pergola\"\",\"\"plant_touching_structure\"\":\"\"unknown\"\"}\",,\nobject,back-climbing-plant-02,Back climbing plant on pergola 2,back-yard,Back yard,,,,,Vine / climbing plant,Measured,7,0,Climbing plant on second pergola farther from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"plant_support_context\"\":\"\"pergola\"\",\"\"plant_touching_structure\"\":\"\"no\"\"}\",,\nobject,back-plant-far-01,Back plant farther 1,back-yard,Back yard,,,,,In-ground plant,Measured,6,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":6,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":7,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-02,Back plant farther 2,back-yard,Back yard,,,,,In-ground plant,Measured,7,0,More than 5 ft from house.,,,\nobject,back-plant-far-03,Back plant farther 3,back-yard,Back yard,,,,,In-ground plant,Measured,8,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":8,\"\"in\"\":0},\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":0,\"\"in\"\":8},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-04,Back plant farther 4,back-yard,Back yard,,,,,In-ground plant,Measured,9,0,More than 5 ft from house.,,,\nobject,back-plant-far-05,Back plant farther 5,back-yard,Back yard,,,,,In-ground plant,Measured,10,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":10,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,back-plant-far-06,Back plant farther 6,back-yard,Back yard,,,,,In-ground plant,Measured,11,0,More than 5 ft from house.,,,\nobject,back-plant-far-07,Back plant farther 7,back-yard,Back yard,,,,,In-ground plant,Measured,12,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":12,\"\"in\"\":0},\"\"plant_type\"\":\"\"herbaceous\"\",\"\"plant_height\"\":{\"\"ft\"\":1,\"\"in\"\":2},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-08,Back plant farther 8,back-yard,Back yard,,,,,In-ground plant,Measured,13,0,More than 5 ft from house.,,,\nobject,back-plant-far-09,Back plant farther 9,back-yard,Back yard,,,,,In-ground plant,Measured,14,0,More than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"no\"\",\"\"distance_wall\"\":{\"\"ft\"\":14,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":6},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"combustible_mulch\"\":\"\"no\"\",\"\"plant_fuel_continuity\"\":\"\"no\"\",\"\"fuel_continuity\"\":\"\"no\"\"}\",,\nobject,back-plant-far-10,Back plant farther 10,back-yard,Back yard,,,,,In-ground plant,Measured,15,0,More than 5 ft from house.,,,\nobject,back-plant-near-01,Back plant close 1,back-yard,Back yard,,,,,In-ground plant,Measured,2,0,Less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"structure_construction_type\"\":\"\"unknown\"\",\"\"under_window\"\":\"\"no\"\",\"\"distance_opening\"\":{\"\"ft\"\":4,\"\"in\"\":0},\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"plant_height\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"healthy_maintained\"\":\"\"yes\"\",\"\"plant_spacing\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"combustible_mulch\"\":\"\"yes\"\",\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"fuel_continuity\"\":\"\"yes\"\"}\",,\nobject,back-plant-near-02,Back plant close 2,back-yard,Back yard,,,,,In-ground plant,Needs review,3,6,Less than 5 ft from house; partial details.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":3,\"\"in\"\":6},\"\"measured_from_structure_part\"\":\"\"exterior_wall\"\",\"\"under_window\"\":\"\"unknown\"\",\"\"plant_type\"\":\"\"other_or_unknown\"\",\"\"healthy_maintained\"\":\"\"unknown\"\",\"\"combustible_mulch\"\":\"\"unknown\"\",\"\"plant_fuel_continuity\"\":\"\"unknown\"\",\"\"fuel_continuity\"\":\"\"unknown\"\"}\",,\nobject,east-climbing-plant,East climbing plant near wall,east-side,East side,,,,,Vine / climbing plant,Measured,1,6,Climbing plant less than 5 ft from house/side wall.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":6},\"\"plant_fuel_continuity\"\":\"\"yes\"\",\"\"plant_support_context\"\":\"\"wall_or_structure\"\",\"\"plant_touching_structure\"\":\"\"yes\"\"}\",,\nobject,east-wood-wall,East wood wall or fence,east-side,East side,,,,,Wood fence,Measured,1,0,Wood wall/fence less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":1,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"parallel\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"yes\"\"}\",,\nobject,east-wood-gate,East side wood gate,east-side,East side,,,,,Wood gate,Measured,2,0,Wood gate less than 5 ft from house.,\"{\"\"zone0_location\"\":\"\"yes\"\",\"\"distance_wall\"\":{\"\"ft\"\":2,\"\"in\"\":0},\"\"fence_orientation\"\":\"\"attached_or_perpendicular\"\",\"\"fence_material\"\":\"\"wood\"\",\"\"combustible_reinforcement\"\":\"\"unknown\"\",\"\"vegetation_between_fence_structure\"\":\"\"yes\"\"}\",,\n"
+};
+
+
 
 const DEBUG_LOG_LIMIT = 150;
 
@@ -2999,27 +4402,24 @@ const state = {
   storageStatus: "not checked",
   quickType: "",
   quickTypeGroup: OBJECT_TYPE_GROUPS[0].label,
-  quickMessage: "Inventory only. No PASS/FAIL rule result yet.",
+  quickMessage: "Inventory plus guarded feedback preview. No official PASS/FAIL compliance result.",
   guidedAnswers: {},
 };
 
 const typeHints = {
-  "Potted plant": "Later phases will ask wall distance, opening distance, container size, container material, plant height, spacing, and dead material.",
-  "Shrub": "Later phases will check height, wall/opening distance, health, dead material, spacing, and fuel continuity.",
-  "Whole tree / unsure part": "Inventory only for now. Later phases will ask tree status/date, part, debris, ladder fuels, contact, and roof/eaves/chimney clearance.",
-  "Tree trunk": "Trunk proximity alone is not treated as automatic removal in the current project baseline.",
-  "Branches / canopy / fronds": "Later phases will check contact with structure and 10 ft / 3.05 m roof/eaves/chimney clearance.",
-  "Tree debris / leaves / needles": "Saved as inventory for now. Later phases will ask whether leaf litter, needles, fruit, dead material, or ladder fuels are present under or near the tree.",
-  "New or planned tree": "Saved as inventory for now. Later phases will ask whether the tree is new, recent, planned, or existing before the relevant date before applying any tree rule.",
-  "Wood gate": "Later phases will check attached/perpendicular status and the 5 ft / 1.52 m non-combustible transition rule.",
-  "Wood fence": "Later phases will check orientation, material, fuel pathway, and the limited 4 ft / 1.22 m existing-vinyl exception where relevant.",
-  "Pergola": "Later phases will flag wood/non-combustible structure questions for review.",
-  "Mulch / wood chips / bark": "Later phases will check combustible mulch in Zone 0.",
-  "Grill / BBQ": "Saved as inventory for now. Rule screening is not connected yet; later phases may treat fuel, combustibility, storage, and distance as review questions if official guidance supports it.",
+  "Potted plant": "Use details + clues for wall/opening distance, container capacity/material, plant height, spacing, and dead material feedback.",
+  "Shrub": "Use details + clues for height, wall/opening distance, health, dead material, spacing, and fuel continuity feedback.",
+  "Vine / climbing plant": "Use this for one real vine or climbing plant. Save what it grows on here so you do not add the same vine twice as a fence/pergola object.",
+  "Tree": "Use one Tree object for the real tree. Trunk, branches, debris, ladder fuels, and new/planned timing are saved as tree clues.",
+  "Wood gate": "Feedback preview uses orientation, material, reinforcement, vegetation, and distance; official discretion may still apply.",
+  "Wood fence": "Feedback preview uses orientation, material, fuel pathway, and the limited existing-vinyl distance clue where relevant.",
+  "Pergola": "Feedback preview is review-heavy for pergolas. Add material, distance, and fuel-continuity clues; add the vine separately as a Vine / climbing plant if needed.",
+  "Mulch / wood chips / bark": "Feedback preview checks combustible mulch in Zone 0.",
+  "Grill / BBQ": "Saved as review-only for now. Feedback preview can flag storage/material clues, but no automatic equipment-specific compliance result is mapped.",
   "HVAC / AC unit": "Saved as inventory for now. The frozen baseline does not make AC units an automatic PASS/FAIL category; later phases may ask about nearby vegetation, debris, and contact.",
-  "Generator": "Saved as inventory for now. Later phases may ask about fuel, storage, and distance if official guidance supports it.",
-  "Firewood / lumber": "Later phases will treat stored combustibles near the structure as a storage/combustible-material question.",
-  "Doormat / rug": "Later phases will treat mats/rugs near the structure as a combustible-item question.",
+  "Generator": "Saved as review-only for now. Feedback preview can flag fuel/storage/material clues, but no automatic equipment-specific compliance result is mapped.",
+  "Firewood / lumber": "Feedback preview treats stored combustibles near the structure as a storage/combustible-material question.",
+  "Doormat / rug": "Feedback preview treats mats/rugs near the structure as a combustible-item question.",
 };
 
 async function init() {
@@ -3129,6 +4529,12 @@ function bindEvents() {
   document.querySelector("#export-json").addEventListener("click", exportJson);
   document.querySelector("#import-json-button").addEventListener("click", () => document.querySelector("#import-json").click());
   document.querySelector("#import-json").addEventListener("change", importJson);
+  document.querySelector("#export-table").addEventListener("click", exportTableCsv);
+  document.querySelector("#export-table-shortcut").addEventListener("click", exportTableCsv);
+  document.querySelector("#import-table-button").addEventListener("click", () => document.querySelector("#import-table").click());
+  document.querySelector("#import-table").addEventListener("change", importTableCsv);
+  document.querySelector("#load-small-sample").addEventListener("click", () => loadSampleTable("small", "small test sample"));
+  document.querySelector("#load-yard-sample").addEventListener("click", () => loadSampleTable("requestedYard", "requested yard sample"));
   document.querySelector("#open-debug-log").addEventListener("click", openDebugLog);
   document.querySelector("#export-debug-log").addEventListener("click", exportDebugLog);
   document.querySelector("#copy-debug-log").addEventListener("click", copyDebugLog);
@@ -3358,7 +4764,7 @@ async function saveObject(event) {
     flowVersion: flow?.version || "",
     screeningReadiness,
     treeStatus: String(questionAnswers.tree_status || ""),
-    treePart: treePartFromObjectType(type),
+    treePart: String(questionAnswers.tree_part || ""),
     sourceBasis: sourceBasisForFlow(flow),
   });
   await putRecord(state.db, stores.objects, draft);
@@ -3675,7 +5081,7 @@ function renderObjects() {
       <p class="distance-line">Distance from wall: ${escapeHtml(formatDistance(object.wallFt, object.wallIn))}</p>
       <p class="object-note-line">${escapeHtml(object.notes || "No notes")}</p>
       ${guidedCardSummaryHtml(object)}
-      <p class="inventory-note">Inventory only. No PASS/FAIL rule result yet.</p>
+      ${feedbackPreviewCardHtml(object)}
       <div class="actions object-actions">
         <button class="risk-clue-action card-clue-action" data-edit-object="${object.id}"><span aria-hidden="true">🕵️</span><span>Details + clues</span></button>
         <button class="secondary card-secondary-action" data-edit-object="${object.id}">Edit / move</button>
@@ -3796,20 +5202,14 @@ function typeIconText(type) {
 }
 
 function isTreeType(type) {
-  return [
-    "Whole tree / unsure part",
-    "Tree trunk",
-    "Branches / canopy / fronds",
-    "Tree debris / leaves / needles",
-    "New or planned tree",
-  ].includes(type);
+  return type === "Tree";
 }
 
 function renderTypeHint() {
   const type = document.querySelector("#object-type").value;
   document.querySelector("#object-type-hint").textContent = type
     ? typeHints[type] || "Later phases will ask only the fields relevant to this object type."
-    : "Choose one object type. This is inventory only and will not show a rule result yet.";
+    : "Choose one object type. Feedback preview appears after you save details and clues.";
 }
 
 function renderGuidedQuestions() {
@@ -3831,13 +5231,10 @@ function renderGuidedQuestions() {
   const linkedDistance = questions.some((question) => question.id === "distance_wall")
     ? `<div class="guided-linked-field">${distanceDiagramSvg()}<span>Distance from wall uses the distance fields below. Feet/inches or cm both count.</span></div>`
     : "";
-  const linkedTreePart = treePartFromObjectType(type)
-    ? `<div class="guided-linked-field"><span class="linked-icon" aria-hidden="true">${typeIconText(type)}</span><span>Tree part comes from the object type you chose: ${escapeHtml(type)}.</span></div>`
-    : "";
   flowLabel.textContent = flow.reviewOnly
     ? `${type}: review-only clue set. Save location and material details; no result yet.`
     : `${type}: answer what you can now. ${visibleQuestions.length} clues here.`;
-  list.innerHTML = `${linkedTreePart}${linkedDistance}${visibleQuestions.map((question) => renderGuidedQuestion(question, state.guidedAnswers[question.id])).join("")}${sourceLegendHtml()}`;
+  list.innerHTML = `${linkedDistance}${visibleQuestions.map((question) => renderGuidedQuestion(question, state.guidedAnswers[question.id])).join("")}${sourceLegendHtml()}`;
   updateGuidedDistanceMetrics();
   renderGuidedReadiness();
 }
@@ -3860,7 +5257,7 @@ function renderGuidedQuestion(question, value) {
 
 function renderGuidedInput(question, value) {
   if (question.inputType === "notice") {
-    return `<p class="notice-only">Inventory/review prompt only. No automatic rule result is connected.</p>`;
+    return `<p class="notice-only">Inventory/review prompt only. Feedback preview stays conservative for this object.</p>`;
   }
   if (question.inputType === "distance") {
     const ft = value && typeof value === "object" ? value.ft ?? "" : "";
@@ -3997,7 +5394,7 @@ function collectGuidedAnswersForType(type) {
   const cards = [...list.querySelectorAll("[data-question-id]")];
   if (!cards.length) return pruneAnswersForType(state.guidedAnswers, type);
 
-  const answers = {};
+  const answers = preserveLegacyGuidedAnswers({}, state.guidedAnswers, type);
   for (const card of cards) {
     const answer = handleGuidedCardAnswer(card);
     if (answer !== undefined) answers[card.dataset.questionId] = answer;
@@ -4048,9 +5445,22 @@ function pruneAnswersForType(answers, type) {
       .filter((question) => questionAppliesToType(question, type))
       .map((question) => question.id),
   );
+  addLegacyAllowedAnswerKeys(allowed, type);
   return Object.fromEntries(
     Object.entries(answers).filter(([key, value]) => allowed.has(key) && value !== undefined && value !== ""),
   );
+}
+
+function preserveLegacyGuidedAnswers(nextAnswers, previousAnswers, type) {
+  if (type !== "Potted plant" || !previousAnswers || typeof previousAnswers !== "object") return nextAnswers;
+  if (previousAnswers.container_size && !nextAnswers.container_size) {
+    return { ...nextAnswers, container_size: previousAnswers.container_size };
+  }
+  return nextAnswers;
+}
+
+function addLegacyAllowedAnswerKeys(allowed, type) {
+  if (type === "Potted plant") allowed.add("container_size");
 }
 
 function renderGuidedReadiness() {
@@ -4091,6 +5501,23 @@ function guidedCardSummaryHtml(object) {
   return `<p class="guided-card-summary ${readinessClass(readiness)}"><span aria-hidden="true">🕵️</span><span><strong>Clues: ${escapeHtml(readinessLabel(readiness))}</strong><small>${escapeHtml(next)}</small></span></p>`;
 }
 
+function feedbackPreviewCardHtml(object) {
+  const feedback = previewObjectFeedback(object);
+  const action = feedback.primaryActions[0] || feedback.boundaryNote;
+  const source = feedback.sourceNote ? `<small>${escapeHtml(feedback.sourceNote)}</small>` : "";
+  const extraActions = feedback.primaryActions.slice(1);
+  return `
+    <div class="feedback-preview feedback-${escapeHtml(feedback.tone)}" aria-label="Feedback preview">
+      <strong>Feedback preview: ${escapeHtml(feedback.label)}</strong>
+      <span>${escapeHtml(feedback.summary)}</span>
+      <span>${escapeHtml(action)}</span>
+      ${extraActions.length ? `<ul>${extraActions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
+      ${source}
+      <small>${escapeHtml(feedback.boundaryNote)}</small>
+    </div>
+  `;
+}
+
 function answersWithObjectDistance(object) {
   const answers = object.questionAnswers && typeof object.questionAnswers === "object" ? { ...object.questionAnswers } : {};
   if (object.wallFt !== null || object.wallIn !== null) {
@@ -4127,7 +5554,7 @@ function readinessLabel(readiness) {
   const labels = {
     not_started: "Not started",
     incomplete: "Incomplete",
-    ready_for_rule_check: "Ready for later screening",
+    ready_for_rule_check: "Ready for feedback preview",
     needs_review: "Needs review",
   };
   return labels[readiness] || labels.not_started;
@@ -4157,6 +5584,8 @@ function answerLabel(value) {
     small: "Small",
     medium: "Medium",
     large: "Large",
+    five_gal_or_less: "5 gal / 18.9 L or less",
+    over_five_gal: "Over 5 gal / 18.9 L",
     exterior_wall: "Exterior wall",
     attached_deck: "Attached deck",
     stairs: "Stairs",
@@ -4176,6 +5605,11 @@ function answerLabel(value) {
     at_least_1ft: "At least 1 ft / 30 cm",
     less_than_1ft: "Less than 1 ft / 30 cm",
     no_deck_stairs_nearby: "No deck/stairs nearby",
+    fence: "Fence",
+    wall_or_structure: "Wall / structure",
+    trellis_or_support: "Trellis / support",
+    deck_or_railing: "Deck / railing",
+    nothing_or_ground: "Nothing / ground",
     standalone_mulch_area: "Standalone mulch area",
     in_or_around_pot: "In or around pot",
     around_plant_or_object: "Around plant/object",
@@ -4185,11 +5619,12 @@ function answerLabel(value) {
     existing_before_2026: "Existing before 2026",
     new_or_recent: "New or recent",
     planned_future: "Planned / future",
-    whole_or_unsure: "Whole tree / unsure part",
+    whole_or_unsure: "Whole tree / general concern",
     trunk: "Trunk",
-    branches_canopy_fronds: "Branches / canopy / fronds",
+    branches_canopy_fronds: "Branches, canopy, or fronds",
     debris: "Debris",
     ladder_fuels: "Ladder fuels",
+    new_or_planned: "New / planned tree",
     temporary: "Temporary",
     temporary_non_collection: "Temporary, not collection day",
     collection_day_only: "Collection day only",
@@ -4258,6 +5693,90 @@ function exportJson() {
   state.backupMessage = `Export started: ${filename}. This is your JSON backup file.`;
   logDebug("backup_export_started", { filename, areaCount: state.areas.length, objectCount: state.objects.length });
   renderBackupStatus();
+}
+
+function exportTableCsv() {
+  const exportedAt = new Date();
+  const csv = buildTableCsv({ areas: state.areas, objects: state.objects });
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const filename = `bloombuffer-table-${exportedAt.toISOString().slice(0, 10)}.csv`;
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+  state.lastBackupFileName = filename;
+  state.lastBackupAt = exportedAt.toISOString();
+  state.backupMessage = `Table export started: ${filename}. Use this for testing, comparison, or careful editing.`;
+  logDebug("table_export_started", { filename, areaCount: state.areas.length, objectCount: state.objects.length });
+  renderBackupStatus();
+}
+
+async function importTableCsv(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  state.backupMessage = `Selected table import file: ${file.name} (${formatFileModified(file)}).`;
+  logDebug("table_import_selected", { filename: file.name, size: file.size, lastModified: file.lastModified || null });
+  renderBackupStatus();
+  try {
+    const text = await file.text();
+    const data = tableCsvToBackup(text);
+    const shouldImport = confirm(
+      `Import table ${file.name}?\n\nThis table contains ${data.areas.length} areas and ${data.objects.length} objects. Importing will replace local BloomBuffer data in this browser.`,
+    );
+    if (!shouldImport) {
+      state.backupMessage = `Table import canceled: ${file.name}. Local browser data was not replaced.`;
+      logDebug("table_import_canceled", { filename: file.name });
+      renderBackupStatus();
+      return;
+    }
+    await replaceAllData(state.db, data);
+    await refreshState();
+    state.lastImportFileName = file.name;
+    state.lastImportAt = new Date().toISOString();
+    state.backupMessage = `Imported table ${file.name}: ${data.areas.length} areas and ${data.objects.length} objects.`;
+    logDebug("table_import_completed", { filename: file.name, areaCount: data.areas.length, objectCount: data.objects.length });
+    renderBackupStatus();
+  } catch (error) {
+    state.backupMessage = `Table import failed for ${file.name}. Local browser data was not replaced.`;
+    logDebug("table_import_failed", { filename: file.name, ...errorToDebugDetail(error) }, "error");
+    renderBackupStatus();
+    console.error("BloomBuffer table import failed:", error);
+    alert(`That table could not be imported.\n\n${error.message}\n\nYour current areas and objects were not changed.`);
+  } finally {
+    event.target.value = "";
+  }
+}
+
+async function loadSampleTable(sampleKey, label) {
+  try {
+    const text = SAMPLE_TABLES[sampleKey];
+    if (!text) throw new Error(`Unknown sample table: ${sampleKey}`);
+    const data = tableCsvToBackup(text);
+    const shouldImport = confirm(
+      `Load ${label}?\n\nThis sample contains ${data.areas.length} areas and ${data.objects.length} objects. Loading it will replace local BloomBuffer data in this browser.`,
+    );
+    if (!shouldImport) {
+      state.backupMessage = `Sample load canceled: ${label}. Local browser data was not replaced.`;
+      logDebug("sample_table_import_canceled", { sampleKey, label });
+      renderBackupStatus();
+      return;
+    }
+    await replaceAllData(state.db, data);
+    await refreshState();
+    state.lastImportFileName = label;
+    state.lastImportAt = new Date().toISOString();
+    state.backupMessage = `Loaded ${label}: ${data.areas.length} areas and ${data.objects.length} objects.`;
+    logDebug("sample_table_import_completed", { sampleKey, label, areaCount: data.areas.length, objectCount: data.objects.length });
+    renderBackupStatus();
+  } catch (error) {
+    state.backupMessage = `Sample load failed: ${label}. Local browser data was not replaced.`;
+    logDebug("sample_table_import_failed", { sampleKey, label, ...errorToDebugDetail(error) }, "error");
+    renderBackupStatus();
+    console.error("BloomBuffer sample table import failed:", error);
+    alert(`That sample could not be loaded.\n\n${error.message}\n\nYour current areas and objects were not changed.`);
+  }
 }
 
 async function importJson(event) {
@@ -4463,7 +5982,7 @@ function showDebugCopyStatus(message) {
 
 function collectPhoneDiagnostics() {
   return {
-    build: "Phase 2 clue motivation UI v43",
+    build: "Phase 5 sample import UI v59",
     pageMode: location.protocol || "unknown",
     pathEndsWith: location.pathname.split("/").pop() || "",
     userAgent: navigator.userAgent || "unknown",

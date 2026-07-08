@@ -4,9 +4,9 @@ This folder is the publish-ready static app for GitHub Pages.
 
 Current build:
 
-- `Build: Phase 2 picker title UI v52`
-- Phase 2 Risk clues only.
-- No PASS/FAIL/REVIEW rule screening is connected.
+- `Build: Phase 5 sample import UI v59`
+- Risk clues, guarded feedback preview, CSV table tools, and built-in test samples are connected.
+- No official PASS/FAIL/REVIEW compliance result is connected.
 
 ## Files To Upload
 
@@ -45,13 +45,17 @@ Expected URL shape:
 
 On the phone:
 
-1. Confirm the top bar says `Build: Phase 2 picker title UI v52`.
+1. Confirm the top bar says `Build: Phase 5 sample import UI v59`.
 2. Add one test object.
 3. Close and reopen the same phone browser.
 4. Confirm the object is still there.
-5. Go to `Rules` > `Phone diagnostics` if buttons or storage fail.
+5. Go to `Rules` > `Table tools`.
+6. Use `Load small test sample` or `Load requested yard sample` if downloads are not working.
+7. Export a CSV test table if you want to compare/edit in a spreadsheet.
+8. Import a small edited CSV copy only after confirming it should replace local browser data.
+9. Go to `Rules` > `Phone diagnostics` if buttons or storage fail.
 
-Computer and phone data are separate unless moved by JSON backup/import.
+Computer and phone data are separate unless moved by JSON backup/import, CSV table import/export, or loaded from the same built-in test sample.
 
 ## Sharing The App
 
